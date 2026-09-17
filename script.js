@@ -415,56 +415,64 @@
   })();
 
   /* ------------------------------------------------------------------ *
-   * 4b. Testimonial rail : drifts left on its own, and you can drag it.
+   * 4b. Drift rails : they scroll left on their own, and you can drag them.
    *
-   *     This was a CSS transform marquee until the rail had to become
-   *     draggable. A translated track cannot be swiped — the cards are no
+   *     Two of these now — the testimonials, and the line-up once it drops to
+   *     phone width — so the engine is a factory rather than a copy.
+   *
+   *     It was a CSS transform marquee until the rail had to become
+   *     draggable. A translated track cannot be swiped: the cards are no
    *     longer where the browser thinks they are, and there is no scroll
    *     position for a finger to take hold of. So the drift moves scrollLeft
-   *     instead, exactly like the showreel above, and the rail is a real
-   *     scroll container underneath.
+   *     instead, and the rail is a real scroll container underneath.
    *
    *     What that buys: touch swipe, trackpad, shift-wheel and keyboard
    *     arrows all work without a line of code, with the platform's own
-   *     momentum and rubber-band. The only thing hand-written is mouse drag,
-   *     because that is the one gesture a scroll container does not give you.
+   *     momentum and rubber-band. The only hand-written gesture is mouse
+   *     drag, because that is the one a scroll container does not give you.
    *
-   *     Three copies of the set, parked in the middle one. Two would be
-   *     enough to loop leftward, but dragging RIGHT from the start would hit
-   *     scrollLeft 0 and stop dead before there was any chance to wrap. With
-   *     a full set either side, the wrap always happens with content already
-   *     rendered on both sides of it.
+   *     Three copies of the set, parked in the middle one. Two would loop
+   *     leftward fine, but dragging RIGHT from the start would hit scrollLeft
+   *     0 and stop dead before there was any chance to wrap. With a full set
+   *     either side, the wrap always happens with content already rendered on
+   *     both sides of it.
    * ------------------------------------------------------------------ */
-  (function quoteRail() {
-    var rail = document.querySelector('.quotes__rail');
-    var track = rail && rail.querySelector('.quotes__track');
-    if (!track) return;
+  function driftRail(cfg) {
+    var rail = document.querySelector(cfg.rail);
+    var track = rail && rail.querySelector(cfg.track);
+    if (!track) return null;
 
     var originals = Array.prototype.slice.call(track.children);
-    if (originals.length < 2) return;
+    if (originals.length < 2) return null;
 
-    var SPEED = 32;         // px per second — moving, but readable in passing
-    var HOLD = 2800;        // ms of stillness after a drag or a swipe
-    var COPIES = 3;         // sets in the track; index 1 is home
+    var SPEED = cfg.speed || 32;   // px per second
+    var HOLD = 2800;               // ms of stillness after a drag or swipe
+    var COPIES = 3;                // sets in the track; index 1 is home
 
-    var built = false, dragging = false, hovering = false;
+    var active = false, built = false, dragging = false, hovering = false;
     var holding = false, onScreen = true, holdTimer = null;
     var startX = 0, startScroll = 0, last = 0, frame = null, moved = false;
-    var pos = 0;            // the drift position we own, in float pixels
-    var setW = 0;           // cached width of one set
+    var pos = 0;                   // the drift position we own, in float px
+    var setW = 0;                  // cached width of one set
 
     function build() {
       if (built) return;
       for (var c = 1; c < COPIES; c++) {
         originals.forEach(function (card) {
           var copy = card.cloneNode(true);
-          // The same seven reviews, twice over. Announced once.
+          // The same cards over again. Announced once.
           copy.setAttribute('aria-hidden', 'true');
           copy.setAttribute('data-clone', '');
           track.appendChild(copy);
         });
       }
       built = true;
+    }
+
+    function strip() {
+      track.querySelectorAll('[data-clone]').forEach(function (c) { c.remove(); });
+      built = false;
+      setW = 0;
     }
 
     // One set, gaps included. Measured off the DOM so a gap change in CSS needs
@@ -487,7 +495,7 @@
     }
 
     function idle() {
-      return !dragging && !hovering && !holding && onScreen &&
+      return active && !dragging && !hovering && !holding && onScreen &&
              !document.hidden && !reduced.matches;
     }
 
@@ -507,7 +515,7 @@
            makes a sub-pixel-per-frame drift possible. */
         pos = wrapped(pos + SPEED * dt / 1000);
         rail.scrollLeft = pos;
-      } else {
+      } else if (active) {
         /* Someone else is driving — a drag, a swipe still carrying momentum,
            a wheel, an arrow key. Follow their position rather than write one,
            because assigning scrollLeft mid-momentum cancels the momentum.
@@ -522,6 +530,7 @@
 
     // Any interaction stops the drift, then it eases back in after a pause.
     function hold() {
+      if (!active) return;
       holding = true;
       clearTimeout(holdTimer);
       holdTimer = setTimeout(function () { holding = false; }, HOLD);
@@ -532,6 +541,7 @@
      * them, with momentum this code could only approximate badly. Taking
      * those over with pointermove would make the rail worse, not better. */
     rail.addEventListener('pointerdown', function (e) {
+      if (!active) return;
       hold();
       if (e.pointerType !== 'mouse' || e.button !== 0) return;
       dragging = true;
@@ -583,9 +593,15 @@
       }, { threshold: 0 }).observe(rail);
     }
 
-    function start() {
+    function enable() {
+      if (active) return;
+      active = true;
       build();
       rail.classList.add('is-live');
+      // A scroll region has to be reachable by keyboard. Set here rather than
+      // in the HTML so a rail that is only live on phones does not leave a
+      // dead tab stop on desktop.
+      rail.setAttribute('tabindex', '0');
       measure();
       // Park in the middle set so there is a full set to drag into either way.
       pos = setW;
@@ -595,27 +611,72 @@
       frame = requestAnimationFrame(tick);
     }
 
-    // The loop keeps running under reduced motion — idle() simply never lets
-    // it advance the scroll. Dragging and swiping still work, which is the
-    // point: the setting turns off motion nobody asked for, not the rail.
-    function watchMotion(mq, fn) {
-      if (mq.addEventListener) mq.addEventListener('change', fn);
-      else if (mq.addListener) mq.addListener(fn);
+    function disable() {
+      if (!active) return;
+      active = false;
+      if (frame) { cancelAnimationFrame(frame); frame = null; }
+      clearTimeout(holdTimer);
+      holding = dragging = false;
+      rail.classList.remove('is-live', 'is-dragging');
+      rail.removeAttribute('tabindex');
+      strip();
+      rail.scrollLeft = 0;
     }
-    watchMotion(reduced, function () { last = performance.now(); });
 
-    var qResize;
-    window.addEventListener('resize', function () {
-      clearTimeout(qResize);
-      qResize = setTimeout(function () {
-        measure();
-        pos = wrapped(rail.scrollLeft);
-        rail.scrollLeft = pos;
-      }, 200);
-    });
+    function remeasure() {
+      if (!active) return;
+      measure();
+      pos = wrapped(rail.scrollLeft);
+      rail.scrollLeft = pos;
+    }
 
-    start();
-  })();
+    return { enable: enable, disable: disable, remeasure: remeasure };
+  }
+
+  // addEventListener is the modern spelling of a matchMedia listener,
+  // addListener the one older Safari still needs.
+  function watchMedia(mq, fn) {
+    if (mq.addEventListener) mq.addEventListener('change', fn);
+    else if (mq.addListener) mq.addListener(fn);
+  }
+
+  var rails = [];
+
+  // Testimonials: always a rail, at every width.
+  var quotes = driftRail({ rail: '.quotes__rail', track: '.quotes__track', speed: 32 });
+  if (quotes) { quotes.enable(); rails.push(quotes); }
+
+  /* The line-up: a three-up grid on desktop, a rail on phones. Three portraits
+     abreast on a 390px screen is about 110px each, which is too small to read
+     a face in — so below 720px it becomes one large portrait at a time. A
+     touch slower than the testimonials: there are only three cards and they
+     are mostly picture, so the same speed reads as restless. */
+  var lineup = driftRail({ rail: '.lineup__rail', track: '.lineup', speed: 24 });
+  if (lineup) {
+    rails.push(lineup);
+    var phoneRail = window.matchMedia('(max-width: 720px)');
+    var syncLineup = function () {
+      if (phoneRail.matches) lineup.enable();
+      else lineup.disable();
+    };
+    watchMedia(phoneRail, syncLineup);
+    syncLineup();
+  }
+
+  // No reduced-motion listener is needed: idle() reads reduced.matches on every
+  // frame, so toggling the setting takes effect on the next one. The loop keeps
+  // running either way — dragging and swiping still work, which is the point.
+  // The setting turns off motion nobody asked for, not the rail.
+
+  var railResize;
+  window.addEventListener('resize', function () {
+    clearTimeout(railResize);
+    // Card widths are vw-based, so the loop distance changes with the viewport
+    // and the cached set width has to be re-derived or the seam drifts.
+    railResize = setTimeout(function () {
+      rails.forEach(function (r) { r.remeasure(); });
+    }, 200);
+  });
 
   /* ------------------------------------------------------------------ *
    * 5. Booking CTAs hand focus to the form.

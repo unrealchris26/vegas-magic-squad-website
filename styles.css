@@ -861,11 +861,43 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 }
 .btn--sm{padding:12px 22px; min-height:0; font-size:11px; letter-spacing:.14em}
 
-@media (max-width:520px){
-  /* Still three across. Only the gap gives way, so the portraits keep as much
-     width as the screen can spare. */
-  .lineup{gap:8px}
-  .member{gap:9px}
+/* --------------------------------------------------------------------------
+   Phones: the line-up stops being a grid and becomes a rail.
+   Three abreast on a 390px screen gives each portrait about 110px, which is
+   too small to read a face in — so one large portrait at a time, swiped, with
+   the next peeking in at the edge. Same drift engine as the testimonials.
+   -------------------------------------------------------------------------- */
+@media (max-width:720px){
+  .lineup__rail{
+    overflow-x:auto; overscroll-behavior-x:contain;
+    scrollbar-width:none; -webkit-overflow-scrolling:touch;
+    /* must stay auto: html sets scroll-behavior:smooth globally, and a smooth
+       scroller fights the per-frame scrollLeft writes the drift makes */
+    scroll-behavior:auto;
+    /* full-bleed, so a card can sit half-off each edge and show there is more */
+    margin-inline:calc(var(--pad) * -1);
+    padding-inline:var(--pad);
+  }
+  .lineup__rail::-webkit-scrollbar{display:none}
+  .lineup__rail.is-live{cursor:grab}
+  .lineup__rail.is-dragging{cursor:grabbing; user-select:none}
+  .lineup__rail:focus-visible{outline:2px solid var(--gold); outline-offset:3px}
+
+  /* grid-template-columns is reset explicitly — leaving it set on a flex
+     container is harmless but reads as a leftover to whoever edits next */
+  .lineup{
+    display:flex; width:max-content;
+    grid-template-columns:none;
+    gap:clamp(14px,4vw,22px);
+    align-items:start;
+  }
+  .member{flex:0 0 min(70vw,300px); gap:12px}
+  /* The portrait carries the card now, so the type under it grows with it
+     rather than staying at the size it needed when three were crammed in. */
+  .member__name{font-size:21px}
+  .member__bill{font-size:11px; letter-spacing:.18em}
+  /* otherwise a mouse drag starting on a portrait becomes a native image drag */
+  .member__fig img{-webkit-user-drag:none}
 }
 
 

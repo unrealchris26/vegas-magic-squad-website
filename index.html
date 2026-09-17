@@ -150,6 +150,11 @@
       <span class="fleuron" aria-hidden="true"></span>
     </header>
 
+    <!-- On phones this becomes a swipeable rail with the same drift engine as
+         the testimonials (script.js, driftRail). On desktop it stays a plain
+         three-up grid and the rail wrapper does nothing. tabindex is added by
+         JS only while the rail is live, so desktop gains no dead tab stop. -->
+    <div class="lineup__rail" role="group" aria-label="The line-up, drag or swipe to browse">
     <ul class="lineup">
 
       <li class="member">
@@ -177,6 +182,7 @@
       </li>
 
     </ul>
+    </div>
 
     <p class="lineup__cta">
       <a class="btn btn--gold btn--lg" href="squad.html">Know more about the squad</a>
