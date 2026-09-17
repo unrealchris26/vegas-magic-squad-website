@@ -1,0 +1,19 @@
+# build output — regenerate with `node build.js`
+dist/
+
+# Netlify CLI local state (contains the linked site id)
+.netlify/
+
+node_modules/
+
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Impeccable tooling state. .impeccable/review alone is ~21MB of captured
+# screenshots — build artefacts of the design process, not project source.
+.impeccable/
+
+# Local preview server has no state to keep, but editors leave these around
+*.log

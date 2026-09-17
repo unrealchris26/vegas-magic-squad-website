@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Squad | Vegas Magic Squad</title>
+<meta name="description" content="Brandon Well, Kent Axell and Dream Upright. The three specialists behind Vegas Magic Squad, what each of them does, and how they work a room.">
+<meta name="theme-color" content="#07090f">
+<link rel="icon" href="images/site/logo.png">
+<link rel="preload" href="fonts/JosefinSans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Montserrat-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip" href="#profiles">Skip to the line-up</a>
+
+<!--
+  THE SQUAD PAGE.
+
+  Created when #about on the homepage was cut down to a horizontal line-up.
+  The three bios below are the ones that used to sit there, moved rather than
+  deleted — including Brandon's closing line, which per PRODUCT.md is the
+  squad's own wording from their own social captions and is the only
+  first-party copy anywhere on this site.
+
+  This is deliberately a starting point, not a finished page. It is honest as
+  it stands: nothing here is claimed that the homepage did not already claim.
+  Room to grow: how the three of them came to work together, how long each has
+  been performing, credits, and a photograph of the three together.
+-->
+
+<!-- No id="top" here, deliberately. This header is position:fixed, so it sits
+     at the viewport top at every scroll position — pointing an anchor at it
+     asks the browser to scroll an element into view that is already in view,
+     and the link does nothing. With no element matching, the HTML spec sends
+     a fragment of exactly "top" to the top of the document instead, which is
+     what the Home and brand links rely on. Do not put the id back. -->
+<header class="nav">
+  <div class="nav__in">
+    <a class="nav__brand" href="index.html" aria-label="Vegas Magic Squad, back to the home page">
+      <img src="images/site/logo.png" alt="" width="44" height="55" decoding="async">
+      <span class="nav__brandtx">Vegas<br>Magic Squad</span>
+    </a>
+
+    <nav class="nav__links" id="navlinks" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#gallery">Gallery</a>
+      <a href="index.html#quotes">Testimonials</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="index.html#booking">Contact</a>
+    </nav>
+
+    <a class="btn btn--red nav__cta" href="index.html#booking">Check Your Date</a>
+
+    <button class="nav__toggle" id="navtoggle" aria-expanded="false" aria-controls="navlinks" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main class="squadpage">
+
+  <section class="sec sec--night" id="profiles" aria-labelledby="squad-h">
+    <div class="wrap">
+
+      <div class="rulepair rulepair--sec" aria-hidden="true"><i></i><i></i></div>
+      <header class="sechead">
+        <h2 class="h2 h2--gold" id="squad-h">The squad</h2>
+        <p class="sechead__sub">Three specialists, one booking</p>
+      </header>
+
+      <p class="squadpage__lede">
+        Between the three of us we cover close-up at the tables, mentalism from
+        the front, and classical magic that works either. You can book one of us
+        or all three for the same night &mdash; and if you are not sure which
+        your evening needs, that is a question we are happy to answer before you
+        commit to anything.
+      </p>
+
+      <article class="profile">
+        <figure class="profile__fig">
+          <img src="images/site/about-brandon.jpg" alt="Brandon Well, The Card Shark, fanning a deck of cards" width="1080" height="1350" loading="lazy" decoding="async">
+        </figure>
+        <div class="profile__copy">
+          <p class="profile__bill">The Card Shark</p>
+          <h3 class="profile__name">Brandon Well</h3>
+          <p>
+            Cards, close enough to touch. You watch the deck the whole way
+            through, and it still does something it has no business doing.
+          </p>
+          <p>
+            Brandon works at a table, or standing with a group close enough that
+            there is nowhere for a move to hide. That closeness is deliberate.
+            The nearer you are, the harder it is to talk yourself out of what you
+            just watched happen.
+          </p>
+          <blockquote class="profile__quote">
+            It is within our suspension of disbelief <strong>where mystery lies
+            and magic begins to happen.</strong>
+          </blockquote>
+        </div>
+      </article>
+
+      <article class="profile profile--flip">
+        <figure class="profile__fig">
+          <img src="images/site/about-kent.jpg" alt="Kent Axell, The Mentalist, mid-performance" width="1080" height="1350" loading="lazy" decoding="async">
+        </figure>
+        <div class="profile__copy">
+          <p class="profile__bill">The Mentalist</p>
+          <h3 class="profile__name">Kent Axell</h3>
+          <p>
+            Mentalism that runs on attention rather than props. Kent works with
+            whatever your guests give him &mdash; a word someone was only
+            thinking of, a choice they are certain they made freely &mdash; and
+            hands it back changed.
+          </p>
+          <p>
+            He takes the front of a seated set, or moves through a reception,
+            depending on what your evening needs. Either way the material comes
+            out of the people standing in front of him, so nobody sits through an
+            act they have seen before.
+          </p>
+          <p class="profile__tag">
+            No two sets ever run the same way: <strong>your guests write half of
+            it.</strong>
+          </p>
+        </div>
+      </article>
+
+      <article class="profile">
+        <figure class="profile__fig">
+          <img src="images/site/about-dream.jpg" alt="Dream Upright, The Magician, mid-performance" width="1080" height="1350" loading="lazy" decoding="async">
+        </figure>
+        <div class="profile__copy">
+          <p class="profile__bill">The Magician</p>
+          <h3 class="profile__name">Dream Upright</h3>
+          <p>
+            Classical magic and illusion &mdash; linking rings, silks, ropes. The
+            repertoire that made most of us fall for magic in the first place,
+            and the kind of close-up that makes a loud table go quiet.
+          </p>
+          <p>
+            Dream performs it near enough to be inspected, and it plays to a
+            seated audience as readily as to four people at a high-top with
+            drinks in their hands. The rings get handed over afterwards.
+            Examining them has never once helped.
+          </p>
+          <p class="profile__tag">
+            Rings, ropes and silks &mdash; <strong>handed straight to you, if you
+            want to check.</strong>
+          </p>
+        </div>
+      </article>
+
+      <p class="squadpage__cta">
+        <a class="btn btn--red btn--lg" href="index.html#booking">Check your date</a>
+      </p>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="bulbs bulbs--strip" data-edge="strip" aria-hidden="true"></div>
+  <div class="wrap foot__grid">
+    <div class="foot__brand">
+      <img src="images/site/logo.png" alt="Vegas Magic Squad" width="140" height="174" loading="lazy" decoding="async">
+      <p>Magicians for corporate events and private parties. Las Vegas, Nevada.</p>
+    </div>
+
+    <nav class="foot__nav" aria-label="Footer">
+      <a href="index.html#about">The line-up</a>
+      <a href="index.html#services">What we do</a>
+      <a href="index.html#booking">Check Your Date</a>
+    </nav>
+  </div>
+
+  <div class="wrap foot__legal">
+    <p>&copy; <span id="yr">2026</span> Vegas Magic Squad. All rights reserved.</p>
+    <p>Booking enquiries welcome for events in Las Vegas and beyond.</p>
+  </div>
+</footer>
+
+<script src="script.js" defer></script>
+</body>
+</html>

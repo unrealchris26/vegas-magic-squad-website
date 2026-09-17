@@ -1,0 +1,19 @@
+# ==========================================================================
+# Vegas Magic Squad — Netlify
+# ==========================================================================
+# The publish root is dist/, not the project folder. build.js assembles it
+# from an allowlist so the design docs, the reference screenshots and the
+# ~11MB of unused source images stay off the public URL. See build.js.
+#
+# Caching and security headers are NOT here — they live in _headers, which
+# build.js copies into dist/. That file is read by every kind of deploy,
+# including a drag-and-drop of dist/, which never reads this one.
+# ==========================================================================
+
+[build]
+  command = "node build.js"
+  publish = "dist"
+
+[build.environment]
+  # Pinned so a change to Netlify's default cannot move the build under us.
+  NODE_VERSION = "20"

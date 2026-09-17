@@ -1,0 +1,116 @@
+Attached Element Context from Integrated Browser
+
+Element: section#clients.clients
+
+URL: http://127.0.0.1:8765/
+
+HTML Path: main > section#clients.clients
+
+Outer HTML:
+```html
+<section class="clients" id="clients" aria-labelledby="clients-h">
+
+  <div class="clients__panel ignite is-lit">
+    <div class="wrap clients__in">
+      <div class="rulepair rulepair--sec" aria-hidden="true"><i></i><i></i></div>
+      <p class="clients__eyebrow">Your company is in good company</p>
+      <h2 class="h2 clients__title" id="clients-h">Booked by names you already know</h2>
+    </div>
+
+    <!--
+      The second list is an exact duplicate of the first. The track travels
+      exactly -50%, at which point set 2 sits where set 1 began and the
+      animation restarts with no visible jump. Keep the two identical.
+    -->
+    <div class="logoloop">
+      <div class="logoloop__track">
+        <ul class="logoloop__set">
+          <li><img src="images/logos/att.png" alt="AT&amp;T" loading="lazy" decoding="async"></li>
+          <li><img src="images/logos/ibm.png" alt="IBM" loading="lazy" decoding="async"></li>
+          <li><img src="images/logos/ford.png" alt="Ford" loading="lazy" decoding="async"></li>
+          <li><img src="images/logos/chase.png" alt="Chase" loading="lazy" decoding="async"></li>
+          <li><img src="images/logos/capital-one.png" alt="Capital One" loading="lazy" decoding="async"></li>
+          <li><img src="images/logos/xerox.png" alt="Xerox" loading="lazy" decoding="async"></li>
+          <li><img src="images/logos/coned.png" alt="Con Edison" loading="lazy" decoding="async"></li>
+          <li><img src="images/logos/make-a-wish.png" alt="Make-A-Wish" loading="lazy" decoding="async"></li>
+        </ul>
+        <ul class="logoloop__set" aria-hidden="true">
+          <li><img src="images/logos/att.png" alt="" loading="lazy" decoding="async"></li>
+          <li><img src="images/logos/ibm.png" alt="" loading="lazy" decoding="async"></li>
+          <li><img src="images/logos/ford.png" alt="" loading="lazy" decoding="async"></li>
+          <li><img src="images/logos/chase.png" alt="" loading="lazy" decoding="async"></li>
+          <li><img src="images/logos/capital-one.png" alt="" loading="lazy" decoding="async"></li>
+          <li><img src="images/logos/xerox.png" alt="" loading="lazy" decoding="async"></li>
+          <li><img src="images/logos/coned.png" alt="" loading="lazy" decoding="async"></li>
+          <li><img src="images/logos/make-a-wish.png" alt="" loading="lazy" decoding="async"></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!--
+    TODO BEFORE LAUNCH: this quote is a PLACEHOLDER carried over from Kent's
+    site and the attribution is deliberately anonymised. Replace it with a real,
+    named quote you have permission to publish, or delete this figure. The
+    named slots in #praise below are the other place quotes live.
+  -->
+  <figure class="wrap pullquote">
+    <blockquote>“Without a doubt, the most impressive performer we have ever booked. Jaw-dropping.”</blockquote>
+    <figcaption>Events Director, Fortune 500 client</figcaption>
+  </figure>
+
+</section>
+```
+
+Dimensions:
+- top: 256px
+- left: 0px
+- width: 1238px
+- height: 951px
+
+CSS:
+```css
+*, *::before, *::after { box-sizing:border-box }
+.clients { /* Both golds are pinned by contrast, not taste. --gold-deep carries white
+     text at 4.88:1. The eyebrow sits on --bill instead, where --gold-deep only
+     reaches 4.15:1, so it needs a darker value — this one clears 4.89:1. */
+  --gold-bill:#7d6228;
+  background:var(--gold-deep);
+  position:relative;
+  /* #praise follows with .trim-top, whose diagonal eats up to --trim off this
+     section's bottom-right. Reserve that height so the guillotine cuts gold
+     band rather than the attribution line. Harmless if the section moves. */
+  padding-bottom:var(--trim); }
+
+/* Pseudo-elements */
+::selection { background:var(--gold); color:var(--gold-ink) }
+::-webkit-scrollbar { width:11px; height:11px }
+::-webkit-scrollbar-thumb { background:var(--gold-deep); border:3px solid var(--night) }
+::-webkit-scrollbar-thumb:hover { background:var(--gold) }
+::-webkit-scrollbar-track { background:var(--night) }
+
+/* Inherited */
+body { color:var(--night-tx); font-family:var(--text); font-size:clamp(15px,.35vw + 14px,17px); line-height:1.62 }
+
+/* Resolved values */
+box-sizing: border-box;
+color: rgb(239, 233, 221);
+display: block;
+font-family: "Libre Franklin", system-ui, -apple-system, "Segoe UI", sans-serif;
+font-size: 17px;
+height: 951.344px;
+line-height: 27.54px;
+padding-bottom: 98.592px;
+position: relative;
+unicode-bidi: isolate /*UA*/;
+width: 1238px;
+
+/* CSS variables */
+--gold: #c8a850;
+--text: "Libre Franklin",system-ui,-apple-system,"Segoe UI",sans-serif;
+--gold-ink: #2a2008;
+--trim: clamp(34px,7.9vw,150px);
+--gold-deep: #8a6d2c;
+--night: #07090f;
+--night-tx: #efe9dd;
+```

@@ -1,0 +1,4 @@
+# Matches the X-Robots-Tag noindex in _headers. Both come off together when
+# the placeholders are replaced and the site is ready to be found.
+User-agent: *
+Disallow: /
