@@ -699,7 +699,91 @@
         <div class="f2">
           <p class="field">
             <label for="f-phone">Phone</label>
-            <input id="f-phone" name="phone" type="tel" autocomplete="tel">
+            <!-- Dial code and national number are separate controls so each can
+                 carry its own autocomplete hint, and so the number field can be
+                 validated on digits alone. script.js joins them back into one
+                 value when the form is submitted. -->
+            <span class="telwrap">
+              <span class="selwrap selwrap--dial">
+                <label class="sr-only" for="f-dial">Country code</label>
+                <select id="f-dial" name="dial" autocomplete="tel-country-code">
+                <optgroup label="Common">
+                  <option value="+1" data-country="United States" selected>United States +1</option>
+                  <option value="+1" data-country="Canada">Canada +1</option>
+                  <option value="+44" data-country="United Kingdom">United Kingdom +44</option>
+                  <option value="+61" data-country="Australia">Australia +61</option>
+                </optgroup>
+                <optgroup label="All countries">
+                  <option value="+54" data-country="Argentina">Argentina +54</option>
+                  <option value="+61" data-country="Australia">Australia +61</option>
+                  <option value="+43" data-country="Austria">Austria +43</option>
+                  <option value="+1" data-country="Bahamas">Bahamas +1</option>
+                  <option value="+880" data-country="Bangladesh">Bangladesh +880</option>
+                  <option value="+32" data-country="Belgium">Belgium +32</option>
+                  <option value="+55" data-country="Brazil">Brazil +55</option>
+                  <option value="+1" data-country="Canada">Canada +1</option>
+                  <option value="+56" data-country="Chile">Chile +56</option>
+                  <option value="+86" data-country="China">China +86</option>
+                  <option value="+57" data-country="Colombia">Colombia +57</option>
+                  <option value="+506" data-country="Costa Rica">Costa Rica +506</option>
+                  <option value="+385" data-country="Croatia">Croatia +385</option>
+                  <option value="+420" data-country="Czechia">Czechia +420</option>
+                  <option value="+45" data-country="Denmark">Denmark +45</option>
+                  <option value="+1" data-country="Dominican Republic">Dominican Republic +1</option>
+                  <option value="+20" data-country="Egypt">Egypt +20</option>
+                  <option value="+358" data-country="Finland">Finland +358</option>
+                  <option value="+33" data-country="France">France +33</option>
+                  <option value="+49" data-country="Germany">Germany +49</option>
+                  <option value="+30" data-country="Greece">Greece +30</option>
+                  <option value="+852" data-country="Hong Kong">Hong Kong +852</option>
+                  <option value="+36" data-country="Hungary">Hungary +36</option>
+                  <option value="+354" data-country="Iceland">Iceland +354</option>
+                  <option value="+91" data-country="India">India +91</option>
+                  <option value="+62" data-country="Indonesia">Indonesia +62</option>
+                  <option value="+353" data-country="Ireland">Ireland +353</option>
+                  <option value="+972" data-country="Israel">Israel +972</option>
+                  <option value="+39" data-country="Italy">Italy +39</option>
+                  <option value="+1" data-country="Jamaica">Jamaica +1</option>
+                  <option value="+81" data-country="Japan">Japan +81</option>
+                  <option value="+254" data-country="Kenya">Kenya +254</option>
+                  <option value="+352" data-country="Luxembourg">Luxembourg +352</option>
+                  <option value="+60" data-country="Malaysia">Malaysia +60</option>
+                  <option value="+52" data-country="Mexico">Mexico +52</option>
+                  <option value="+377" data-country="Monaco">Monaco +377</option>
+                  <option value="+31" data-country="Netherlands">Netherlands +31</option>
+                  <option value="+64" data-country="New Zealand">New Zealand +64</option>
+                  <option value="+234" data-country="Nigeria">Nigeria +234</option>
+                  <option value="+47" data-country="Norway">Norway +47</option>
+                  <option value="+92" data-country="Pakistan">Pakistan +92</option>
+                  <option value="+507" data-country="Panama">Panama +507</option>
+                  <option value="+51" data-country="Peru">Peru +51</option>
+                  <option value="+63" data-country="Philippines">Philippines +63</option>
+                  <option value="+48" data-country="Poland">Poland +48</option>
+                  <option value="+351" data-country="Portugal">Portugal +351</option>
+                  <option value="+1" data-country="Puerto Rico">Puerto Rico +1</option>
+                  <option value="+974" data-country="Qatar">Qatar +974</option>
+                  <option value="+40" data-country="Romania">Romania +40</option>
+                  <option value="+966" data-country="Saudi Arabia">Saudi Arabia +966</option>
+                  <option value="+65" data-country="Singapore">Singapore +65</option>
+                  <option value="+27" data-country="South Africa">South Africa +27</option>
+                  <option value="+82" data-country="South Korea">South Korea +82</option>
+                  <option value="+34" data-country="Spain">Spain +34</option>
+                  <option value="+94" data-country="Sri Lanka">Sri Lanka +94</option>
+                  <option value="+46" data-country="Sweden">Sweden +46</option>
+                  <option value="+41" data-country="Switzerland">Switzerland +41</option>
+                  <option value="+886" data-country="Taiwan">Taiwan +886</option>
+                  <option value="+66" data-country="Thailand">Thailand +66</option>
+                  <option value="+90" data-country="Turkey">Turkey +90</option>
+                  <option value="+971" data-country="United Arab Emirates">United Arab Emirates +971</option>
+                  <option value="+44" data-country="United Kingdom">United Kingdom +44</option>
+                  <option value="+1" data-country="United States">United States +1</option>
+                  <option value="+84" data-country="Vietnam">Vietnam +84</option>
+                </optgroup>
+                </select>
+                <svg class="selwrap__c" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5 12 15.5 18 9.5"/></svg>
+              </span>
+              <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national">
+            </span>
             <span class="err" data-err="f-phone" aria-live="polite"></span>
           </p>
           <p class="field">

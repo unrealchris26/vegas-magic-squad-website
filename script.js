@@ -816,6 +816,19 @@
     var payload = {};
     fields.forEach(function (el) { if (el.name) payload[el.name] = el.value.trim(); });
 
+    /* The dial code is meaningless on its own, so it is joined to the number
+       here rather than sent as a second field every endpoint would have to
+       know how to recombine. An empty phone stays empty — "+1" by itself is
+       not a phone number, and sending one would look like a real value. */
+    if (payload.phone) {
+      // A pasted international number already carries its own prefix.
+      // Prefixing again would produce "+1 +44 20 7946 0000".
+      payload.phone = payload.phone.charAt(0) === '+'
+        ? payload.phone
+        : ((payload.dial || '') + ' ' + payload.phone).trim();
+    }
+    delete payload.dial;
+
     submit.classList.add('is-sending');
     submit.disabled = true;
     status.textContent = 'Checking your enquiry.';
@@ -827,11 +840,15 @@
         fields.forEach(clearError);
         // Deliberately does not claim delivery: the handler below transmits
         // nothing. Replace this string when the form is wired to a real endpoint.
-        status.textContent = 'Form checks out, but it is not connected yet, so nothing was sent. Email unrealvegas@gmail.com in the meantime.';
+        status.textContent = 'Thank you — your enquiry is in. We will come back to you with what we would do with your evening, and what it would cost.';
         status.className = 'formnote is-ok';
       })
-      .catch(function () {
-        status.textContent = 'That did not send. Email unrealvegas@gmail.com and we will pick it up there.';
+      .catch(function (err) {
+        // Two different failures, two different truths. Neither claims the
+        // enquiry arrived, because in neither case do we know that it did.
+        status.textContent = (err && err.message === 'not-configured')
+          ? 'This form is not connected yet, so nothing was sent. Please email unrealvegas@gmail.com or call (207) 458-3115.'
+          : 'That did not send. Please email unrealvegas@gmail.com or call (207) 458-3115 and we will pick it up there.';
         status.className = 'formnote is-bad';
       })
       .then(function () {
@@ -841,35 +858,88 @@
   });
 
   /* ==================================================================== *
-   * PLACEHOLDER SUBMIT HANDLER  --  REPLACE BEFORE LAUNCH
+   * GO HIGH LEVEL  --  inbound webhook
    * --------------------------------------------------------------------
-   * Nothing is transmitted anywhere. This resolves after a short delay so
-   * the success, error and loading states are all reachable and testable.
+   * LIVE. Enquiries POST to the workflow's Inbound Webhook trigger.
+   * Verified 2026-09-17: preflight and POST both return
+   * Access-Control-Allow-Origin: *, and the endpoint answers 200 with
+   * {"status":"Success: test request received"} — so the browser can post
+   * to it directly and no server-side proxy is needed.
    *
-   * To make it real, delete the body of this function and return a real
-   * request. For example, with Formspree:
+   * The GHL side still needs its actions wired: open the workflow, read the
+   * captured payload off the Inbound Webhook trigger, map the keys below
+   * onto contact fields, and add a Create/Update Contact action. Without
+   * that action the payload arrives and nothing is recorded.
    *
-   *   function sendEnquiry(data) {
-   *     return fetch('https://formspree.io/f/YOUR_FORM_ID', {
-   *       method: 'POST',
-   *       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-   *       body: JSON.stringify(data)
-   *     }).then(function (r) {
-   *       if (!r.ok) throw new Error('Request failed');
-   *     });
-   *   }
+   * To point this at a different workflow, replace GHL_WEBHOOK. Leave it as
+   * an empty string and the form reverts to validating and saying plainly
+   * that nothing was sent, rather than pretending to deliver.
    *
-   * Netlify Forms, Basin, Getform and a custom endpoint all follow the
-   * same shape: POST the payload, throw on a non-ok response.
+   * ⚠ This URL ships inside script.js, so it is public to anyone who views
+   *   source. That is how a browser-to-webhook POST works, and it means
+   *   someone could push junk contacts into the workflow. Acceptable for a
+   *   booking form; if it gets abused, move this call behind a Netlify
+   *   Function and keep the URL in an environment variable instead.
    * ==================================================================== */
+  var GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/w6jm6XLgzoiHN5ovEKdL/webhook-trigger/4bdd60bb-bdd0-4aca-b6bd-1ffacd5dd53e';
+  var GHL_TIMEOUT = 15000;       // ms before we stop waiting and say so
+
   function sendEnquiry(data) {
-    return new Promise(function (resolve) {
-      console.info('[Vegas Magic Squad] Placeholder handler. Enquiry not sent:', data);
-      setTimeout(resolve, 900);
+    if (!GHL_WEBHOOK) {
+      return Promise.reject(new Error('not-configured'));
+    }
+
+    /* GHL maps whatever keys arrive, so the payload is flat and named for
+       what a person would call each thing. firstName/lastName are split out
+       alongside the whole name because GHL's contact record wants them
+       separately, and asking the visitor for two fields to satisfy that
+       would be making them do the system's work. */
+    var whole = (data.name || '').trim().replace(/\s+/g, ' ');
+    var cut = whole.lastIndexOf(' ');
+    var body = {
+      name: whole,
+      firstName: cut === -1 ? whole : whole.slice(0, cut),
+      lastName: cut === -1 ? '' : whole.slice(cut + 1),
+      email: data.email || '',
+      phone: data.phone || '',
+      eventDate: data.date || '',
+      eventType: data.type || '',
+      guestCount: data.guests || '',
+      venue: data.venue || '',
+      message: data.message || '',
+      source: 'Website booking form',
+      pageUrl: window.location.href,
+      submittedAt: new Date().toISOString()
+    };
+
+    // A request with no ceiling leaves the button spinning forever on a dead
+    // network, which reads as "still working" when it is not.
+    var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, GHL_TIMEOUT) : null;
+
+    return fetch(GHL_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      signal: ctrl ? ctrl.signal : undefined
+    }).then(function (r) {
+      if (timer) clearTimeout(timer);
+      if (!r.ok) throw new Error('GHL returned ' + r.status);
+    }, function (err) {
+      if (timer) clearTimeout(timer);
+      /* A TypeError with no status is the signature of a blocked
+         cross-origin request, not of a rejected one — the POST may well have
+         arrived and the browser simply refused to show us the response. It
+         is reported as a failure regardless: telling someone their enquiry
+         was received when we cannot confirm it is worse than asking them to
+         email. If this turns out to be the failure mode, the fix is the
+         Netlify Function proxy noted above, not a more hopeful message. */
+      throw err;
     });
   }
 
-  }  /* end form guard */
+  }  /* end form guard — opened at `if (form && status && submit)` so this
+        file is safe on squad.html, which has no booking form */
 
   /* ------------------------------------------------------------------ *
    * 7. Footer year

@@ -442,8 +442,34 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 .field input[aria-invalid="true"],.field select[aria-invalid="true"],.field textarea[aria-invalid="true"]{
   border-color:var(--red-hi); box-shadow:0 1px 0 0 var(--red-hi)
 }
+/* Available to screen readers, invisible on screen. The dial-code select has
+   its own label because "Phone" belongs to the number field, and a select with
+   no label of its own is announced as just "combo box". */
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0;
+}
+
 .selwrap{position:relative; display:block}
 .selwrap select{appearance:none; padding-right:44px; cursor:pointer}
+
+/* Dial code and number read as one control. auto/1fr rather than a fixed
+   width so the select sizes to its longest visible option instead of
+   truncating "United Arab Emirates +971" to nothing useful. */
+.telwrap{display:grid; grid-template-columns:auto minmax(0,1fr); gap:8px; align-items:start}
+.selwrap--dial{min-width:0}
+.selwrap--dial select{
+  padding-right:36px; padding-left:12px;
+  max-width:11.5rem; text-overflow:ellipsis;
+}
+.selwrap--dial .selwrap__c{right:11px}
+
+@media (max-width:420px){
+  /* Side by side, the number field is left with about 150px on a small phone,
+     which is not enough to see a number you are typing. Stack instead. */
+  .telwrap{grid-template-columns:1fr; gap:10px}
+  .selwrap--dial select{max-width:none}
+}
 .selwrap__c{
   position:absolute; right:14px; top:50%; transform:translateY(-50%);
   width:17px; height:17px; fill:none; stroke:var(--gold); stroke-width:1.6;
