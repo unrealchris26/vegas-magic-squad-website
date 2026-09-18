@@ -40,9 +40,15 @@ Planners typically evaluate several entertainment options at once and make conta
 
 **The line-up (confirmed, and the spelling is binding):**
 
+> Corrected 2026-09-17: this file previously recorded the card specialist as
+> "Brandon Well". The user confirmed the correct name is **Brandon Williams**,
+> which matches the portrait supplied as "THE CARD SHARK Brandon Williams
+> Instagram Size.jpg". All site copy, alt text and meta descriptions were
+> updated to match.
+
 | Performer | Billing | Discipline |
 |---|---|---|
-| Brandon Well | The Card Shark | Card work and sleight of hand |
+| Brandon Williams | The Card Shark | Card work and sleight of hand |
 | Kent Axell | The Mentalist | Mentalism and mind-reading |
 | Dream Upright | The Magician | Classical magic and illusion |
 
@@ -66,13 +72,13 @@ Planners typically evaluate several entertainment options at once and make conta
 **Real photography, all in `images/`:**
 
 - `Hero Section.png` (1763x892): the three performers together against dark teal smoke with flying playing cards. User-designated hero background.
-- `brandon-portrait-1.png` (466x984, alpha): Brandon Well, dark suit, bar interior.
+- `brandon-portrait-1.png` (466x984, alpha): Brandon Williams, dark suit, bar interior.
 - `ChatGPT Image Sep 15, 2026, 09_56_12 AM.png` (1024x1536, alpha): Kent Axell, purple plaid jacket, arms open, spotlit.
 - `dream-portrait.png` (488x1106, alpha): Dream Upright, bowler hat, performing linking rings.
 - `DSC01124-1-scaled.jpg` (2560x1440): a real audience on its feet applauding at a holiday event. The single strongest piece of proof on hand.
 - Four square strolling-magic shots at corporate events, plus three close-up performance and portrait shots.
 
-**Real first-party copy** exists in the image filenames, drawn from the squad's own social captions, including Brandon Well's line "It is within our suspension of disbelief where mystery lies and magic begins to happen." These are the performers' own words and may be used as such.
+**Real first-party copy** exists in the image filenames, drawn from the squad's own social captions, including Brandon Williams's line "It is within our suspension of disbelief where mystery lies and magic begins to happen." These are the performers' own words and may be used as such.
 
 **Absences that must not be fabricated:** there are no client testimonials, no named corporate clients, no press quotes, no awards, no audience or booking numbers, and no pricing. The testimonial section ships with clearly-marked placeholders for the user to replace. Contact details (booking email, phone, Instagram) are likewise placeholders pending real values. One venue, the Ahern Hotel, appears in a photo filename but was not confirmed for publication and must not be claimed on the page.
 
