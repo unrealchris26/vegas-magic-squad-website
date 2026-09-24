@@ -26,7 +26,7 @@ const ROOT = __dirname;
 const OUT = path.join(ROOT, 'dist');
 
 // The pages and the two shared files; every asset below is discovered.
-const ENTRIES = ['index.html', 'squad.html', 'styles.css', 'script.js'];
+const ENTRIES = ['index.html', 'squad.html', 'privacy.html', 'terms.html', 'styles.css', 'script.js'];
 
 // Only these get pulled in by reference. Keeps a stray mailto: or #anchor out.
 const ASSET_EXT = /\.(?:css|js|mjs|woff2?|ttf|otf|jpe?g|png|webp|avif|gif|svg|ico|webmanifest|mp4|webm)$/i;

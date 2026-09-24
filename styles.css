@@ -357,6 +357,63 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 }
 
 /* ==========================================================================
+   Legal pages : privacy policy, terms & conditions
+   Long-form reading, so the measure is tight and the rhythm is generous.
+   Everything else is borrowed from the existing system.
+   ========================================================================== */
+.legalpage{padding-top:calc(72px + env(safe-area-inset-top,0px))}
+.legal{max-width:68ch; margin-inline:auto}
+.legal__lede{
+  margin:0 0 clamp(30px,4vw,46px);
+  padding:18px 20px;
+  background:var(--night-2);
+  border-left:3px solid var(--gold);
+  font-size:16px; line-height:1.68; color:var(--night-tx);
+}
+.legal h3{
+  margin:clamp(30px,4vw,44px) 0 .5em;
+  font-family:var(--disp); font-size:clamp(17px,2vw,21px); font-weight:700;
+  letter-spacing:.02em; color:var(--gold-hi);
+}
+.legal p{margin:0 0 1em; font-size:15.5px; line-height:1.72; color:var(--night-tx2)}
+.legal p a{color:var(--gold-hi); text-underline-offset:3px}
+.legal p a:hover{color:var(--gold)}
+/* The [CONFIRM] markers must be impossible to publish by accident. */
+.legal strong{color:var(--gold-hi); font-weight:600}
+.legal__list{
+  margin:0 0 1.2em; padding:0; list-style:none;
+  display:flex; flex-direction:column; gap:.55em;
+}
+.legal__list li{
+  position:relative; padding-left:20px;
+  font-size:15.5px; line-height:1.6; color:var(--night-tx2);
+}
+.legal__list li::before{
+  content:""; position:absolute; left:0; top:.68em;
+  width:10px; height:1px; background:var(--gold-deep);
+}
+.legal__cta{
+  display:flex; flex-wrap:wrap; gap:14px; justify-content:center;
+  margin:clamp(40px,5.5vw,64px) 0 0;
+}
+
+/* Footer legal links, on every page */
+.foot__legalnav{display:flex; flex-wrap:wrap; gap:8px 22px}
+.foot__legalnav a{
+  color:var(--night-tx2); text-decoration:none;
+  border-bottom:1px solid rgba(200,168,80,.28);
+  transition:color .2s var(--ease), border-color .2s var(--ease);
+}
+.foot__legalnav a:hover{color:var(--gold-hi); border-bottom-color:var(--gold)}
+
+/* The consent line under the booking form */
+.formlegal{
+  margin:14px 0 0; font-size:12.5px; line-height:1.6; color:var(--night-tx2);
+}
+.formlegal a{color:var(--gold-hi); text-underline-offset:3px}
+.formlegal a:hover{color:var(--gold)}
+
+/* ==========================================================================
    Video lightbox
    A native <dialog>, so Escape, the focus trap and the inert backdrop come
    from the platform rather than from code that has to remember them.
