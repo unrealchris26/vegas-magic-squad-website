@@ -1,0 +1,15 @@
+{
+  "name": "vegas-magic-squad-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static marketing site for Vegas Magic Squad. No dependencies: build.js and serve.js use only the Node standard library.",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node serve.js",
+    "preview": "node build.js && node serve.js dist"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED"
+}

@@ -90,7 +90,9 @@ function main() {
     if (size > 300 * 1024) heavy.push([rel, size]);
   }
 
-  // _headers and _redirects are Netlify's, and belong at the publish root.
+  // Netlify reads _headers and _redirects from the publish root. Vercel does
+  // not — its equivalents live in vercel.json. These are still copied so the
+  // output works on either host; on Vercel they are simply inert files.
   for (const extra of ['_headers', '_redirects', 'robots.txt']) {
     if (fs.existsSync(path.join(ROOT, extra))) {
       bytes += copy(extra);
