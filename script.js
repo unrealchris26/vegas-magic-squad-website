@@ -679,6 +679,83 @@
   });
 
   /* ------------------------------------------------------------------ *
+   * 4c. Video lightbox.
+   *
+   *     Every trigger is a real anchor pointing straight at its .mp4 file
+   *     (written without the attribute spelled out here, because build.js
+   *     scans this file for asset references and would try to ship it).
+   *     That is deliberate:
+   *     with JS off, or if this module throws, the link still plays the clip
+   *     in the browser's own player. This only upgrades that.
+   *
+   *     The <video> carries no src until something opens it, and the src is
+   *     removed again on close. Three clips come to 13MB — a <video> sitting
+   *     in the DOM with a src is a download waiting to happen on every page
+   *     load, even with preload="none" honoured, and not every browser
+   *     honours it.
+   * ------------------------------------------------------------------ */
+  (function videoLightbox() {
+    var dlg = document.getElementById('player');
+    var vid = document.getElementById('lb-video');
+    var title = document.getElementById('lb-title');
+    var closeBtn = document.getElementById('lb-close');
+
+    // Without <dialog> support the plain links are the fallback, and they
+    // work. Leaving them alone is better than a half-built overlay.
+    if (!dlg || !vid || !title || !closeBtn || typeof dlg.showModal !== 'function') return;
+
+    var opener = null;   // so focus can go back where it came from
+
+    function open(src, label, trigger) {
+      opener = trigger || null;
+      title.innerHTML = label || '';
+      vid.setAttribute('src', src);
+      dlg.showModal();
+      // Autoplay can be refused (a policy, a data saver, reduced motion on
+      // some platforms). The controls are right there, so a refusal is not
+      // an error worth reporting — it just means the visitor presses play.
+      var p = vid.play();
+      if (p && typeof p.catch === 'function') p.catch(function () {});
+    }
+
+    function close() {
+      vid.pause();
+      // removeAttribute, not src = '' — an empty src resolves against the
+      // page URL and the browser fetches the document again as media.
+      vid.removeAttribute('src');
+      vid.load();
+      title.textContent = '';
+      if (opener && opener.focus) opener.focus();
+      opener = null;
+    }
+
+    document.addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;   // new tab
+      if (!e.target || !e.target.closest) return;
+      var trigger = e.target.closest('[data-video]');
+      if (!trigger) return;
+      var src = trigger.getAttribute('href');
+      if (!src) return;
+      e.preventDefault();
+      open(src, trigger.getAttribute('data-title'), trigger);
+    });
+
+    closeBtn.addEventListener('click', function () { dlg.close(); });
+
+    // Clicking the backdrop closes it. The dialog element IS the backdrop
+    // area, so a click landing on the dialog itself rather than on its inner
+    // panel means the visitor clicked outside the video.
+    dlg.addEventListener('click', function (e) {
+      if (e.target === dlg) dlg.close();
+    });
+
+    // Fires for the close button, the backdrop and the Escape key alike, so
+    // the teardown lives here once instead of at each of the three.
+    dlg.addEventListener('close', close);
+  })();
+
+  /* ------------------------------------------------------------------ *
    * 5. Booking CTAs hand focus to the form.
    *
    *    Fifteen buttons on this page point at #booking. A bare hash jump

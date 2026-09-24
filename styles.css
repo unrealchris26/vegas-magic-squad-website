@@ -357,6 +357,48 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 }
 
 /* ==========================================================================
+   Video lightbox
+   A native <dialog>, so Escape, the focus trap and the inert backdrop come
+   from the platform rather than from code that has to remember them.
+   ========================================================================== */
+.lb{
+  border:0; padding:0; background:transparent;
+  max-width:min(1100px, 94vw); width:100%;
+  color:var(--night-tx);
+}
+.lb::backdrop{background:rgba(3,4,8,.88); backdrop-filter:blur(4px)}
+.lb__in{position:relative; display:flex; flex-direction:column; gap:12px}
+.lb__title{
+  margin:0; padding-right:48px;
+  font-family:var(--disp); font-size:clamp(13px,1.5vw,17px);
+  font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--gold-hi);
+}
+.lb__vid{
+  width:100%; height:auto; max-height:76vh;
+  display:block; background:#000;
+  border:1px solid rgba(200,168,80,.35);
+}
+.lb__x{
+  position:absolute; top:-6px; right:0;
+  width:40px; height:40px; line-height:1;
+  display:grid; place-items:center;
+  font-size:26px; font-family:var(--text);
+  background:transparent; color:var(--gold-hi);
+  border:1px solid rgba(200,168,80,.4);
+  cursor:pointer;
+  transition:background .2s var(--ease), color .2s var(--ease);
+}
+.lb__x:hover{background:var(--gold); color:var(--gold-ink)}
+.lb__x:focus-visible{outline:2px solid var(--gold); outline-offset:2px}
+
+@media (max-width:600px){
+  .lb{max-width:100vw}
+  .lb__title{font-size:11px; padding-right:44px}
+  .lb__vid{max-height:66vh}
+}
+
+/* ==========================================================================
    Sections + guillotine trims
    ========================================================================== */
 .sec{position:relative; padding-block:clamp(64px,9vw,140px)}

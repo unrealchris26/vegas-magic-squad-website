@@ -70,3 +70,12 @@
 # cache hits.
 /images/*
   Cache-Control: public, max-age=2592000
+
+# --------------------------------------------------------------------------
+# Showreel clips
+# --------------------------------------------------------------------------
+# The heaviest thing on the site by far, and the least likely to be re-cut
+# under the same filename. Cached hard so a second viewing costs nothing.
+# Nothing here is fetched until a visitor actually presses play.
+/video/*
+  Cache-Control: public, max-age=31536000, immutable

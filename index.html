@@ -84,7 +84,7 @@
       <p class="bill__lede">Three of us, one booking. Close-up at the tables, mentalism from the stage, classical magic in between. Tell us what kind of evening you are planning and we will tell you what fits it.</p>
       <div class="bill__acts">
         <a class="btn btn--red btn--lg" href="#booking">Check Availability</a>
-        <a class="btn btn--gold btn--lg" href="#room">Watch The Showreel</a>
+        <a class="btn btn--gold btn--lg" href="video/stage-full-room.mp4" data-video data-title="Stage &mdash; The Full Room">Watch The Showreel</a>
       </div>
       <!-- Moved below the buttons: at the top of this block it sat straight
            across the performers' faces in the hero photograph. -->
@@ -95,26 +95,27 @@
       SHOWREEL STRIP — ported from the Kent Axell site (div.wrap > div.reelgrid).
       Sits as its own strike tier under the buttons, so it lights in after them.
 
-      TODO BEFORE LAUNCH: the play badges promise video and there is none yet.
-      Each card currently links to an on-page anchor, which is what Kent's own
-      cards do. Either wire these to real trailers, or drop the .reel__play span
-      from all three and they read as plain photo links.
+      The play badges are honest now: each card links to a real clip. The href
+      is the video file itself, so with JS off the browser just plays it; JS
+      upgrades that to the lightbox at the foot of this page. preload is never
+      set on these - 13MB of video must not download because someone scrolled
+      past the hero.
     -->
     <div class="reelgrid strike" style="--s:2">
 
-      <a class="reel" href="#room" aria-label="Strolling close-up magic at the tables — see the reaction">
+      <a class="reel" href="video/strolling.mp4" data-video data-title="Strolling &mdash; At the Tables" aria-label="Watch: strolling close-up magic at the tables, 11 seconds">
         <img src="images/site/strolling-0.jpg" alt="A magician performing close-up card magic for guests standing at a corporate reception" loading="lazy" decoding="async">
         <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span>
         <span class="reel__label">Strolling &mdash; At the Tables</span>
       </a>
 
-      <a class="reel" href="#room" aria-label="Parlour close-up set — see the reaction">
+      <a class="reel" href="video/parlour-closeup.mp4" data-video data-title="Parlour &mdash; Close-Up" aria-label="Watch: a parlour close-up set, 15 seconds">
         <img src="images/site/parlour-closeup.jpg" alt="Seated guests leaning in around a table during a parlour close-up set" loading="lazy" decoding="async">
         <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span>
         <span class="reel__label">Parlour &mdash; Close-Up</span>
       </a>
 
-      <a class="reel" href="#booking" aria-label="The full stage show — check your date">
+      <a class="reel" href="video/stage-full-room.mp4" data-video data-title="Stage &mdash; The Full Room" aria-label="Watch: the full stage show, 1 minute">
         <img src="images/site/room-ovation.jpg" alt="An audience standing and applauding around banquet tables at a company holiday dinner" loading="lazy" decoding="async">
         <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span>
         <span class="reel__label">Stage &mdash; The Full Room</span>
@@ -276,7 +277,7 @@
     <!-- Row 1 -->
     <article class="srow">
       <figure class="srow__fig">
-        <img src="images/site/corporate-ballroom.jpg" alt="Dream Upright holding a crystal ball in a banquet room set with round tables before a company party" width="1080" height="1080" loading="lazy" decoding="async">
+        <img src="images/site/corporate-reception.webp" alt="A magician showing a card to a laughing group at a corporate drinks reception, glasses still in hand" width="1078" height="745" loading="lazy" decoding="async">
       </figure>
       <div class="srow__copy">
         <h3>Corporate parties &amp; receptions</h3>
@@ -354,7 +355,7 @@
     <!-- Row 4 -->
     <article class="srow srow--flip">
       <figure class="srow__fig">
-        <img src="images/site/conference-table.jpg" alt="Brandon Williams fanning a deck of cards for badged delegates seated at a conference table" width="1080" height="1080" loading="lazy" decoding="async">
+        <img src="images/site/trade-show.jpg" alt="A magician performing for visitors gathered at an exhibition stand" width="3264" height="2448" loading="lazy" decoding="async">
       </figure>
       <div class="srow__copy">
         <h3>Trade shows &amp; conference receptions</h3>
@@ -893,6 +894,24 @@
     <p>Booking enquiries welcome for events in Las Vegas and beyond.</p>
   </div>
 </footer>
+
+<!--
+  VIDEO LIGHTBOX. One dialog reused by all four triggers. <dialog> is used
+  rather than a hand-rolled overlay because showModal() gives the Escape key,
+  the focus trap and the inert backdrop for free, and those are exactly the
+  parts people get wrong.
+
+  The <video> has no src until something opens it, and gets it stripped again
+  on close - with three clips totalling 13MB, an idle <video src> would be a
+  standing download on every page load.
+-->
+<dialog class="lb" id="player" aria-label="Video player">
+  <div class="lb__in">
+    <p class="lb__title" id="lb-title"></p>
+    <video class="lb__vid" id="lb-video" controls playsinline preload="none"></video>
+    <button class="lb__x" type="button" id="lb-close" aria-label="Close video">&times;</button>
+  </div>
+</dialog>
 
 <script src="vendor/gsap.min.js" defer></script>
 <script src="script.js" defer></script>
