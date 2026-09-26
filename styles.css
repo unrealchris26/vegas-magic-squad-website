@@ -205,17 +205,27 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   to{transform:scale(1.075)}
 }
 
+/* Inverted from what it was. The old scrim was heaviest at the top (94%)
+   and through the middle, which is precisely where the faces sit — it was
+   dimming the photograph's best asset to make room for text that has now
+   moved. It is light across the top and middle, and does its darkening at the
+   bottom where the copy actually sits. The nav carries its own background, so
+   the top does not need much. */
 .hero__scrim{
   position:absolute; inset:0; z-index:-1;
   background:
-    linear-gradient(to bottom, rgba(7,9,15,.94) 0%, rgba(7,9,15,.78) 22%, rgba(7,9,15,.42) 40%, rgba(7,9,15,.16) 54%, rgba(7,9,15,.8) 78%, var(--night) 100%),
-    linear-gradient(to right, rgba(7,9,15,.7) 0%, rgba(7,9,15,.16) 28%, rgba(7,9,15,.16) 72%, rgba(7,9,15,.7) 100%);
+    linear-gradient(to bottom, rgba(7,9,15,.52) 0%, rgba(7,9,15,.16) 16%, rgba(7,9,15,.04) 36%, rgba(7,9,15,.30) 56%, rgba(7,9,15,.86) 78%, var(--night) 100%),
+    linear-gradient(to right, rgba(7,9,15,.52) 0%, rgba(7,9,15,.06) 30%, rgba(7,9,15,.06) 70%, rgba(7,9,15,.52) 100%);
 }
 
+/* Bottom-aligned, not centred. Centred put the headline straight across the
+   performers' faces — the single most valuable part of the photograph and the
+   reason it was chosen. With the strapline gone and the lede down to one line,
+   the whole bill now fits the lower third and leaves the faces clear. */
 .hero__bill{
   position:relative; z-index:4; width:100%;
-  padding:clamp(66px,9vw,132px) clamp(46px,8.4vw,142px);
-  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  padding:clamp(66px,9vw,132px) clamp(46px,8.4vw,142px) clamp(42px,6vw,86px);
+  display:flex; flex-direction:column; justify-content:flex-end; align-items:center;
   text-align:center;
 }
 .hero__col{
@@ -442,6 +452,14 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   font-weight:700; letter-spacing:.14em; text-transform:uppercase;
   color:var(--gold-hi);
 }
+/* The image slot matches the video slot, so switching between them does not
+   move the panel or the close button. */
+.lb__img{
+  width:100%; height:auto;
+  max-height:min(76vh, calc(94vh - 72px));
+  display:block; object-fit:contain; background:#000;
+  border:1px solid rgba(200,168,80,.35);
+}
 .lb__vid{
   width:100%; height:auto;
   /* room for the title row, the flex gap and the dialog's own margin, so the
@@ -591,6 +609,34 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 }
 .field input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(78%) sepia(35%) saturate(520%) hue-rotate(2deg); cursor:pointer}
 .err{min-height:0; font-size:12.5px; color:#f08a90; font-weight:600}
+
+/* Hint under a field — the "email or phone" rule spans both, so both point at
+   the one note with aria-describedby rather than each carrying its own. */
+.hint{font-size:12.5px; line-height:1.5; color:var(--night-tx2)}
+
+/* The SMS consent row. Grid rather than an inline checkbox so the label wraps
+   as a proper block beside the box instead of running under it, and so the
+   error can sit full-width beneath both. */
+.field--check{
+  display:grid; grid-template-columns:auto 1fr; gap:4px 12px;
+  align-items:start;
+  margin-top:clamp(18px,2.4vw,26px);
+  padding:16px 18px;
+  background:var(--night-2);
+  border:1px solid rgba(200,168,80,.22);
+}
+.field--check input[type="checkbox"]{
+  width:18px; height:18px; margin:2px 0 0;
+  accent-color:var(--gold); cursor:pointer; flex:none;
+}
+.field--check label{
+  font-size:13px; line-height:1.6; color:var(--night-tx2);
+  font-weight:400; letter-spacing:0; text-transform:none; cursor:pointer;
+}
+.field--check label a{color:var(--gold-hi); text-underline-offset:3px}
+.field--check label a:hover{color:var(--gold)}
+.field--check .err{grid-column:1 / -1}
+.field--check input[type="checkbox"]:focus-visible{outline:2px solid var(--gold); outline-offset:3px}
 .err:empty{display:none}
 
 .formnote{margin-top:16px; font-size:13.5px; color:var(--night-tx2); min-height:1.2em}
@@ -899,6 +945,26 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 }
 .shots{display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(10px,1.5vw,18px)}
 .shot{margin:0; position:relative; overflow:hidden; background:var(--night-2)}
+/* The whole tile is the hit area — a gallery photograph that only responds on
+   a small corner icon is a photograph most people never open. */
+.shot__link{display:block; position:relative; cursor:zoom-in}
+.shot__link:focus-visible{outline:2px solid var(--gold); outline-offset:-2px}
+.shot__zoom{
+  position:absolute; right:10px; bottom:10px;
+  width:34px; height:34px; display:grid; place-items:center;
+  background:rgba(7,9,15,.72); backdrop-filter:blur(6px);
+  border:1px solid rgba(200,168,80,.38);
+  opacity:0; translate:0 6px;
+  transition:opacity .3s var(--ease), translate .3s var(--ease), background-color .3s var(--ease);
+  pointer-events:none;
+}
+.shot__zoom svg{width:17px; height:17px; fill:none; stroke:var(--gold-hi); stroke-width:1.7; stroke-linecap:round}
+.shot__link:hover .shot__zoom,
+.shot__link:focus-visible .shot__zoom{opacity:1; translate:0 0}
+/* Touch has no hover, so the affordance is simply always on there. */
+@media (hover:none){
+  .shot__zoom{opacity:1; translate:0 0}
+}
 .shot img{
   width:100%; aspect-ratio:4/3; object-fit:cover;
   filter:saturate(.88) brightness(.94);
@@ -1418,10 +1484,12 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 /* portrait devices get the portrait crop of the trio */
 @media (orientation:portrait){
   .hero__img{object-position:50% 50%}
+  /* Same inversion as the landscape scrim: light where the faces are, dark
+     only at the foot where the copy sits. */
   .hero__scrim{
     background:
-      linear-gradient(to bottom, rgba(7,9,15,.84) 0%, rgba(7,9,15,.3) 18%, rgba(7,9,15,.12) 46%, rgba(7,9,15,.46) 76%, var(--night) 100%),
-      linear-gradient(to right, rgba(7,9,15,.3), rgba(7,9,15,.05) 42%, rgba(7,9,15,.3));
+      linear-gradient(to bottom, rgba(7,9,15,.5) 0%, rgba(7,9,15,.14) 18%, rgba(7,9,15,.04) 44%, rgba(7,9,15,.34) 62%, rgba(7,9,15,.88) 82%, var(--night) 100%),
+      linear-gradient(to right, rgba(7,9,15,.22), rgba(7,9,15,.02) 42%, rgba(7,9,15,.22));
   }
   /* the landscape halos read as murk over the portrait crop */
   .bill__lede{text-shadow:0 1px 3px rgba(7,9,15,.9), 0 0 14px rgba(7,9,15,.7)}

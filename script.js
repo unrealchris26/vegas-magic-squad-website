@@ -697,18 +697,35 @@
   (function videoLightbox() {
     var dlg = document.getElementById('player');
     var vid = document.getElementById('lb-video');
+    var img = document.getElementById('lb-image');
     var title = document.getElementById('lb-title');
     var closeBtn = document.getElementById('lb-close');
 
     // Without <dialog> support the plain links are the fallback, and they
     // work. Leaving them alone is better than a half-built overlay.
-    if (!dlg || !vid || !title || !closeBtn || typeof dlg.showModal !== 'function') return;
+    if (!dlg || !vid || !img || !title || !closeBtn || typeof dlg.showModal !== 'function') return;
+
+    // One dialog serves both kinds. The file extension decides which slot is
+    // used, so a trigger only has to point at the file it wants shown.
+    function isVideo(src) { return /\.(mp4|webm|mov)(\?|$)/i.test(src); }
 
     var opener = null;   // so focus can go back where it came from
 
     function open(src, label, trigger) {
       opener = trigger || null;
       title.innerHTML = label || '';
+
+      if (!isVideo(src)) {
+        img.setAttribute('src', src);
+        img.setAttribute('alt', (label || '').replace(/<[^>]+>/g, ''));
+        img.hidden = false;
+        vid.hidden = true;
+        dlg.showModal();
+        return;
+      }
+
+      img.hidden = true;
+      vid.hidden = false;
       vid.setAttribute('src', src);
       dlg.showModal();
       // Autoplay can be refused (a policy, a data saver, reduced motion on
@@ -719,6 +736,10 @@
     }
 
     function close() {
+      // Dropping the image src too: a 3264px photograph held in a hidden
+      // element is memory nobody is looking at.
+      img.removeAttribute('src');
+      img.hidden = true;
       vid.pause();
       // removeAttribute, not src = '' — an empty src resolves against the
       // page URL and the browser fetches the document again as media.
@@ -733,7 +754,7 @@
       if (e.defaultPrevented || e.button !== 0) return;
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;   // new tab
       if (!e.target || !e.target.closest) return;
-      var trigger = e.target.closest('[data-video]');
+      var trigger = e.target.closest('[data-video],[data-image]');
       if (!trigger) return;
       var src = trigger.getAttribute('href');
       if (!src) return;
@@ -865,9 +886,51 @@
     return true;
   }
 
+  /* Neither email nor phone is required on its own - people should be able to
+     give whichever they prefer. But an enquiry with no way to answer it is not
+     an enquiry, so at least one has to be there. The error is attached to the
+     email field because it is the first of the two on the page. */
+  function checkReachable() {
+    var email = document.getElementById('f-email');
+    var phone = document.getElementById('f-phone');
+    if (!email || !phone) return true;
+    if ((email.value || '').trim() || (phone.value || '').trim()) {
+      if (email.getAttribute('aria-invalid') === 'true' &&
+          !(email.value || '').trim()) clearError(email);
+      return true;
+    }
+    setError(email, 'Add an email address or a phone number so we can reply.');
+    return false;
+  }
+
+  /* Ticking "text me" without leaving a number is a dead end, and it would
+     also record a consent to SMS against no number at all - which is worse
+     than useless if the consent is ever audited. */
+  function checkSmsUsable() {
+    var sms = document.getElementById('f-sms');
+    var phone = document.getElementById('f-phone');
+    if (!sms || !phone || !sms.checked) { if (sms) clearError(sms); return true; }
+    if ((phone.value || '').trim()) { clearError(sms); return true; }
+    setError(sms, 'Add a phone number, or untick this box.');
+    return false;
+  }
+
   var fields = Array.prototype.slice.call(
     form.querySelectorAll('input, select, textarea')
   );
+
+  // Typing into either contact field should clear a "we cannot reach you"
+  // error raised against the other one.
+  ['f-email', 'f-phone'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', function () {
+      var email = document.getElementById('f-email');
+      if (email && email.getAttribute('aria-invalid') === 'true') checkReachable();
+      checkSmsUsable();
+    });
+  });
+  var smsBox = document.getElementById('f-sms');
+  if (smsBox) smsBox.addEventListener('change', checkSmsUsable);
 
   fields.forEach(function (el) {
     el.addEventListener('blur', function () { if (el.value.trim() || el.hasAttribute('required')) checkField(el); });
@@ -882,6 +945,8 @@
     fields.forEach(function (el) {
       if (!checkField(el)) { ok = false; if (!firstBad) firstBad = el; }
     });
+    if (!checkReachable()) { ok = false; if (!firstBad) firstBad = document.getElementById('f-email'); }
+    if (!checkSmsUsable()) { ok = false; if (!firstBad) firstBad = document.getElementById('f-sms'); }
 
     if (!ok) {
       status.textContent = 'Check the highlighted fields and send again.';
@@ -891,7 +956,14 @@
     }
 
     var payload = {};
-    fields.forEach(function (el) { if (el.name) payload[el.name] = el.value.trim(); });
+    fields.forEach(function (el) {
+      if (!el.name) return;
+      // A checkbox reports its value attribute whether or not it is ticked,
+      // so reading .value here would record consent from everyone.
+      payload[el.name] = (el.type === 'checkbox')
+        ? (el.checked ? 'yes' : 'no')
+        : el.value.trim();
+    });
 
     /* The dial code is meaningless on its own, so it is joined to the number
        here rather than sent as a second field every endpoint would have to
@@ -961,6 +1033,12 @@
   var GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/w6jm6XLgzoiHN5ovEKdL/webhook-trigger/4bdd60bb-bdd0-4aca-b6bd-1ffacd5dd53e';
   var GHL_TIMEOUT = 15000;       // ms before we stop waiting and say so
 
+  // The exact sentence the visitor was shown, taken from the page itself.
+  function consentWording() {
+    var lab = document.querySelector('label[for="f-sms"]');
+    return lab ? lab.textContent.replace(/\s+/g, ' ').trim() : '';
+  }
+
   function sendEnquiry(data) {
     if (!GHL_WEBHOOK) {
       return Promise.reject(new Error('not-configured'));
@@ -979,6 +1057,15 @@
       lastName: cut === -1 ? '' : whole.slice(cut + 1),
       email: data.email || '',
       phone: data.phone || '',
+      /* A2P 10DLC evidence. A carrier or a complaint can ask you to show that
+         a specific person agreed, at a specific moment, to specific wording -
+         so all three are sent. consentText is read out of the live label
+         rather than duplicated here, because a copy would drift the first time
+         the wording on the page is edited and the record would then describe
+         something nobody was ever shown. */
+      smsConsent: data.smsConsent === 'yes' ? 'yes' : 'no',
+      smsConsentText: data.smsConsent === 'yes' ? consentWording() : '',
+      smsConsentAt: data.smsConsent === 'yes' ? new Date().toISOString() : '',
       eventDate: data.date || '',
       eventType: data.type || '',
       guestCount: data.guests || '',
