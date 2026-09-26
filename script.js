@@ -717,7 +717,13 @@
 
       if (!isVideo(src)) {
         img.setAttribute('src', src);
-        img.setAttribute('alt', (label || '').replace(/<[^>]+>/g, ''));
+        /* Gallery images carry no visible title, so the description comes from
+           the thumbnail that was clicked. Without this the full-size image
+           would open with an empty alt — the one place a screen reader most
+           needs it, since the picture is now the entire content. */
+        var thumb = trigger && trigger.querySelector ? trigger.querySelector('img') : null;
+        img.setAttribute('alt',
+          (label || (thumb && thumb.getAttribute('alt')) || '').replace(/<[^>]+>/g, ''));
         img.hidden = false;
         vid.hidden = true;
         dlg.showModal();

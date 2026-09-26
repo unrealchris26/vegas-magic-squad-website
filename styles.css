@@ -444,6 +444,9 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    doing that job before, and it hung the button's border outside the panel —
    which the viewport clipped the moment the dialog grew tall enough to sit
    against the top of the screen. */
+/* Gallery images carry no title. The row still has to clear the close button
+   when it IS empty, so the height stays — but the padding only matters when
+   there is text to keep off the button. */
 .lb__title{
   margin:0;
   min-height:40px; display:flex; align-items:center;
@@ -452,6 +455,13 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   font-weight:700; letter-spacing:.14em; text-transform:uppercase;
   color:var(--gold-hi);
 }
+/* Both slots set display:block, and a class rule beats the user agent's
+   [hidden]{display:none} — so toggling .hidden did nothing and the empty
+   video player stayed on screen above every gallery image. Specificity of
+   (0,2,0) here puts that right. */
+.lb__vid[hidden],
+.lb__img[hidden]{display:none}
+
 /* The image slot matches the video slot, so switching between them does not
    move the panel or the close button. */
 .lb__img{
