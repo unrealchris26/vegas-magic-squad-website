@@ -253,23 +253,29 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 .rulepair--sec{margin:0 0 clamp(26px,3.4vw,46px)}
 .sec--bill .rulepair--sec i{background:linear-gradient(to right,var(--ink),rgba(20,16,12,.16))}
 
-.bill__foot{width:100%; margin-top:clamp(30px,4.2vw,58px)}
-/* This line moved to the FOOT of the bill, below the buttons. Its spacing was
-   still the eyebrow spacing from when it sat above the lede: a margin-bottom
-   pushing empty space under the last thing on the page, and no margin-top at
-   all, so it sat jammed against the buttons with a gap beneath it. Reversed —
-   the space now goes above it, where it separates the line from the buttons
-   and lets it read as a deliberate sign-off. */
-.bill__eng{
-  display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:.85em;
-  font-size:clamp(11px,.95vw,12.5px); font-weight:700; letter-spacing:.2em;
-  text-transform:uppercase; color:var(--gold);
-  margin:clamp(26px,3.4vw,44px) 0 0;
-}
-.bill__eng i{width:26px; height:1px; background:var(--gold-deep); display:inline-block}
+/* Tight to the title. This block holds the subtitle and the buttons, and at
+   58px it left the subtitle floating mid-air rather than reading as a line
+   belonging to the name above it. The breathing room the hero needs is below
+   the subtitle, not above it — .bill__lede's own margin-bottom does that. */
+.bill__foot{width:100%; margin-top:clamp(6px,1vw,14px)}
+/* This was sized as body copy — 52ch measure, 18.5px ceiling — back when it
+   was a three-sentence paragraph. It is a six-word billing line now, so it is
+   set as one: the display face rather than the body face, so it reads as part
+   of the title lockup rather than as a caption beneath it.
+   Uppercase with positive tracking because Josefin Sans is geometric and its
+   near-circular caps close up badly when they are pulled together.
+   The shadow is no longer confined to the portrait breakpoint — at this size
+   the line sits across more of the photograph at every width. */
 .bill__lede{
-  max-width:52ch; margin-inline:auto; color:var(--night-tx); font-size:clamp(15px,1.25vw,18.5px);
-  line-height:1.5; margin-bottom:clamp(24px,3vw,38px); text-wrap:balance;
+  max-width:34ch; margin-inline:auto;
+  font-family:var(--disp);
+  font-size:clamp(19px,2.7vw,33px);
+  font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+  line-height:1.24; color:var(--night-tx);
+  text-shadow:0 2px 6px rgba(7,9,15,.85), 0 0 22px rgba(7,9,15,.6);
+  margin-top:0;
+  margin-bottom:clamp(26px,3.2vw,40px);
+  text-wrap:balance;
 }
 .bill__acts{display:flex; flex-wrap:wrap; justify-content:center; gap:14px}
 
@@ -757,14 +763,6 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 @media (max-width:720px){
   .f2{grid-template-columns:1fr}
   .foot__grid{grid-template-columns:1fr}
-}
-@media (max-width:620px){
-  /* Once the two phrases wrap, the hairline that separates them is orphaned at
-     the end of a line with nothing after it, which is most of why this reads as
-     adrift. Below this width they stack as two centred lines and the rule goes.
-     Tracking eases off too — .2em on a wrapped line pushes it wider still. */
-  .bill__eng{flex-direction:column; gap:.5em; letter-spacing:.16em}
-  .bill__eng i{display:none}
 }
 @media (max-width:460px){
   .bill__acts .btn{width:100%}
@@ -1502,7 +1500,8 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
       linear-gradient(to right, rgba(7,9,15,.22), rgba(7,9,15,.02) 42%, rgba(7,9,15,.22));
   }
   /* the landscape halos read as murk over the portrait crop */
-  .bill__lede{text-shadow:0 1px 3px rgba(7,9,15,.9), 0 0 14px rgba(7,9,15,.7)}
-  .bill__eng{text-shadow:0 1px 3px rgba(7,9,15,.9)
-  }
+  /* The base rule carries a stronger shadow now; this used to override it
+     with a weaker one, which is the wrong way round on the crop where the
+     line sits closest to the faces. */
+  .bill__lede{letter-spacing:.05em}
 }
