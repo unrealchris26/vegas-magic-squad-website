@@ -23,10 +23,14 @@
   PRIVACY POLICY.
 
   Written from an audit of what this site actually does, not from a template:
-  no analytics, no tag manager, no advertising pixels, no cookies, no
-  localStorage or sessionStorage. The only outbound destinations in the whole
-  codebase are the GoHighLevel webhook that receives form submissions and an
-  Instagram link in the footer. That is why this is short.
+  no tag manager, no advertising pixels, no cookies, no localStorage or
+  sessionStorage. Outbound: the GoHighLevel webhook that receives form
+  submissions, an Instagram link in the footer, and - added later - Vercel
+  Web Analytics, which is cookieless and counts page views only.
+
+  If analytics is ever removed or swapped, the "Cookies and tracking" section
+  has to change with it. A privacy policy that describes a build the site no
+  longer is, is worse than none.
 
   ⚠ NOT LEGAL ADVICE, AND NOT YET CONFIRMED. Four things below are marked
   [CONFIRM] because only the squad can answer them: the legal entity name,
@@ -70,7 +74,7 @@
       <div class="rulepair rulepair--sec" aria-hidden="true"><i></i><i></i></div>
       <header class="sechead">
         <h2 class="h2 h2--gold" id="privacy-h">Privacy policy</h2>
-        <p class="sechead__sub">Last updated 24 September 2026</p>
+        <p class="sechead__sub">Last updated 3 October 2026</p>
       </header>
 
       <div class="legal">
@@ -78,8 +82,8 @@
         <p class="legal__lede">
           The short version: the only personal information we collect is what
           you type into the booking form. We use it to answer your enquiry. We
-          do not sell it, and there are no trackers or advertising cookies
-          anywhere on this site.
+          do not sell it. There are no advertising trackers or cookies anywhere
+          on this site, though we do count page views &mdash; see below.
         </p>
 
         <h3>Who we are</h3>
@@ -158,11 +162,18 @@
 
         <h3>Cookies and tracking</h3>
         <p>
-          This site sets no cookies. It has no analytics, no tag manager, no
-          advertising pixels, and stores nothing in your browser. The
-          typefaces, the animation library and the video all load from this
-          site's own server rather than from a third party, so simply reading
-          these pages tells nobody anything about you.
+          This site sets no cookies, has no tag manager and no advertising
+          pixels, and stores nothing in your browser. The typefaces, the
+          animation library and the video all load from this site&rsquo;s own
+          server rather than from a third party.
+        </p>
+        <p>
+          We do use <strong>Vercel Web Analytics</strong>, which counts page
+          views and tells us roughly where visitors came from and what kind of
+          device they used. It is cookieless, it does not follow you to other
+          websites, and it does not build a profile of you. We see totals, not
+          people. Vercel&rsquo;s own privacy terms cover the data they process
+          on our behalf.
         </p>
         <p>
           The one external link is to our Instagram profile in the footer.
@@ -251,6 +262,11 @@
   </div>
 </footer>
 
+<!-- Vercel Web Analytics. This is the tag @vercel/analytics injects at
+     runtime; the npm package itself needs a bundler, and this site has none,
+     so the tag goes in directly. The path is served by Vercel's edge, not by
+     this repo - it 404s locally, which is harmless and expected. -->
+<script defer src="/_vercel/insights/script.js"></script>
 <script src="script.js" defer></script>
 </body>
 </html>

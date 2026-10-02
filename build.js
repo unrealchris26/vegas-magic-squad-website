@@ -40,6 +40,9 @@ function isLocal(ref) {
     !/^[a-z][a-z0-9+.-]*:/i.test(ref) &&   // http:, mailto:, tel:, data:
     !ref.startsWith('//') &&
     !ref.startsWith('#') &&
+    // Vercel serves /_vercel/* from its own edge - the analytics script is
+    // never a file in this repo, so looking for it on disk fails the build.
+    !ref.startsWith('/_vercel/') &&
     ASSET_EXT.test(ref.split(/[?#]/)[0]);
 }
 

@@ -965,6 +965,11 @@
   </div>
 </dialog>
 
+<!-- Vercel Web Analytics. This is the tag @vercel/analytics injects at
+     runtime; the npm package itself needs a bundler, and this site has none,
+     so the tag goes in directly. The path is served by Vercel's edge, not by
+     this repo - it 404s locally, which is harmless and expected. -->
+<script defer src="/_vercel/insights/script.js"></script>
 <script src="vendor/gsap.min.js" defer></script>
 <script src="script.js" defer></script>
 </body>
