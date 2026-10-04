@@ -230,8 +230,31 @@
               <span class="tx-mute" style="color:#a89c89;">&nbsp;&middot;&nbsp;</span>
               <a class="gold" href="TERMS_URL_HERE" style="color:#e6d193; text-decoration:underline;">Terms &amp; conditions</a>
             </p>
-            <p class="tx-mute" style="margin:0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:11px; line-height:1.7; letter-spacing:0.4px; color:#a89c89;">
-              Vegas Magic Squad &middot; Las Vegas, Nevada
+            <!--
+              COMPLIANCE BLOCK. Three separate obligations, all of which are
+              also deliverability signals - filters score their absence.
+
+              1. Why this arrived. Named cause reduces "report spam" clicks,
+                 which is the single strongest negative reputation signal.
+              2. A real postal address. CAN-SPAM requires one on commercial
+                 mail and a city/state is not one. [MAILING_ADDRESS] must be
+                 filled before this sends - a PO box or registered agent
+                 address is acceptable.
+              3. A visible, working unsubscribe. GHL's own sending policy
+                 requires it, and a hidden or absent one is grounds for the
+                 account being throttled.
+            -->
+            <p class="tx-mute" style="margin:0 0 12px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:11px; line-height:1.7; color:#a89c89;">
+              You&rsquo;re receiving this because you requested a call through
+              vegasmagicsquad.com.
+            </p>
+            <p class="tx-mute" style="margin:0 0 12px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:11px; line-height:1.7; letter-spacing:0.4px; color:#a89c89;">
+              Vegas Magic Squad &middot; [MAILING_ADDRESS] &middot; Las Vegas, NV
+            </p>
+            <p style="margin:0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:11px; line-height:1.7;">
+              <a class="gold" href="{{trigger_link.unsubscribe}}" style="color:#a89c89; text-decoration:underline;">Unsubscribe</a>
+              <span class="tx-mute" style="color:#a89c89;">&nbsp;&middot;&nbsp;</span>
+              <a class="gold" href="{{trigger_link.unsubscribe}}" style="color:#a89c89; text-decoration:underline;">Manage preferences</a>
             </p>
           </td>
         </tr>
