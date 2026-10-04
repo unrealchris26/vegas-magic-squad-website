@@ -4,81 +4,105 @@
   Paste the markup between the two SIGNATURE markers into the signature box in
   GoHighLevel, Gmail or Outlook.
 
-  WHY THIS IS BUILT DIFFERENTLY FROM THE CONFIRMATION EMAIL
+  WHY IT CARRIES ITS OWN DARK BACKGROUND
 
-  A signature is not a template. It gets pasted into a compose window, so every
-  rule a signature editor strips has to be avoided outright:
+  An earlier version was built dark-on-light, on the assumption a signature
+  always lands in a white reply thread. That is wrong here: {{user.email_signature}}
+  renders INSIDE the confirmation email, on #07090f. Dark text there is
+  invisible.
 
-    - No <style> block, no classes, no media queries. Gmail and Outlook delete
-      them on paste, so every style here is inline on the element.
-    - No web font link. It would not survive either, so the stacks lead with
-      Montserrat for the rare client that has it installed locally and fall
-      straight through to Arial.
-    - No dark page background. A signature sits inside a reply chain on white.
-      The brand's near-black appears only as the small logo tile, which reads as
-      a deliberate mark rather than a block of colour fighting the thread.
-    - Text colours are dark-on-light for the same reason: in a quoted reply the
-      ground is white and light text would vanish.
+  But the opposite is equally wrong - light text pasted into a white Gmail
+  thread disappears just as completely. The two contexts cannot be served by
+  one set of text colours.
 
-  Set up for Kent Axell. For another team member, change only the two lines
-  holding the name and the title - everything else is shared.
+  So the signature brings its own ground. It is a self-contained #07090f block,
+  which means:
+    - inside the confirmation email it is seamless, because that is the same
+      colour as the email body
+    - in a white reply chain it reads as a deliberate dark card rather than
+      broken text
+  Legibility is guaranteed in both without a media query, which matters because
+  a signature editor would strip one anyway.
+
+  Type matches the email exactly: the gold label at 11px / 2.2px tracking, the
+  Josefin headline stack for the name, Montserrat for everything else, and the
+  same five colours.
+
+  OTHER CONSTRAINTS (a signature is pasted, not rendered from a template)
+    - No <style>, no classes, no media queries. Gmail and Outlook delete them
+      on paste, so every style is inline on the element.
+    - No web-font <link>, same reason. The stacks lead with the brand faces for
+      the rare client that has them locally, then fall through to Arial.
+    - bgcolor attributes alongside the inline background-color: older Outlook
+      reads the attribute and ignores the CSS.
+
+  Set up for Kent Axell. For another team member, change only the name and
+  title lines - everything else is shared.
 -->
 
 <!-- ================= SIGNATURE : COPY FROM HERE ================= -->
-<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; font-family:'Montserrat',Arial,Helvetica,sans-serif;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" bgcolor="#07090f" style="border-collapse:collapse; background-color:#07090f;">
   <tr>
+    <td style="padding:0;">
 
-    <!-- Logo. A separate file from the confirmation email's: that one is
-         flattened onto the near-black it sits on, which would show as a dark
-         rectangle here on a white thread. This is the mark on real
-         transparency, so it works on a light compose window and on a dark one.
+      <!-- Gold hairline across the top, the same rule the email uses under its
+           nav and above its footer. Ties the block to the message it sits in,
+           and gives it an edge when it lands on white instead. -->
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+        <tr><td height="1" bgcolor="#4a3f22" style="height:1px; line-height:1px; font-size:0; background-color:#4a3f22;">&nbsp;</td></tr>
+      </table>
 
-         It is a true RGBA PNG, NOT a palette PNG with a tRNS chunk - that
-         combination renders on desktop and fails in several mobile clients,
-         which is exactly what broke the logo in the confirmation email.
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" bgcolor="#07090f" style="border-collapse:collapse; background-color:#07090f;">
+        <tr>
 
-         Served at 2x (144x179) and displayed at 72x89 so it stays sharp on
-         retina. Width and height are set as attributes AND inline, because
-         Outlook reads the attributes and ignores the CSS. -->
-    <td valign="top" style="padding:0 18px 0 0; vertical-align:top;">
-      <a href="https://magicsquad.vegas" style="text-decoration:none; border:0;">
-        <img src="https://vegas-magic-squad-website.vercel.app/images/site/signature-logo.png"
-             width="72" height="89" alt="Vegas Magic Squad"
-             style="display:block; width:72px; height:89px; border:0; outline:none; text-decoration:none;">
-      </a>
-    </td>
+          <!-- Logo on real transparency, so it sits on this dark ground with no
+               seam. A true RGBA PNG, NOT a palette PNG with a tRNS chunk -
+               that combination renders on desktop and fails in several mobile
+               clients. Served 2x (144x179), displayed 72x89. Dimensions as
+               attributes AND inline: Outlook reads the attributes. -->
+          <td valign="top" bgcolor="#07090f" style="padding:20px 18px 20px 0; vertical-align:top; background-color:#07090f;">
+            <a href="https://magicsquad.vegas" style="text-decoration:none; border:0;">
+              <img src="https://vegas-magic-squad-website.vercel.app/images/site/signature-logo.png"
+                   width="72" height="89" alt="Vegas Magic Squad"
+                   style="display:block; width:72px; height:89px; border:0; outline:none; text-decoration:none;">
+            </a>
+          </td>
 
-    <!-- A 1px gold rule as a table cell rather than a border: borders on
-         adjacent cells get collapsed or dropped by several clients. -->
-    <td style="width:1px; padding:0; background-color:#c8a850; font-size:0; line-height:0;">&nbsp;</td>
+          <!-- 1px gold rule as a cell, not a border: borders on adjacent cells
+               get collapsed or dropped by several clients. -->
+          <td bgcolor="#c8a850" style="width:1px; padding:0; background-color:#c8a850; font-size:0; line-height:0;">&nbsp;</td>
 
-    <td valign="top" style="padding:0 0 0 18px; vertical-align:top;">
+          <td valign="top" bgcolor="#07090f" style="padding:20px 0 20px 18px; vertical-align:top; background-color:#07090f;">
 
-      <p style="margin:0 0 2px 0; font-family:'Montserrat',Arial,Helvetica,sans-serif; font-size:16px; font-weight:700; line-height:1.3; color:#14100c;">
-        Kent Axell
-      </p>
+            <p style="margin:0 0 4px 0; font-family:'Josefin Sans','Century Gothic','Helvetica Neue',Arial,Helvetica,sans-serif; font-size:19px; font-weight:700; letter-spacing:0.3px; text-transform:uppercase; line-height:1.15; color:#e6d193;">
+              Kent Axell
+            </p>
 
-      <p style="margin:0 0 8px 0; font-family:'Montserrat',Arial,Helvetica,sans-serif; font-size:11px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; line-height:1.4; color:#8a6d2c;">
-        Founder &amp; Executive Producer &middot; Vegas Magic Squad
-      </p>
+            <p style="margin:0 0 12px 0; font-family:'Montserrat',Arial,Helvetica,sans-serif; font-size:11px; font-weight:700; letter-spacing:2.2px; text-transform:uppercase; line-height:1.45; color:#c8a850;">
+              Founder &amp; Executive Producer
+            </p>
 
-      <p style="margin:0 0 3px 0; font-family:'Montserrat',Arial,Helvetica,sans-serif; font-size:13px; line-height:1.6; color:#574c3c;">
-        <a href="mailto:kent@vegasmagicsquad.com" style="color:#574c3c; text-decoration:none;">kent@vegasmagicsquad.com</a>
-      </p>
+            <p style="margin:0 0 3px 0; font-family:'Montserrat',Arial,Helvetica,sans-serif; font-size:13px; line-height:1.65; color:#efe9dd;">
+              <a href="mailto:kent@vegasmagicsquad.com" style="color:#efe9dd; text-decoration:none;">kent@vegasmagicsquad.com</a>
+            </p>
 
-      <p style="margin:0 0 3px 0; font-family:'Montserrat',Arial,Helvetica,sans-serif; font-size:13px; line-height:1.6; color:#574c3c;">
-        <a href="tel:+12074583115" style="color:#574c3c; text-decoration:none;">(207) 458-3115</a>
-      </p>
+            <p style="margin:0 0 10px 0; font-family:'Montserrat',Arial,Helvetica,sans-serif; font-size:13px; line-height:1.65; color:#efe9dd;">
+              <a href="tel:+12074583115" style="color:#efe9dd; text-decoration:none;">(207) 458-3115</a>
+            </p>
 
-      <p style="margin:0 0 8px 0; font-family:'Montserrat',Arial,Helvetica,sans-serif; font-size:13px; line-height:1.6;">
-        <a href="https://magicsquad.vegas" style="color:#8a6d2c; text-decoration:none; font-weight:700;">magicsquad.vegas</a>
-        <span style="color:#b9ad99;">&nbsp;&middot;&nbsp;</span>
-        <a href="https://www.instagram.com/vegas_magic_squad/" style="color:#8a6d2c; text-decoration:none;">Instagram</a>
-      </p>
+            <p style="margin:0 0 10px 0; font-family:'Montserrat',Arial,Helvetica,sans-serif; font-size:13px; line-height:1.65;">
+              <a href="https://magicsquad.vegas" style="color:#e6d193; text-decoration:underline;">magicsquad.vegas</a>
+              <span style="color:#a89c89;">&nbsp;&middot;&nbsp;</span>
+              <a href="https://www.instagram.com/vegas_magic_squad/" style="color:#e6d193; text-decoration:underline;">Instagram</a>
+            </p>
 
-      <p style="margin:0; font-family:'Montserrat',Arial,Helvetica,sans-serif; font-size:11px; line-height:1.6; color:#9a8f7d;">
-        Magicians for corporate events and private parties &middot; Las Vegas, Nevada
-      </p>
+            <p style="margin:0; font-family:'Montserrat',Arial,Helvetica,sans-serif; font-size:11px; line-height:1.6; letter-spacing:0.3px; color:#a89c89;">
+              Magicians for corporate events and private parties &middot; Las Vegas, Nevada
+            </p>
+
+          </td>
+        </tr>
+      </table>
 
     </td>
   </tr>
