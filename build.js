@@ -93,6 +93,15 @@ function main() {
     if (size > 300 * 1024) heavy.push([rel, size]);
   }
 
+  /* Assets nothing on the site links to, but that still have to be published.
+     The confirmation email sends from GoHighLevel and pulls its logo over the
+     wire, so that file must exist at a stable public URL even though no page
+     references it - the reference scan above would otherwise drop it and the
+     logo would silently stop loading in every email sent. */
+  for (const asset of ['images/site/email-logo.png']) {
+    if (fs.existsSync(path.join(ROOT, asset))) bytes += copy(asset);
+  }
+
   // Netlify reads _headers and _redirects from the publish root. Vercel does
   // not — its equivalents live in vercel.json. These are still copied so the
   // output works on either host; on Vercel they are simply inert files.

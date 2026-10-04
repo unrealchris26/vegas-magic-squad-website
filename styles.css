@@ -430,14 +430,49 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 .formlegal a:hover{color:var(--gold)}
 
 /* ==========================================================================
+   Deliberate headlines
+   The base .h2 allows up to 4.4rem and caps the measure at 18ch. At that size
+   "LET'S FIND THE RIGHT" is wider than the 720px form column, so the browser
+   broke it wherever it happened to fit — stranding "RIGHT" alone on a line and
+   pushing "ENTERTAINMENT" past the column edge.
+
+   Fixed two ways at once: the line breaks are authored rather than left to
+   chance, and the ceiling is lowered so the longest authored line fits the
+   column it sits above. --col is set per section, so the headline, the
+   sub-headline and the form all share one width and their edges line up.
+   ========================================================================== */
+.hl{
+  max-width:var(--col);
+  margin-inline:auto;
+  text-align:center;
+  /* 3.5rem keeps "ENTERTAINMENT FOR YOU" at roughly 95% of 720px rather than
+     overflowing it. Lower bound fits "ENTERTAINMENT" on a 375px screen with
+     the side padding intact. */
+  font-size:clamp(2rem, 5.2vw, 3.5rem);
+  line-height:1.04;
+  letter-spacing:.006em;
+  /* Fallback for any width where the authored breaks are switched off. */
+  text-wrap:balance;
+  margin-bottom:clamp(1rem, 1.6vw, 1.5rem);
+}
+.hl__l{display:block}
+
+@media (max-width:640px){
+  /* Below this the authored breaks start working against the narrower column,
+     so they come off and text-wrap:balance takes over. The spans fall back to
+     inline and the whitespace between them in the markup becomes the space. */
+  .hl__l{display:inline}
+}
+
+/* ==========================================================================
    Call-request form : the one conversion point, directly under the hero
    ========================================================================== */
 .callform{padding-block:clamp(44px,6vw,80px)}
-.callform__in{max-width:720px; margin-inline:auto}
+.callform{--col:720px}
+.callform__in{max-width:var(--col); margin-inline:auto}
 .callform__head{text-align:center; margin-bottom:clamp(24px,3.2vw,36px)}
-.callform__head .h2{margin-bottom:.4em; max-width:none}
 .callform__sub{
-  margin:0 auto; max-width:52ch;
+  margin:0 auto; max-width:var(--col);
   font-size:16px; line-height:1.62; color:var(--night-tx2);
 }
 .opt{
@@ -472,9 +507,10 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    Final call : returns to the form above rather than opening a second one
    ========================================================================== */
 .finalcall{padding-block:clamp(48px,7vw,96px); text-align:center}
-.finalcall__in{max-width:620px; margin-inline:auto}
+.finalcall{--col:620px}
+.finalcall__in{max-width:var(--col); margin-inline:auto}
 .finalcall__sub{
-  margin:0 auto; max-width:46ch; font-size:16px; line-height:1.62;
+  margin:0 auto; max-width:var(--col); font-size:16px; line-height:1.62;
   color:var(--night-tx2);
 }
 .finalcall__cta{margin:clamp(24px,3vw,34px) 0 0}

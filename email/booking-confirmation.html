@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Tells Apple Mail / iOS / Outlook the design is already dark, so they leave
+     it alone instead of inverting it into washed-out grey. -->
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
+<title>Thank you for reaching out</title>
+
+<!--[if mso]>
+<xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml>
+<![endif]-->
+
+<!-- Apple Mail and iOS honour these. Gmail and Outlook ignore them and fall
+     back to the stacks declared inline on every element. -->
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  /* Only media queries and dark-mode overrides live here. Everything that
+     must survive Gmail is inline on the element itself. */
+  body, table, td, a { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+  table, td { mso-table-lspace:0pt; mso-table-rspace:0pt; }
+  img { -ms-interpolation-mode:bicubic; border:0; outline:none; text-decoration:none; }
+
+  /* Outlook.com / Office 365 dark mode rewrites colours via these hooks.
+     Without them the near-black ground becomes grey and the gold goes muddy. */
+  [data-ogsc] .bg      { background-color:#07090f !important; }
+  [data-ogsc] .panel   { background-color:#0d1119 !important; }
+  [data-ogsc] .tx      { color:#efe9dd !important; }
+  [data-ogsc] .tx-mute { color:#a89c89 !important; }
+  [data-ogsc] .gold    { color:#e6d193 !important; }
+  [data-ogsc] .gold-lb { color:#c8a850 !important; }
+
+  @media (prefers-color-scheme: dark) {
+    .bg      { background-color:#07090f !important; }
+    .panel   { background-color:#0d1119 !important; }
+    .tx      { color:#efe9dd !important; }
+    .tx-mute { color:#a89c89 !important; }
+    .gold    { color:#e6d193 !important; }
+    .gold-lb { color:#c8a850 !important; }
+  }
+
+  @media only screen and (max-width:480px) {
+    .wrap      { width:100% !important; }
+    .pad-x     { padding-left:24px !important; padding-right:24px !important; }
+    .h1        { font-size:30px !important; line-height:1.06 !important; }
+    .body-tx   { font-size:16px !important; }
+    .btn-a     { display:block !important; width:auto !important; }
+    .logo      { width:150px !important; height:187px !important; }
+    .step-n    { font-size:11px !important; }
+  }
+</style>
+</head>
+
+<body class="bg" style="margin:0; padding:0; background-color:#07090f; color:#efe9dd;">
+
+<!-- Preheader: the grey line beside the subject in an inbox list. The zero-width
+     joiners stop Gmail pulling body copy in after it. -->
+<div style="display:none; font-size:1px; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all; font-family:Arial,sans-serif; color:#07090f;">
+  We&rsquo;ve received your event details. Here&rsquo;s what happens next.
+  &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+</div>
+
+<table role="presentation" class="bg" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#07090f; margin:0; padding:0;">
+  <tr>
+    <td align="center" style="padding:0;">
+
+      <!--[if mso]>
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"><tr><td>
+      <![endif]-->
+
+      <table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; background-color:#07090f;">
+
+        <!-- ============ HEADER ============ -->
+        <tr>
+          <td align="center" class="pad-x" style="padding:36px 40px 26px 40px;">
+            <!--
+              Absolute URL, hosted on the site itself. A relative path or a
+              local file can never load in an inbox - the message is rendered
+              on someone else's machine, days later, with no connection to this
+              repo. Served 2x (360x448) and displayed at 180x224 so it stays
+              sharp on retina. build.js copies it explicitly because no web
+              page links to it and the reference scan would otherwise drop it.
+
+              SWAP THE HOST when magicsquad.vegas is attached to the project.
+            -->
+            <img class="logo" src="https://vegas-magic-squad-website.vercel.app/images/site/email-logo.png" width="180" height="224" alt="Vegas Magic Squad" style="display:block; border:0; outline:none; text-decoration:none; width:180px; max-width:180px; height:auto;">
+          </td>
+        </tr>
+        <!-- The gold hairline under the site's nav, flattened: email clients do
+             not render the fading gradient the site uses. -->
+        <tr>
+          <td style="padding:0 40px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr><td height="1" style="height:1px; line-height:1px; font-size:0; background-color:#4a3f22;">&nbsp;</td></tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- ============ LABEL + HEADLINE ============ -->
+        <tr>
+          <td class="pad-x" style="padding:38px 40px 0 40px;">
+            <p class="gold-lb" style="margin:0 0 16px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:2.2px; text-transform:uppercase; color:#c8a850;">
+              Request received
+            </p>
+            <h1 class="h1 gold" style="margin:0 0 22px 0; font-family:'Josefin Sans','Century Gothic','Helvetica Neue',Arial,sans-serif; font-size:38px; font-weight:700; line-height:1.02; letter-spacing:0.3px; text-transform:uppercase; color:#e6d193;">
+              Thank you for<br>reaching out
+            </h1>
+          </td>
+        </tr>
+
+        <!-- ============ BODY ============ -->
+        <tr>
+          <td class="pad-x" style="padding:0 40px;">
+            <p class="body-tx tx" style="margin:0 0 18px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:16px; line-height:1.62; color:#efe9dd;">
+              Hi {{contact.first_name}},
+            </p>
+            <p class="body-tx tx" style="margin:0 0 18px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:16px; line-height:1.62; color:#efe9dd;">
+              Thank you for reaching out and submitting your event details!
+            </p>
+            <p class="body-tx tx" style="margin:0 0 18px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:16px; line-height:1.62; color:#efe9dd;">
+              We&rsquo;ve successfully received your request and are excited to help you find the perfect performer for your event.
+            </p>
+            <p class="body-tx tx" style="margin:0 0 18px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:16px; line-height:1.62; color:#efe9dd;">
+              Our team is currently reviewing the information you provided, and someone will be in touch with you shortly to go over next steps and answer any questions you may have.
+            </p>
+            <p class="body-tx tx" style="margin:0 0 30px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:16px; line-height:1.62; color:#efe9dd;">
+              We look forward to speaking with you soon and helping make your event unforgettable!
+            </p>
+          </td>
+        </tr>
+
+        <!-- ============ WHAT HAPPENS NEXT ============ -->
+        <!-- Mirrors the site's consent box: #0d1119 fill, 1px gold border at
+             low alpha (flattened to #2e2718 for clients with no rgba), square. -->
+        <tr>
+          <td class="pad-x" style="padding:0 40px;">
+            <table role="presentation" class="panel" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#0d1119; border:1px solid #2e2718; border-radius:0;">
+              <tr>
+                <td style="padding:22px 24px;">
+                  <p class="gold-lb" style="margin:0 0 16px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:2.2px; text-transform:uppercase; color:#c8a850;">
+                    What happens next
+                  </p>
+
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td width="30" valign="top" class="step-n gold" style="width:30px; font-family:'Josefin Sans','Century Gothic',Arial,sans-serif; font-size:13px; font-weight:700; line-height:1.6; color:#e6d193;">1.</td>
+                      <td valign="top" class="tx" style="font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:15px; line-height:1.6; color:#efe9dd; padding-bottom:10px;">We review your event details</td>
+                    </tr>
+                    <tr>
+                      <td width="30" valign="top" class="step-n gold" style="width:30px; font-family:'Josefin Sans','Century Gothic',Arial,sans-serif; font-size:13px; font-weight:700; line-height:1.6; color:#e6d193;">2.</td>
+                      <td valign="top" class="tx" style="font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:15px; line-height:1.6; color:#efe9dd; padding-bottom:10px;">A team member reaches out to you</td>
+                    </tr>
+                    <tr>
+                      <td width="30" valign="top" class="step-n gold" style="width:30px; font-family:'Josefin Sans','Century Gothic',Arial,sans-serif; font-size:13px; font-weight:700; line-height:1.6; color:#e6d193;">3.</td>
+                      <td valign="top" class="tx" style="font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:15px; line-height:1.6; color:#efe9dd;">We match you with the right performer</td>
+                    </tr>
+                  </table>
+
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- ============ CTA ============ -->
+        <!-- Bulletproof: VML for Outlook (arcsize 0% keeps the square corner the
+             site's design rule insists on), real anchor everywhere else. -->
+        <tr>
+          <td align="center" class="pad-x" style="padding:32px 40px 8px 40px;">
+            <!--[if mso]>
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="PERFORMERS_PAGE_URL_HERE" style="height:54px;v-text-anchor:middle;width:280px;" arcsize="0%" strokecolor="#a8141d" strokeweight="1.5pt" fillcolor="#a8141d">
+              <w:anchorlock/>
+              <center style="color:#fdf6ea;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:2px;">MEET OUR PERFORMERS</center>
+            </v:roundrect>
+            <![endif]-->
+            <!--[if !mso]><!-- -->
+            <a class="btn-a" href="PERFORMERS_PAGE_URL_HERE" style="display:inline-block; background-color:#a8141d; border:1.5px solid #a8141d; border-radius:0; color:#fdf6ea; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:13px; font-weight:700; letter-spacing:2.6px; text-transform:uppercase; text-decoration:none; padding:17px 34px; mso-hide:all;">
+              Meet Our Performers
+            </a>
+            <!--<![endif]-->
+          </td>
+        </tr>
+
+        <!-- ============ SIGN-OFF ============ -->
+        <tr>
+          <td class="pad-x" style="padding:30px 40px 36px 40px;">
+            <p class="body-tx tx" style="margin:0 0 6px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:16px; line-height:1.62; color:#efe9dd;">
+              Best regards,
+            </p>
+            <p class="body-tx tx" style="margin:0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:16px; line-height:1.62; color:#efe9dd;">
+              {{user.email_signature}}
+            </p>
+          </td>
+        </tr>
+
+        <!-- ============ FOOTER ============ -->
+        <tr>
+          <td style="padding:0 40px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr><td height="1" style="height:1px; line-height:1px; font-size:0; background-color:#4a3f22;">&nbsp;</td></tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" class="pad-x" style="padding:24px 40px 40px 40px;">
+            <p class="tx-mute" style="margin:0 0 10px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:13px; line-height:1.7; color:#a89c89;">
+              Prefer to reach us directly?
+            </p>
+            <p style="margin:0 0 18px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:13px; line-height:1.7;">
+              <a class="gold" href="mailto:kent@vegasmagicsquad.com" style="color:#e6d193; text-decoration:underline;">kent@vegasmagicsquad.com</a>
+              <span class="tx-mute" style="color:#a89c89;">&nbsp;&middot;&nbsp;</span>
+              <a class="gold" href="tel:+12074583115" style="color:#e6d193; text-decoration:underline;">(207) 458-3115</a>
+            </p>
+            <p style="margin:0 0 14px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:12px; line-height:1.7;">
+              <a class="gold" href="PRIVACY_URL_HERE" style="color:#e6d193; text-decoration:underline;">Privacy policy</a>
+              <span class="tx-mute" style="color:#a89c89;">&nbsp;&middot;&nbsp;</span>
+              <a class="gold" href="TERMS_URL_HERE" style="color:#e6d193; text-decoration:underline;">Terms &amp; conditions</a>
+            </p>
+            <p class="tx-mute" style="margin:0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:11px; line-height:1.7; letter-spacing:0.4px; color:#a89c89;">
+              Vegas Magic Squad &middot; Las Vegas, Nevada
+            </p>
+          </td>
+        </tr>
+
+      </table>
+
+      <!--[if mso]>
+      </td></tr></table>
+      <![endif]-->
+
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
