@@ -892,23 +892,6 @@
     return true;
   }
 
-  /* Neither email nor phone is required on its own - people should be able to
-     give whichever they prefer. But an enquiry with no way to answer it is not
-     an enquiry, so at least one has to be there. The error is attached to the
-     email field because it is the first of the two on the page. */
-  function checkReachable() {
-    var email = document.getElementById('f-email');
-    var phone = document.getElementById('f-phone');
-    if (!email || !phone) return true;
-    if ((email.value || '').trim() || (phone.value || '').trim()) {
-      if (email.getAttribute('aria-invalid') === 'true' &&
-          !(email.value || '').trim()) clearError(email);
-      return true;
-    }
-    setError(email, 'Add an email address or a phone number so we can reply.');
-    return false;
-  }
-
   /* Ticking "text me" without leaving a number is a dead end, and it would
      also record a consent to SMS against no number at all - which is worse
      than useless if the consent is ever audited. */
@@ -925,16 +908,6 @@
     form.querySelectorAll('input, select, textarea')
   );
 
-  // Typing into either contact field should clear a "we cannot reach you"
-  // error raised against the other one.
-  ['f-email', 'f-phone'].forEach(function (id) {
-    var el = document.getElementById(id);
-    if (el) el.addEventListener('input', function () {
-      var email = document.getElementById('f-email');
-      if (email && email.getAttribute('aria-invalid') === 'true') checkReachable();
-      checkSmsUsable();
-    });
-  });
   var smsBox = document.getElementById('f-sms');
   if (smsBox) smsBox.addEventListener('change', checkSmsUsable);
 
@@ -951,7 +924,6 @@
     fields.forEach(function (el) {
       if (!checkField(el)) { ok = false; if (!firstBad) firstBad = el; }
     });
-    if (!checkReachable()) { ok = false; if (!firstBad) firstBad = document.getElementById('f-email'); }
     if (!checkSmsUsable()) { ok = false; if (!firstBad) firstBad = document.getElementById('f-sms'); }
 
     if (!ok) {
@@ -991,6 +963,9 @@
 
     sendEnquiry(payload)
       .then(function () {
+        /* Step two. The lead is already saved at this point, so the calendar
+           is an offer and never a gate - and leaving now loses nothing. */
+        showCallDone(payload);
         form.reset();
         fields.forEach(clearError);
         // Deliberately does not claim delivery: the handler below transmits
@@ -1045,6 +1020,42 @@
     return lab ? lab.textContent.replace(/\s+/g, ' ').trim() : '';
   }
 
+  /* ------------------------------------------------------------------ *
+   * Step two : confirmation, and an optional time.
+   *
+   * CALENDAR_URL is empty until the GHL scheduler link is supplied. While it
+   * is empty the confirmation shows on its own rather than linking to a
+   * calendar that does not exist - a dead "choose a time" button is worse
+   * than no button.
+   *
+   * The visitor's details are carried into the booking link so they are not
+   * asked for them twice, and so the appointment lands against the same
+   * contact rather than creating a second one.
+   * ------------------------------------------------------------------ */
+  var CALENDAR_URL = '';     // <-- paste the GHL calendar/scheduler link here
+
+  function showCallDone(data) {
+    var done = document.getElementById('calldone');
+    if (!done) return;
+    var link = document.getElementById('calldone-link');
+    var sub = document.getElementById('calldone-sub');
+
+    if (CALENDAR_URL && link) {
+      var join = CALENDAR_URL.indexOf('?') === -1 ? '?' : '&';
+      link.href = CALENDAR_URL + join +
+        'first_name=' + encodeURIComponent(data.name || '') +
+        '&email=' + encodeURIComponent(data.email || '') +
+        '&phone=' + encodeURIComponent(data.phone || '');
+    } else {
+      if (link) link.hidden = true;
+      if (sub) sub.textContent = 'We will be in touch shortly to arrange a time.';
+    }
+
+    done.hidden = false;
+    done.setAttribute('tabindex', '-1');
+    done.focus();
+  }
+
   function sendEnquiry(data) {
     if (!GHL_WEBHOOK) {
       return Promise.reject(new Error('not-configured'));
@@ -1072,11 +1083,16 @@
       smsConsent: data.smsConsent === 'yes' ? 'yes' : 'no',
       smsConsentText: data.smsConsent === 'yes' ? consentWording() : '',
       smsConsentAt: data.smsConsent === 'yes' ? new Date().toISOString() : '',
-      eventDate: data.date || '',
-      eventType: data.type || '',
-      guestCount: data.guests || '',
-      venue: data.venue || '',
+      /* The form no longer asks for a date, venue, type or headcount - an
+         early-stage enquirer has none of them and every one was a reason to
+         abandon. They are sent as empty strings rather than dropped so the
+         GHL field mapping keeps working untouched. */
+      eventDate: '',
+      eventType: '',
+      guestCount: '',
+      venue: '',
       message: data.message || '',
+      requestType: 'Call request',
       source: 'Website booking form',
       pageUrl: window.location.href,
       submittedAt: new Date().toISOString()

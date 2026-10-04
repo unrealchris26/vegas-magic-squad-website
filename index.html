@@ -42,7 +42,7 @@
   <div class="nav__in">
     <a class="nav__brand" href="#top" aria-label="Vegas Magic Squad, back to top">
       <img src="images/site/logo.png" alt="" width="44" height="55" decoding="async">
-      <span class="nav__brandtx">Vegas<br>Magic Squad</span>
+      <span class="nav__brandtx">Vegas<br>Magic<br>Squad</span>
     </a>
 
     <!-- In page order. #clients and #room are deliberately not listed: the
@@ -50,15 +50,14 @@
          visitor would go looking for. Both still sit in the page. -->
     <nav class="nav__links" id="navlinks" aria-label="Primary">
       <a href="#top">Home</a>
-      <a href="#about">About</a>
+      <a href="#booking">Book a Call</a>
       <a href="#services">Services</a>
       <a href="#gallery">Gallery</a>
-      <a href="#quotes">Testimonials</a>
-      <a href="#faq">FAQ</a>
-      <a href="#booking">Contact</a>
+      <a href="#about">Our Performers</a>
+      <a href="#quotes">Reviews</a>
     </nav>
 
-    <a class="btn btn--red nav__cta" href="#booking">Book Now</a>
+    <a class="btn btn--red nav__cta" href="#booking">Book a Quick Call</a>
 
     <button class="nav__toggle" id="navtoggle" aria-expanded="false" aria-controls="navlinks" aria-label="Open menu">
       <span></span><span></span><span></span>
@@ -84,10 +83,10 @@
     </div>
 
     <div class="bill__foot strike" style="--s:1">
-      <p class="bill__lede">Las Vegas best magicians at your event</p>
+      <p class="bill__lede">Las Vegas&rsquo;s best magicians at your event</p>
       <div class="bill__acts">
-        <a class="btn btn--red btn--lg" href="#booking">Check Availability</a>
-        <a class="btn btn--gold btn--lg" href="video/stage-full-room.mp4" data-video data-title="Stage &mdash; The Full Room">Watch The Showreel</a>
+        <a class="btn btn--red btn--lg" href="#booking">Book a Quick Call</a>
+        <a class="btn btn--gold btn--lg" href="video/stage-full-room.mp4" data-video data-title="Stage &mdash; The Full Room">Watch the Show Reel</a>
       </div>
     </div>
 
@@ -127,65 +126,195 @@
   </div>
 </section>
 
-<!-- ============ ABOUT ============ -->
+<!-- ============ CALL REQUEST ============ -->
 <!--
-  THE LINE-UP. Was three full-width alternating blocks, one per performer, each
-  with a portrait, two paragraphs, a closing line and its own button. Now a
-  single horizontal row: portrait, name, billing, and one shared CTA.
+  Sits directly under the hero on purpose. The previous version made a visitor
+  scroll the whole page before they could contact anyone, and asked for a date,
+  a venue, a headcount and an event type before it would accept them — all of
+  which an early-stage enquirer does not have, and any one of which is a reason
+  to leave.
 
-  What that dropped, and where it needs to come back: Brandon's closing line,
-  "It is within our suspension of disbelief where mystery lies and magic begins
-  to happen." Per PRODUCT.md that is the squad's own wording from their social
-  captions and was the ONLY first-party copy anywhere on this page. It belongs
-  on squad.html.
+  Three required fields and one optional box. Nothing here asks the visitor to
+  have decided anything yet.
 
-  The CTA points at squad.html, which is currently a stub. Replace that file
-  with the real profiles; nothing here needs to change when you do.
+  TWO STEPS, and the order matters: the lead is saved the moment step one is
+  submitted. Choosing a time is offered afterwards and is entirely optional —
+  nobody has to find a calendar slot before we have their details, and leaving
+  at that point loses nothing.
 -->
-<section class="about" id="about" aria-labelledby="about-h">
-  <div class="wrap">
+<section class="sec sec--night callform" id="booking" aria-labelledby="booking-h">
+  <div class="wrap callform__in">
 
-    <header class="sechead">
-      <h2 id="about-h">The <strong>line-up</strong></h2>
-      <span class="fleuron" aria-hidden="true"></span>
+    <header class="callform__head">
+      <h2 class="h2 h2--gold" id="booking-h">Let&rsquo;s find the right entertainment for you</h2>
+      <p class="callform__sub">
+        Start with a quick conversation. You don&rsquo;t need a confirmed date,
+        a venue, or a finished plan &mdash; we&rsquo;ll help you explore the options.
+      </p>
     </header>
 
-    <!-- On phones this becomes a swipeable rail with the same drift engine as
-         the testimonials (script.js, driftRail). On desktop it stays a plain
-         three-up grid and the rail wrapper does nothing. tabindex is added by
-         JS only while the rail is live, so desktop gains no dead tab stop. -->
-    <div class="lineup__rail" role="group" aria-label="The line-up, drag or swipe to browse">
-    <ul class="lineup">
+    <form id="bookform" novalidate>
+      <div class="f2">
+        <p class="field">
+          <label for="f-name">Your name <span class="req" aria-hidden="true">required</span></label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required>
+          <span class="err" data-err="f-name" aria-live="polite"></span>
+        </p>
+        <p class="field">
+          <label for="f-email">Email <span class="req" aria-hidden="true">required</span></label>
+          <input id="f-email" name="email" type="email" autocomplete="email" required>
+          <span class="err" data-err="f-email" aria-live="polite"></span>
+        </p>
+      </div>
 
-      <li class="member">
-        <figure class="member__fig">
-          <img src="images/site/about-brandon.jpg" alt="Brandon Williams, The Card Shark, fanning a deck of cards" width="1080" height="1350" loading="lazy" decoding="async">
-        </figure>
-        <h3 class="member__name">Brandon Williams</h3>
-        <p class="member__bill">The Card Shark</p>
-      </li>
+      <p class="field">
+        <label for="f-phone">Phone <span class="req" aria-hidden="true">required</span></label>
+        <span class="telwrap">
+          <span class="selwrap selwrap--dial">
+            <label class="sr-only" for="f-dial">Country code</label>
+            <select id="f-dial" name="dial" autocomplete="tel-country-code">
+                <optgroup label="Common">
+                  <option value="+1" data-country="United States" selected>United States +1</option>
+                  <option value="+1" data-country="Canada">Canada +1</option>
+                  <option value="+44" data-country="United Kingdom">United Kingdom +44</option>
+                  <option value="+61" data-country="Australia">Australia +61</option>
+                </optgroup>
+                <optgroup label="All countries">
+                  <option value="+54" data-country="Argentina">Argentina +54</option>
+                  <option value="+61" data-country="Australia">Australia +61</option>
+                  <option value="+43" data-country="Austria">Austria +43</option>
+                  <option value="+1" data-country="Bahamas">Bahamas +1</option>
+                  <option value="+880" data-country="Bangladesh">Bangladesh +880</option>
+                  <option value="+32" data-country="Belgium">Belgium +32</option>
+                  <option value="+55" data-country="Brazil">Brazil +55</option>
+                  <option value="+1" data-country="Canada">Canada +1</option>
+                  <option value="+56" data-country="Chile">Chile +56</option>
+                  <option value="+86" data-country="China">China +86</option>
+                  <option value="+57" data-country="Colombia">Colombia +57</option>
+                  <option value="+506" data-country="Costa Rica">Costa Rica +506</option>
+                  <option value="+385" data-country="Croatia">Croatia +385</option>
+                  <option value="+420" data-country="Czechia">Czechia +420</option>
+                  <option value="+45" data-country="Denmark">Denmark +45</option>
+                  <option value="+1" data-country="Dominican Republic">Dominican Republic +1</option>
+                  <option value="+20" data-country="Egypt">Egypt +20</option>
+                  <option value="+358" data-country="Finland">Finland +358</option>
+                  <option value="+33" data-country="France">France +33</option>
+                  <option value="+49" data-country="Germany">Germany +49</option>
+                  <option value="+30" data-country="Greece">Greece +30</option>
+                  <option value="+852" data-country="Hong Kong">Hong Kong +852</option>
+                  <option value="+36" data-country="Hungary">Hungary +36</option>
+                  <option value="+354" data-country="Iceland">Iceland +354</option>
+                  <option value="+91" data-country="India">India +91</option>
+                  <option value="+62" data-country="Indonesia">Indonesia +62</option>
+                  <option value="+353" data-country="Ireland">Ireland +353</option>
+                  <option value="+972" data-country="Israel">Israel +972</option>
+                  <option value="+39" data-country="Italy">Italy +39</option>
+                  <option value="+1" data-country="Jamaica">Jamaica +1</option>
+                  <option value="+81" data-country="Japan">Japan +81</option>
+                  <option value="+254" data-country="Kenya">Kenya +254</option>
+                  <option value="+352" data-country="Luxembourg">Luxembourg +352</option>
+                  <option value="+60" data-country="Malaysia">Malaysia +60</option>
+                  <option value="+52" data-country="Mexico">Mexico +52</option>
+                  <option value="+377" data-country="Monaco">Monaco +377</option>
+                  <option value="+31" data-country="Netherlands">Netherlands +31</option>
+                  <option value="+64" data-country="New Zealand">New Zealand +64</option>
+                  <option value="+234" data-country="Nigeria">Nigeria +234</option>
+                  <option value="+47" data-country="Norway">Norway +47</option>
+                  <option value="+92" data-country="Pakistan">Pakistan +92</option>
+                  <option value="+507" data-country="Panama">Panama +507</option>
+                  <option value="+51" data-country="Peru">Peru +51</option>
+                  <option value="+63" data-country="Philippines">Philippines +63</option>
+                  <option value="+48" data-country="Poland">Poland +48</option>
+                  <option value="+351" data-country="Portugal">Portugal +351</option>
+                  <option value="+1" data-country="Puerto Rico">Puerto Rico +1</option>
+                  <option value="+974" data-country="Qatar">Qatar +974</option>
+                  <option value="+40" data-country="Romania">Romania +40</option>
+                  <option value="+966" data-country="Saudi Arabia">Saudi Arabia +966</option>
+                  <option value="+65" data-country="Singapore">Singapore +65</option>
+                  <option value="+27" data-country="South Africa">South Africa +27</option>
+                  <option value="+82" data-country="South Korea">South Korea +82</option>
+                  <option value="+34" data-country="Spain">Spain +34</option>
+                  <option value="+94" data-country="Sri Lanka">Sri Lanka +94</option>
+                  <option value="+46" data-country="Sweden">Sweden +46</option>
+                  <option value="+41" data-country="Switzerland">Switzerland +41</option>
+                  <option value="+886" data-country="Taiwan">Taiwan +886</option>
+                  <option value="+66" data-country="Thailand">Thailand +66</option>
+                  <option value="+90" data-country="Turkey">Turkey +90</option>
+                  <option value="+971" data-country="United Arab Emirates">United Arab Emirates +971</option>
+                  <option value="+44" data-country="United Kingdom">United Kingdom +44</option>
+                  <option value="+1" data-country="United States">United States +1</option>
+                  <option value="+84" data-country="Vietnam">Vietnam +84</option>
+                </optgroup>
+                </select>
+            <svg class="selwrap__c" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5 12 15.5 18 9.5"/></svg>
+          </span>
+          <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" required>
+        </span>
+        <span class="err" data-err="f-phone" aria-live="polite"></span>
+      </p>
 
-      <li class="member">
-        <figure class="member__fig">
-          <img src="images/site/about-kent.jpg" alt="Kent Axell, The Mentalist, mid-performance" width="1080" height="1350" loading="lazy" decoding="async">
-        </figure>
-        <h3 class="member__name">Kent Axell</h3>
-        <p class="member__bill">The Mentalist</p>
-      </li>
+      <p class="field">
+        <label for="f-msg">Anything you&rsquo;d like us to know? <span class="opt">optional</span></label>
+        <textarea id="f-msg" name="message" rows="3"></textarea>
+        <span class="err" data-err="f-msg" aria-live="polite"></span>
+      </p>
 
-      <li class="member">
-        <figure class="member__fig">
-          <img src="images/site/about-dream.jpg" alt="Dream Upright, The Magician, mid-performance" width="1080" height="1350" loading="lazy" decoding="async">
-        </figure>
-        <h3 class="member__name">Dream Upright</h3>
-        <p class="member__bill">The Magician</p>
-      </li>
+      <!--
+        A2P 10DLC consent. Unticked, optional, and separate from the phone
+        field above - consent that is a condition of submitting is not consent,
+        and texting must never be the only way we follow up.
+      -->
+      <p class="field field--check">
+        <input type="checkbox" id="f-sms" name="smsConsent" value="yes">
+        <label for="f-sms">
+          Text me as well as calling. By checking this box you agree to receive
+          SMS from Vegas Magic Squad about your enquiry. Message frequency
+          varies. Message and data rates may apply. Reply STOP to opt out or
+          HELP for help. See our <a href="privacy.html">Privacy Policy</a> and
+          <a href="terms.html">Terms</a>.
+        </label>
+        <span class="err" data-err="f-sms" aria-live="polite"></span>
+      </p>
 
-    </ul>
+      <button class="btn btn--red btn--lg btn--block" type="submit" id="submit">
+        <span class="btn__label">Request My Call</span>
+        <span class="btn__spin" aria-hidden="true"></span>
+      </button>
+
+      <p class="formnote" id="formstatus" role="status" aria-live="polite"></p>
+
+      <p class="formlegal">
+        We use these details to answer your enquiry and nothing else. They are
+        sent to our booking system, GoHighLevel. See our
+        <a href="privacy.html">privacy policy</a> and
+        <a href="terms.html">terms &amp; conditions</a>.
+      </p>
+    </form>
+
+    <!--
+      STEP TWO. Revealed only after the lead is safely away. The calendar is an
+      offer, never a gate - the heading says the request is already received,
+      because it is.
+
+      CALENDAR_URL is empty until the GHL scheduler link is supplied. While it
+      is empty this shows the confirmation alone and promises nothing it cannot
+      do, rather than linking to a calendar that does not exist.
+    -->
+    <div class="callform__done" id="calldone" hidden>
+      <h3 class="callform__doneh">Thanks &mdash; your call request has been received.</h3>
+      <p class="callform__donep" id="calldone-sub">
+        Prefer a specific time? Choose one below. Otherwise, we&rsquo;ll be in touch.
+      </p>
+      <p class="callform__donecta">
+        <a class="btn btn--gold btn--lg" id="calldone-link" href="#" target="_blank" rel="noopener">Choose a time</a>
+      </p>
     </div>
 
-    <p class="lineup__cta">
-      <a class="btn btn--gold btn--lg" href="squad.html">Know more about the squad</a>
+    <p class="callform__direct">
+      Prefer to reach us directly?
+      <a href="mailto:kent@vegasmagicsquad.com">kent@vegasmagicsquad.com</a>
+      <span aria-hidden="true">&middot;</span>
+      <a href="tel:+12074583115">(207) 458-3115</a>
     </p>
 
   </div>
@@ -247,10 +376,6 @@
     named quote you have permission to publish, or delete this figure. With
     #praise removed, this is now the only quote anywhere on the page.
   -->
-  <figure class="wrap pullquote">
-    <blockquote>&ldquo;Without a doubt, the most impressive performers we have ever booked. Jaw-dropping.&rdquo;</blockquote>
-    <figcaption>Events Director, Fortune 500 client</figcaption>
-  </figure>
 
 </section>
 
@@ -295,7 +420,7 @@
           <li>No stage, no seating plan, no running order to rearrange</li>
           <li>Book one of us or all three for the same night</li>
         </ul>
-        <a class="btn btn--gold" href="#booking">Check Availability</a>
+        <a class="btn btn--gold" href="#booking">Book a Quick Call</a>
       </div>
     </article>
 
@@ -322,7 +447,7 @@
           <li>Mentalism from Kent Axell, classical magic from Dream Upright</li>
           <li>Tell us the space and the headcount and we will tell you what fits</li>
         </ul>
-        <a class="btn btn--gold" href="#booking">Check Availability</a>
+        <a class="btn btn--gold" href="#booking">Book a Quick Call</a>
       </div>
     </article>
 
@@ -347,7 +472,7 @@
           <li>Close-up at arm&rsquo;s length, where the reaction is the show</li>
           <li>Brandon&rsquo;s card work for the guests who like to watch closely</li>
         </ul>
-        <a class="btn btn--gold" href="#booking">Check Availability</a>
+        <a class="btn btn--gold" href="#booking">Book a Quick Call</a>
       </div>
     </article>
 
@@ -372,7 +497,7 @@
           <li>Your product or message worked into the routine</li>
           <li>Your team starts every conversation mid-flow, not from scratch</li>
         </ul>
-        <a class="btn btn--gold" href="#booking">Check Availability</a>
+        <a class="btn btn--gold" href="#booking">Book a Quick Call</a>
       </div>
     </article>
 
@@ -413,8 +538,8 @@
 
     <div class="shots">
       <figure class="shot">
-        <a class="shot__link" href="images/site/gallery-lineup.png" data-image aria-label="View full size: The three of the squad in a dark panelled bar &mdash; linking rings held up on the left, a blindfolded man holding a billet in the centre, a fan of cards on the right">
-          <img src="images/site/gallery-lineup.png" alt="The three of the squad in a dark panelled bar &mdash; linking rings held up on the left, a blindfolded man holding a billet in the centre, a fan of cards on the right" width="1672" height="941" loading="lazy" decoding="async">
+        <a class="shot__link" href="images/site/reaction-corporate.jpg" data-image aria-label="View full size: a guest at a corporate reception reacting with astonishment to a close-up effect">
+          <img src="images/site/reaction-corporate.jpg" alt="A guest at a corporate reception reacting with open-mouthed astonishment to a close-up effect, colleagues laughing around her" width="1080" height="1080" loading="lazy" decoding="async">
           <span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8 21 21M8.5 11h5M11 8.5v5"/></svg></span>
         </a>
       </figure>
@@ -431,8 +556,8 @@
         </a>
       </figure>
       <figure class="shot">
-        <a class="shot__link" href="images/site/gallery-boutique.jpg" data-image aria-label="View full size: Dream Upright in a bowler hat stretching a red silk between his hands for a small seated audience">
-          <img src="images/site/gallery-boutique.jpg" alt="Dream Upright in a bowler hat stretching a red silk between his hands for a small seated audience" width="1080" height="810" loading="lazy" decoding="async">
+        <a class="shot__link" href="images/site/closeup-reception.jpg" data-image aria-label="View full size: guests at a corporate drinks reception laughing at a close-up effect">
+          <img src="images/site/closeup-reception.jpg" alt="Guests at a corporate drinks reception laughing as a close-up effect happens in their own hands" width="1600" height="1068" loading="lazy" decoding="async">
           <span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8 21 21M8.5 11h5M11 8.5v5"/></svg></span>
         </a>
       </figure>
@@ -450,45 +575,81 @@
       </figure>
     </div>
 
-    <p class="gallery__cta"><a class="btn btn--red btn--lg" href="#booking">Check Availability</a></p>
+    <p class="gallery__cta"><a class="btn btn--red btn--lg" href="#booking">Book a Quick Call</a></p>
 
   </div>
 </section>
 
-<!-- ============ THE ROOM : PROOF ============ -->
-<section class="sec--room" id="room" aria-labelledby="room-h">
-  <img class="room__img" src="images/site/room-ovation.jpg" alt="An audience standing and applauding around banquet tables at a company holiday dinner" width="2000" height="1125" loading="lazy" decoding="async">
-  <div class="room__scrim" aria-hidden="true"></div>
-  <div class="room__in wrap">
-    <h2 class="h2 h2--gold h2--big" id="room-h">This is what you are actually booking</h2>
-    <p class="room__cap">A real audience, on its feet, at a company holiday dinner.</p>
-  </div>
-
-<!-- ============ TILTED BAND ============ -->
+<!-- ============ ABOUT ============ -->
 <!--
-  Kent Axell's div.marquee.marquee--tilt-b: a gold band, rotated 2deg, wider
-  than the viewport, scrolling in reverse.
+  THE LINE-UP. Was three full-width alternating blocks, one per performer, each
+  with a portrait, two paragraphs, a closing line and its own button. Now a
+  single horizontal row: portrait, name, billing, and one shared CTA.
 
-  RENAMED to .band on purpose. The name .marquee used to belong to the hero's
-  chasing bulb frame, which has since been removed — but the rename stays,
-  because .band is what this actually is and .marquee described the other
-  thing. Structure is otherwise his, class for class: __track, __track--rev,
-  __set, and the drawn separator marks.
+  What that dropped, and where it needs to come back: Brandon's closing line,
+  "It is within our suspension of disbelief where mystery lies and magic begins
+  to happen." Per PRODUCT.md that is the squad's own wording from their social
+  captions and was the ONLY first-party copy anywhere on this page. It belongs
+  on squad.html.
 
-  His band reads "Social Proof / Testimonials / Client Logos / Real Reactions",
-  which are section labels from his own build rather than copy. These words are
-  this site's disciplines and services, all of them factual.
+  The CTA points at squad.html, which is currently a stub. Replace that file
+  with the real profiles; nothing here needs to change when you do.
 -->
-<div class="band band--tilt-b" aria-hidden="true">
-  <div class="band__track band__track--rev">
-    <div class="band__set">
-      <span>Close-Up</span><i></i><span>Mentalism</span><i></i><span>Classical Magic</span><i></i><span>Strolling</span><i></i><span>Corporate Events</span><i></i><span>Private Parties</span><i></i><span>Las Vegas</span><i></i>
+<section class="about" id="about" aria-labelledby="about-h">
+  <div class="wrap">
+
+    <header class="sechead">
+      <h2 id="about-h">The performers behind <strong>the experience</strong></h2>
+      <span class="fleuron" aria-hidden="true"></span>
+    </header>
+
+    <!-- On phones this becomes a swipeable rail with the same drift engine as
+         the testimonials (script.js, driftRail). On desktop it stays a plain
+         three-up grid and the rail wrapper does nothing. tabindex is added by
+         JS only while the rail is live, so desktop gains no dead tab stop. -->
+    <div class="lineup__rail" role="group" aria-label="The line-up, drag or swipe to browse">
+    <p class="lineup__lede">
+      Different personalities. Different specialties. One experience designed
+      around you. From mind-reading and sleight of hand to stage performances
+      and hosting, we bring together the right performers for the experience
+      you want to create &mdash; two of us, ten of us, one room or several.
+    </p>
+    <p class="lineup__note">A few of the personalities we work with:</p>
+
+    <ul class="lineup">
+
+      <li class="member">
+        <figure class="member__fig">
+          <img src="images/site/about-brandon.jpg" alt="Brandon Williams, The Card Shark, fanning a deck of cards" width="1080" height="1350" loading="lazy" decoding="async">
+        </figure>
+        <h3 class="member__name">Brandon Williams</h3>
+        <p class="member__bill">The Card Shark</p>
+      </li>
+
+      <li class="member">
+        <figure class="member__fig">
+          <img src="images/site/about-kent.jpg" alt="Kent Axell, The Mentalist, mid-performance" width="1080" height="1350" loading="lazy" decoding="async">
+        </figure>
+        <h3 class="member__name">Kent Axell</h3>
+        <p class="member__bill">The Mentalist</p>
+      </li>
+
+      <li class="member">
+        <figure class="member__fig">
+          <img src="images/site/about-dream.jpg" alt="Dream Upright, The Magician, mid-performance" width="1080" height="1350" loading="lazy" decoding="async">
+        </figure>
+        <h3 class="member__name">Dream Upright</h3>
+        <p class="member__bill">The Magician</p>
+      </li>
+
+    </ul>
     </div>
-    <div class="band__set">
-      <span>Close-Up</span><i></i><span>Mentalism</span><i></i><span>Classical Magic</span><i></i><span>Strolling</span><i></i><span>Corporate Events</span><i></i><span>Private Parties</span><i></i><span>Las Vegas</span><i></i>
-    </div>
+
+    <p class="lineup__cta">
+      <a class="btn btn--gold btn--lg" href="squad.html">Meet Our Performers</a>
+    </p>
+
   </div>
-</div>
 </section>
 
 <!-- ============ TESTIMONIALS ============ -->
@@ -523,7 +684,7 @@
   <div class="wrap">
 
     <header class="sechead">
-      <h2 id="quotes-h">What people say <strong>the next morning</strong></h2>
+      <h2 id="quotes-h">What people <strong>are saying</strong></h2>
       <p class="sechead__sub">From the people who booked us</p>
       <span class="fleuron" aria-hidden="true"></span>
     </header>
@@ -634,285 +795,19 @@
   </div>
 </section>
 
-<!-- ============ FAQ ============ -->
-<!--
-  Ported from the Kent Axell site (section#faq.panelwrap). Structure is his:
-  a raised panel holding a stack of disclosure rows with a rotating chevron.
-  Type is no longer his: the display face here is Josefin Sans, which is this
-  site's --disp, so the headings are literally the same face.
-
-  The questions are written for this site and claim nothing PRODUCT.md does not
-  license: no price, no travel radius, no insurance, no headcount, no venue and
-  no residency. The last row exists specifically so the form cannot be mistaken
-  for a confirmed booking.
-
-  No JS: `name="faq"` makes the rows natively exclusive, so opening one closes
-  the rest. Browsers without that support simply allow more than one open.
--->
-<section class="sec sec--bill faqwrap" id="faq" aria-labelledby="faq-h">
-  <div class="wrap">
-    <div class="faqpanel">
-
-      <div class="rulepair rulepair--sec" aria-hidden="true"><i></i><i></i></div>
-      <header class="faqpanel__head">
-        <h2 class="h2" id="faq-h">Questions we get asked</h2>
-        <p class="faqpanel__sub">The things planners ask us before they book</p>
-      </header>
-
-      <div class="faq">
-        <details name="faq">
-          <summary>What kinds of events do you perform at?</summary>
-          <div class="faq__body"><p>Corporate events and private parties. Company parties and holiday dinners, conference receptions, product launches, trade-show stands, weddings, milestone birthdays and house parties. Anywhere a room of people has drinks in their hands and time to be surprised.</p></div>
-        </details>
-        <details name="faq">
-          <summary>Can we book one performer, or is it always all three?</summary>
-          <div class="faq__body"><p>Either, and you do not have to work out which. Book one of us or all three &mdash; Brandon on cards, Kent on mentalism, Dream on classical magic. Tell us what the event is and we will tell you honestly what it needs, including when the answer is &ldquo;fewer of us than you were about to book&rdquo;.</p></div>
-        </details>
-        <details name="faq">
-          <summary>What is the difference between strolling and a stage set?</summary>
-          <div class="faq__body"><p>Strolling means we come to your guests &mdash; moving between tables and groups during a reception or dinner, working a handful of people at a time. A stage or parlour set is everyone seated, watching one act together. Most evenings are better with both: strolling while people arrive and eat, a set once they have settled.</p></div>
-        </details>
-        <details name="faq">
-          <summary>What do you need from us on the night?</summary>
-          <div class="faq__body"><p>For strolling, genuinely nothing &mdash; no stage, no sound, no setup, and no change to your running order. We arrive, we work, you carry on. For a seated set we will go through space, sound and lighting with you once we know the venue, and we will tell you well in advance if anything needs arranging.</p></div>
-        </details>
-        <details name="faq">
-          <summary>How much does a booking cost?</summary>
-          <div class="faq__body"><p>There is no fixed price list, because an hour of strolling at a drinks reception and a full evening with all three of us are not the same job. Send the date, the event type and a rough headcount through the form and we will come back with a real number rather than a range.</p></div>
-        </details>
-        <details name="faq">
-          <summary>What happens when I submit the form?</summary>
-          <div class="faq__body"><p>It sends us an enquiry, not a confirmed booking &mdash; nothing is held and no date is reserved until we have replied and agreed the details with you. You are not committing to anything by asking, and we would rather you asked early than found out too late that the date had gone.</p></div>
-        </details>
-      </div>
-
-      <p class="faq__cta"><a class="btn btn--red btn--lg" href="#booking">Check Availability</a></p>
-
-    </div>
+<!-- ============ FINAL CALL ============ -->
+<!-- Returns to the one form near the top rather than opening a second,
+     longer one. A page with two different forms makes a visitor choose. -->
+<section class="sec sec--night finalcall" aria-labelledby="finalcall-h">
+  <div class="wrap finalcall__in">
+    <h2 class="h2 h2--gold" id="finalcall-h">Tell us what you&rsquo;re planning</h2>
+    <p class="finalcall__sub">
+      No date, venue or guest count needed. One short conversation and we&rsquo;ll
+      show you what fits.
+    </p>
+    <p class="finalcall__cta"><a class="btn btn--red btn--lg" href="#booking">Book a Quick Call</a></p>
   </div>
 </section>
-
-<!-- ============ BOOKING ============ -->
-<section class="sec sec--night trim-top booking" id="booking" aria-labelledby="booking-h">
-  <div class="wrap booking__grid">
-
-    <div class="booking__form">
-      <h2 class="h2 h2--gold" id="booking-h">Check Availability</h2>
-      <p class="booking__sub">Tell us the date and roughly what you are planning. We will come back with what we would do with your evening, and what it would cost.</p>
-
-      <form id="bookform" novalidate>
-        <div class="f2">
-          <p class="field">
-            <label for="f-name">Your name <span class="req" aria-hidden="true">required</span></label>
-            <input id="f-name" name="name" type="text" autocomplete="name" required>
-            <span class="err" data-err="f-name" aria-live="polite"></span>
-          </p>
-          <p class="field">
-            <label for="f-email">Email</label>
-            <input id="f-email" name="email" type="email" autocomplete="email" aria-describedby="reach-note">
-            <span class="hint" id="reach-note">Email or phone &mdash; we just need one way to reach you.</span>
-            <span class="err" data-err="f-email" aria-live="polite"></span>
-          </p>
-        </div>
-
-        <div class="f2">
-          <p class="field">
-            <label for="f-phone">Phone</label>
-            <!-- Dial code and national number are separate controls so each can
-                 carry its own autocomplete hint, and so the number field can be
-                 validated on digits alone. script.js joins them back into one
-                 value when the form is submitted. -->
-            <span class="telwrap">
-              <span class="selwrap selwrap--dial">
-                <label class="sr-only" for="f-dial">Country code</label>
-                <select id="f-dial" name="dial" autocomplete="tel-country-code">
-                <optgroup label="Common">
-                  <option value="+1" data-country="United States" selected>United States +1</option>
-                  <option value="+1" data-country="Canada">Canada +1</option>
-                  <option value="+44" data-country="United Kingdom">United Kingdom +44</option>
-                  <option value="+61" data-country="Australia">Australia +61</option>
-                </optgroup>
-                <optgroup label="All countries">
-                  <option value="+54" data-country="Argentina">Argentina +54</option>
-                  <option value="+61" data-country="Australia">Australia +61</option>
-                  <option value="+43" data-country="Austria">Austria +43</option>
-                  <option value="+1" data-country="Bahamas">Bahamas +1</option>
-                  <option value="+880" data-country="Bangladesh">Bangladesh +880</option>
-                  <option value="+32" data-country="Belgium">Belgium +32</option>
-                  <option value="+55" data-country="Brazil">Brazil +55</option>
-                  <option value="+1" data-country="Canada">Canada +1</option>
-                  <option value="+56" data-country="Chile">Chile +56</option>
-                  <option value="+86" data-country="China">China +86</option>
-                  <option value="+57" data-country="Colombia">Colombia +57</option>
-                  <option value="+506" data-country="Costa Rica">Costa Rica +506</option>
-                  <option value="+385" data-country="Croatia">Croatia +385</option>
-                  <option value="+420" data-country="Czechia">Czechia +420</option>
-                  <option value="+45" data-country="Denmark">Denmark +45</option>
-                  <option value="+1" data-country="Dominican Republic">Dominican Republic +1</option>
-                  <option value="+20" data-country="Egypt">Egypt +20</option>
-                  <option value="+358" data-country="Finland">Finland +358</option>
-                  <option value="+33" data-country="France">France +33</option>
-                  <option value="+49" data-country="Germany">Germany +49</option>
-                  <option value="+30" data-country="Greece">Greece +30</option>
-                  <option value="+852" data-country="Hong Kong">Hong Kong +852</option>
-                  <option value="+36" data-country="Hungary">Hungary +36</option>
-                  <option value="+354" data-country="Iceland">Iceland +354</option>
-                  <option value="+91" data-country="India">India +91</option>
-                  <option value="+62" data-country="Indonesia">Indonesia +62</option>
-                  <option value="+353" data-country="Ireland">Ireland +353</option>
-                  <option value="+972" data-country="Israel">Israel +972</option>
-                  <option value="+39" data-country="Italy">Italy +39</option>
-                  <option value="+1" data-country="Jamaica">Jamaica +1</option>
-                  <option value="+81" data-country="Japan">Japan +81</option>
-                  <option value="+254" data-country="Kenya">Kenya +254</option>
-                  <option value="+352" data-country="Luxembourg">Luxembourg +352</option>
-                  <option value="+60" data-country="Malaysia">Malaysia +60</option>
-                  <option value="+52" data-country="Mexico">Mexico +52</option>
-                  <option value="+377" data-country="Monaco">Monaco +377</option>
-                  <option value="+31" data-country="Netherlands">Netherlands +31</option>
-                  <option value="+64" data-country="New Zealand">New Zealand +64</option>
-                  <option value="+234" data-country="Nigeria">Nigeria +234</option>
-                  <option value="+47" data-country="Norway">Norway +47</option>
-                  <option value="+92" data-country="Pakistan">Pakistan +92</option>
-                  <option value="+507" data-country="Panama">Panama +507</option>
-                  <option value="+51" data-country="Peru">Peru +51</option>
-                  <option value="+63" data-country="Philippines">Philippines +63</option>
-                  <option value="+48" data-country="Poland">Poland +48</option>
-                  <option value="+351" data-country="Portugal">Portugal +351</option>
-                  <option value="+1" data-country="Puerto Rico">Puerto Rico +1</option>
-                  <option value="+974" data-country="Qatar">Qatar +974</option>
-                  <option value="+40" data-country="Romania">Romania +40</option>
-                  <option value="+966" data-country="Saudi Arabia">Saudi Arabia +966</option>
-                  <option value="+65" data-country="Singapore">Singapore +65</option>
-                  <option value="+27" data-country="South Africa">South Africa +27</option>
-                  <option value="+82" data-country="South Korea">South Korea +82</option>
-                  <option value="+34" data-country="Spain">Spain +34</option>
-                  <option value="+94" data-country="Sri Lanka">Sri Lanka +94</option>
-                  <option value="+46" data-country="Sweden">Sweden +46</option>
-                  <option value="+41" data-country="Switzerland">Switzerland +41</option>
-                  <option value="+886" data-country="Taiwan">Taiwan +886</option>
-                  <option value="+66" data-country="Thailand">Thailand +66</option>
-                  <option value="+90" data-country="Turkey">Turkey +90</option>
-                  <option value="+971" data-country="United Arab Emirates">United Arab Emirates +971</option>
-                  <option value="+44" data-country="United Kingdom">United Kingdom +44</option>
-                  <option value="+1" data-country="United States">United States +1</option>
-                  <option value="+84" data-country="Vietnam">Vietnam +84</option>
-                </optgroup>
-                </select>
-                <svg class="selwrap__c" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5 12 15.5 18 9.5"/></svg>
-              </span>
-              <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" aria-describedby="reach-note">
-            </span>
-            <span class="err" data-err="f-phone" aria-live="polite"></span>
-          </p>
-          <p class="field">
-            <label for="f-date">Event date <span class="req" aria-hidden="true">required</span></label>
-            <input id="f-date" name="date" type="date" required>
-            <span class="err" data-err="f-date" aria-live="polite"></span>
-          </p>
-        </div>
-
-        <div class="f2">
-          <p class="field">
-            <label for="f-type">Event type <span class="req" aria-hidden="true">required</span></label>
-            <span class="selwrap">
-              <select id="f-type" name="type" required>
-                <option value="">Choose one</option>
-                <option>Corporate</option>
-                <option>Private</option>
-              </select>
-              <svg class="selwrap__c" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5 12 15.5 18 9.5"/></svg>
-            </span>
-            <span class="err" data-err="f-type" aria-live="polite"></span>
-          </p>
-          <p class="field">
-            <label for="f-guests">Approximate guests</label>
-            <input id="f-guests" name="guests" type="number" min="1" max="100000" inputmode="numeric">
-            <span class="err" data-err="f-guests" aria-live="polite"></span>
-          </p>
-        </div>
-
-        <p class="field">
-          <label for="f-venue">Venue or city</label>
-          <input id="f-venue" name="venue" type="text">
-          <span class="err" data-err="f-venue" aria-live="polite"></span>
-        </p>
-
-        <p class="field">
-          <label for="f-msg">Anything else we should know</label>
-          <textarea id="f-msg" name="message" rows="4"></textarea>
-          <span class="err" data-err="f-msg" aria-live="polite"></span>
-        </p>
-
-
-        <!--
-          A2P 10DLC consent. Unticked by default, optional, and separate from
-          every other field - consent that is a condition of submitting the
-          form is not consent. The wording is the full disclosure a carrier
-          reviewer looks for: brand, purpose, frequency, rates, STOP and HELP,
-          and links to both policies. script.js sends the answer AND this exact
-          text to GHL, so what was agreed to can be evidenced later.
-        -->
-        <p class="field field--check">
-          <input type="checkbox" id="f-sms" name="smsConsent" value="yes">
-          <label for="f-sms">
-            Text me about my enquiry. By checking this box you agree to receive
-            SMS from Vegas Magic Squad about your booking. Message frequency
-            varies. Message and data rates may apply. Reply STOP to opt out or
-            HELP for help. See our <a href="privacy.html">Privacy Policy</a> and
-            <a href="terms.html">Terms</a>.
-          </label>
-          <span class="err" data-err="f-sms" aria-live="polite"></span>
-        </p>
-
-        <button class="btn btn--red btn--lg btn--block" type="submit" id="submit">
-          <span class="btn__label">Send Enquiry</span>
-          <span class="btn__spin" aria-hidden="true"></span>
-        </button>
-
-        <p class="formnote" id="formstatus" role="status" aria-live="polite"></p>
-
-        <!-- Sits under the send button on purpose: this is the moment personal
-             details actually leave the visitor's browser, so it is the moment
-             to say where they go. -->
-        <p class="formlegal">
-          We use these details to answer your enquiry and nothing else. They
-          are sent to our booking system, GoHighLevel. See our
-          <a href="privacy.html">privacy policy</a> and
-          <a href="terms.html">terms &amp; conditions</a>.
-        </p>
-      </form>
-    </div>
-
-    <aside class="booking__side">
-      <h3 class="side2__h">What helps us answer fast</h3>
-      <p class="side2__lede">None of this is required. Every line you can fill in is one less email before you have a real answer.</p>
-      <ul class="checks">
-        <li>The date, and whether it is locked or still moving</li>
-        <li>Venue or city, and the space if you know it</li>
-        <li>Roughly how many guests</li>
-        <li>The slot you are filling &mdash; reception, after dinner, or all night</li>
-        <li>Whether you want one of us or all three</li>
-      </ul>
-
-      <h3 class="side2__h">Direct</h3>
-      <!-- TODO BEFORE LAUNCH: replace with the real booking email, phone and social handles. -->
-      <ul class="direct">
-        <li>
-          <svg viewBox="0 0 24 24" aria-hidden="true" class="ic"><path d="M3 6.5h18v11H3z"/><path d="m3 7 9 6 9-6"/></svg>
-          <a href="mailto:unrealvegas@gmail.com">unrealvegas@gmail.com</a>
-        </li>
-        <li>
-          <svg viewBox="0 0 24 24" aria-hidden="true" class="ic"><path d="M7 3.5h3l1.5 4-2 1.5a12 12 0 0 0 5.5 5.5l1.5-2 4 1.5v3c0 1-.8 1.8-1.8 1.7C11 18.2 5.8 13 4.3 5.3 4.2 4.3 5 3.5 6 3.5Z"/></svg>
-          <a href="tel:+12074583115">(207) 458-3115</a>
-        </li>
-      </ul>
-    </aside>
-
-  </div>
-</section>
-
-</main>
 
 <!-- ============ FOOTER ============ -->
 <footer class="foot">
@@ -924,16 +819,13 @@
     </div>
 
     <nav class="foot__nav" aria-label="Footer">
-      <a href="#about">The line-up</a>
-      <a href="#services">What we do</a>
-      <a href="#booking">Check Availability</a>
+      <a href="#about">Our Performers</a>
+      <a href="#services">Services</a>
+      <a href="#booking">Book a Quick Call</a>
     </nav>
 
     <div class="foot__social">
       <a href="https://www.instagram.com/vegas_magic_squad/" target="_blank" rel="noopener" aria-label="Vegas Magic Squad on Instagram"><svg class="ic ic--solid"><use href="#ic-ig"/></svg></a>
-      <a href="#" aria-label="Facebook"><svg class="ic ic--solid"><use href="#ic-fb"/></svg></a>
-      <a href="#" aria-label="YouTube"><svg class="ic ic--solid"><use href="#ic-yt"/></svg></a>
-      <a href="#" aria-label="TikTok"><svg class="ic ic--solid"><use href="#ic-tt"/></svg></a>
     </div>
   </div>
 

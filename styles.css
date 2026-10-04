@@ -430,6 +430,68 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 .formlegal a:hover{color:var(--gold)}
 
 /* ==========================================================================
+   Call-request form : the one conversion point, directly under the hero
+   ========================================================================== */
+.callform{padding-block:clamp(44px,6vw,80px)}
+.callform__in{max-width:720px; margin-inline:auto}
+.callform__head{text-align:center; margin-bottom:clamp(24px,3.2vw,36px)}
+.callform__head .h2{margin-bottom:.4em; max-width:none}
+.callform__sub{
+  margin:0 auto; max-width:52ch;
+  font-size:16px; line-height:1.62; color:var(--night-tx2);
+}
+.opt{
+  margin-left:6px; font-family:var(--text); font-size:10px; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--night-tx2);
+}
+.callform__direct{
+  margin:clamp(22px,3vw,30px) 0 0; text-align:center;
+  font-size:13.5px; color:var(--night-tx2);
+}
+.callform__direct a{color:var(--gold-hi); text-underline-offset:3px}
+.callform__direct a:hover{color:var(--gold)}
+
+/* Step two. Hidden until the lead is saved, then revealed in place - it
+   replaces nothing, so a visitor can see their request was received without
+   the page having navigated anywhere. */
+.callform__done{
+  margin:clamp(22px,3vw,32px) 0 0; padding:clamp(22px,3vw,30px);
+  background:var(--night-2); border:1px solid rgba(200,168,80,.3);
+  text-align:center;
+}
+.callform__done:focus{outline:none}
+.callform__done:focus-visible{outline:2px solid var(--gold); outline-offset:3px}
+.callform__doneh{
+  margin:0 0 .5em; font-family:var(--disp); font-weight:700;
+  font-size:clamp(18px,2.2vw,24px); color:var(--gold-hi); letter-spacing:.01em;
+}
+.callform__donep{margin:0 auto; max-width:46ch; font-size:15px; color:var(--night-tx2)}
+.callform__donecta{margin:clamp(16px,2.2vw,24px) 0 0}
+
+/* ==========================================================================
+   Final call : returns to the form above rather than opening a second one
+   ========================================================================== */
+.finalcall{padding-block:clamp(48px,7vw,96px); text-align:center}
+.finalcall__in{max-width:620px; margin-inline:auto}
+.finalcall__sub{
+  margin:0 auto; max-width:46ch; font-size:16px; line-height:1.62;
+  color:var(--night-tx2);
+}
+.finalcall__cta{margin:clamp(24px,3vw,34px) 0 0}
+
+/* Performers intro: the copy that stops three names reading as the whole
+   roster, or as a fixed package. */
+.lineup__lede{
+  max-width:60ch; margin:0 auto clamp(14px,1.8vw,20px);
+  text-align:center; font-size:16px; line-height:1.68; color:var(--night-tx2);
+}
+.lineup__note{
+  margin:0 auto clamp(26px,3.4vw,40px); text-align:center;
+  font-family:var(--disp); font-size:12px; font-weight:600;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--gold);
+}
+
+/* ==========================================================================
    Video lightbox
    A native <dialog>, so Escape, the focus trap and the inert backdrop come
    from the platform rather than from code that has to remember them.
