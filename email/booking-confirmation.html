@@ -49,7 +49,10 @@
     .h1        { font-size:30px !important; line-height:1.06 !important; }
     .body-tx   { font-size:16px !important; }
     .btn-a     { display:block !important; width:auto !important; }
-    .logo      { width:150px !important; height:187px !important; }
+    /* Width only. Pairing a fixed px height with the inline height:auto is
+       the other way a logo breaks on mobile: a client that applies one rule
+       and not the other collapses or distorts the box. */
+    .logo      { width:150px !important; height:auto !important; }
     .step-n    { font-size:11px !important; }
   }
 </style>
@@ -84,6 +87,13 @@
               repo. Served 2x (360x448) and displayed at 180x224 so it stays
               sharp on retina. build.js copies it explicitly because no web
               page links to it and the reference scan would otherwise drop it.
+
+              The file is deliberately an OPAQUE palette PNG, flattened onto
+              #07090f. It was a palette PNG carrying a tRNS transparency chunk,
+              which renders on desktop but fails in several mobile clients -
+              Gmail on Android among them. The background behind it is always
+              #07090f, so there was nothing for the alpha to reveal and nothing
+              lost by removing it.
 
               SWAP THE HOST when magicsquad.vegas is attached to the project.
             -->
