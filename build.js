@@ -98,7 +98,7 @@ function main() {
      wire, so that file must exist at a stable public URL even though no page
      references it - the reference scan above would otherwise drop it and the
      logo would silently stop loading in every email sent. */
-  for (const asset of ['images/site/email-logo.png']) {
+  for (const asset of ['images/site/email-logo.png', 'images/site/signature-logo.png']) {
     if (fs.existsSync(path.join(ROOT, asset))) bytes += copy(asset);
   }
 
