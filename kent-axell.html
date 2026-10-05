@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kent Axell, Mentalist | Vegas Magic Squad</title>
+<meta name="description" content="Kent Axell, mentalist and magician with Vegas Magic Squad. Mind reading, influence and magic for corporate events and private parties in Las Vegas. Reviews, video, and what to expect.">
+<meta name="theme-color" content="#07090f">
+<link rel="icon" href="images/site/favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="images/site/logo.png" type="image/png">
+<link rel="preload" href="fonts/JosefinSans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Montserrat-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip" href="#overview">Skip to the profile</a>
+
+<!--
+  KENT AXELL — PERFORMER PROFILE
+  ============================================================================
+  Reached from the line-up on the home page and from squad.html.
+
+  WHERE THE CONTENT COMES FROM
+  Every claim below is Kent's own, taken from the profile he publishes about
+  himself. Nothing here was written for him and nothing was invented. The bio,
+  the credits, the press lines and the reviews are his.
+
+  TWO DELIBERATE DEPARTURES FROM THAT SOURCE, BOTH DECIDED WITH THE CLIENT:
+
+  1. The platform badges are gone — the FEATURED flag, the "5 Verified
+     bookings" counter and the "responds in about 12 hours" figure. FEATURED
+     is a paid placement on that site, not a credential. The booking counter
+     counts only bookings made THROUGH that site, so lifted onto his own
+     domain it reads as a career total and badly undersells him. The response
+     time is computed by that platform and cannot be computed here; printing
+     it on his own site turns a statistic into a promise.
+
+  2. The bio led with "one of New York City's most in demand" and Manhattan
+     theatres. Every credit is kept — Brain Games, NY1, Fox5, Determined,
+     A Taste of Magic — but the page leads with Las Vegas, because this site
+     sells a Las Vegas booking and a Vegas buyer reading "New York City" in
+     the first line reasonably concludes he is 2,500 miles away.
+
+  NO REVIEW SCHEMA ON THIS PAGE, AND THAT IS NOT AN OVERSIGHT
+  The four reviews are real, with real names and real dates, but they were
+  collected on a third-party booking platform, not here. Google's structured
+  data policy treats review markup as first-party: marking up reviews gathered
+  elsewhere to win a star snippet is the exact pattern that earns a manual
+  action. Quoting them in plain HTML is ordinary marketing; requesting a rich
+  result for them is not. If these are ever re-collected first-party, the
+  markup can go in then.
+
+  WHAT STILL NEEDS KENT
+  - Photographs. His own profile carries 9+ photos and 4 videos of him
+    specifically. The gallery below borrows from the shared site library, and
+    only the frames marked CONFIRMED are verified as him. Swap the rest the
+    moment he hands over his own set.
+  - One review (Mike G.) is truncated at the source. It is cut here at the
+    last complete sentence rather than guessed at. Full text needed.
+-->
+
+<header class="nav">
+  <div class="nav__in">
+    <a class="nav__brand" href="index.html" aria-label="Vegas Magic Squad, back to the home page">
+      <img src="images/site/logo.png" alt="" width="44" height="55" decoding="async">
+      <span class="nav__brandtx">Vegas<br>Magic Squad</span>
+    </a>
+
+    <nav class="nav__links" id="navlinks" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#gallery">Gallery</a>
+      <a href="index.html#quotes">Testimonials</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="index.html#booking">Contact</a>
+    </nav>
+
+    <a class="btn btn--red nav__cta" href="index.html#booking">Book Now</a>
+
+    <button class="nav__toggle" id="navtoggle" aria-expanded="false" aria-controls="navlinks" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main class="pprofile">
+
+  <!-- ====================== PROFILE HEADER ======================
+       The reference puts a media panel on the left and a fixed summary card
+       on the right: name, rating, location, discipline, travel, price, then
+       the primary action. Same split and same reading order here, in this
+       site's materials — square corners, gold hairlines, --night-2 panel.
+       The rating row is simply absent rather than faked.
+  -->
+  <section class="pphero" aria-labelledby="kent-h">
+    <div class="wrap">
+
+      <p class="ppback"><a href="index.html#about">&larr; Back to the line-up</a></p>
+
+      <div class="pphero__grid">
+
+        <!-- Featured media. A real anchor straight at the clip, upgraded by
+             the lightbox in script.js — with JS off it still plays. -->
+        <div class="pphero__media">
+          <a class="reel pphero__reel" href="video/stage-full-room.mp4" data-video data-title="Kent Axell &mdash; The Full Room" aria-label="Watch Kent Axell perform the full stage show, 1 minute">
+            <!-- CONFIRMED Kent -->
+            <img src="images/site/stage-emcee.jpg" alt="Kent Axell hosting from the stage under blue and green lighting, a guest laughing beside him" width="1600" height="900" fetchpriority="high" decoding="async">
+            <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+            <span class="reel__label">Kent Axell &mdash; The Full Room</span>
+          </a>
+        </div>
+
+        <!-- Summary card -->
+        <div class="pphero__card">
+
+          <div class="pphero__id">
+            <!-- CONFIRMED Kent -->
+            <img class="pphero__thumb" src="images/site/about-kent.jpg" alt="" width="1080" height="1350" decoding="async">
+            <div>
+              <h1 class="pphero__name" id="kent-h">Kent Axell</h1>
+              <p class="pphero__tag">The Mentalist</p>
+            </div>
+          </div>
+
+          <ul class="ppmeta">
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
+              <span>Las Vegas, NV</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c.6-3.8 3.6-6 7.2-6s6.6 2.2 7.2 6"/></svg>
+              <span>Mentalist &middot; Magician</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 16.5h18M5.5 16.5l1.6-5.2A2 2 0 0 1 9 9.8h6a2 2 0 0 1 1.9 1.5l1.6 5.2"/><circle cx="7.2" cy="19" r="1.4"/><circle cx="16.8" cy="19" r="1.4"/></svg>
+              <span>Travels anywhere</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4"/><path d="M12 7.4v9.2M14.6 9.6c-.5-.8-1.5-1.2-2.6-1.2-1.5 0-2.5.7-2.5 1.8 0 2.5 5.2 1.3 5.2 3.9 0 1.2-1.1 1.9-2.7 1.9-1.2 0-2.2-.4-2.7-1.3"/></svg>
+              <span>Contact for pricing</span>
+            </li>
+          </ul>
+
+          <div class="pphero__acts">
+            <a class="btn btn--gold btn--block" href="index.html#booking">Check Kent&rsquo;s Availability</a>
+            <a class="btn btn--ghost btn--block" href="squad.html">See the Full Line-Up</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== OVERVIEW ====================== -->
+  <section class="sec sec--night ppsec" id="overview" aria-labelledby="ov-h">
+    <div class="wrap ppcol">
+
+      <div class="rulepair rulepair--sec" aria-hidden="true"><i></i><i></i></div>
+      <h2 class="pph2" id="ov-h">Overview</h2>
+
+      <p class="pplede">
+        I help people complete their events. I look forward to helping you
+        complete yours.
+      </p>
+
+      <!-- Press lines, exactly as Kent publishes them, expletive still
+           starred out the way his own profile prints it. -->
+      <ul class="pppress">
+        <li>
+          <blockquote>Holy ******* **** Kent. How did you do that?</blockquote>
+          <cite>Werner Herzog</cite>
+        </li>
+        <li>
+          <blockquote>Sophisticated Entertainment</blockquote>
+          <cite>The Sun Journal</cite>
+        </li>
+      </ul>
+
+    </div>
+  </section>
+
+  <!-- ====================== PHOTOS ======================
+       Same .shots grid and the same lightbox the home page gallery uses, so a
+       tap opens full-size with Escape, focus trap and an inert backdrop for
+       free.
+
+       WHY THERE ARE ONLY FOUR, AND NO SECOND VIDEO
+       Every candidate in the shared library was checked frame by frame against
+       Kent. Most of it is other members of the squad and was pulled:
+         video/strolling.mp4 + strolling-0.jpg  — the bowler-hat performer
+         video/parlour-closeup.mp4              — a third performer entirely
+         parlour-closeup.jpg                    — the bowler-hat performer
+         parlour-drawing.jpg                    — a fourth, bearded, in glasses
+         corporate-reception.webp               — not Kent
+       Those are good photographs and they belong on the home page, where the
+       squad is the subject. On a page headed with one man's name they are a
+       claim about who the viewer is looking at.
+
+       What is left is honest: the stage frames, where the performer matches
+       the portrait and the stage clip, and two room shots where the subject is
+       the audience and no performer's face is visible at all.
+
+       Kent's own listing carries 9+ photos and 4 videos OF HIM. Getting that
+       set is the single highest-value thing anyone can do for this page.
+  -->
+  <section class="sec sec--night ppsec ppsec--tight" aria-labelledby="media-h">
+    <div class="wrap">
+
+      <div class="rulepair rulepair--sec" aria-hidden="true"><i></i><i></i></div>
+      <h2 class="pph2" id="media-h">Photos</h2>
+
+      <div class="shots ppshots">
+        <figure class="shot">
+          <a class="shot__link" href="images/site/stage-emcee.jpg" data-image data-title="Kent Axell hosting from the stage">
+            <!-- CONFIRMED Kent -->
+            <img src="images/site/stage-emcee.jpg" alt="Kent Axell hosting from the stage under blue and green lighting, a guest laughing beside him" width="1600" height="900" loading="lazy" decoding="async">
+            <span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8 20 20M11 8.6v4.8M8.6 11h4.8"/></svg></span>
+          </a>
+        </figure>
+        <figure class="shot">
+          <a class="shot__link" href="images/site/stage-prediction.jpg" data-image data-title="A guest on stage holding a prediction card">
+            <img src="images/site/stage-prediction.jpg" alt="A guest on stage holding a prediction card as the performer throws his arm wide" width="1600" height="900" loading="lazy" decoding="async">
+            <span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8 20 20M11 8.6v4.8M8.6 11h4.8"/></svg></span>
+          </a>
+        </figure>
+        <figure class="shot">
+          <a class="shot__link" href="images/site/gallery-theatre-gasp.jpg" data-image data-title="A seated theatre audience mid-show">
+            <img src="images/site/gallery-theatre-gasp.jpg" alt="A seated theatre audience mid-show, one woman with her hand clapped over her mouth and others laughing around her" width="1600" height="900" loading="lazy" decoding="async">
+            <span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8 20 20M11 8.6v4.8M8.6 11h4.8"/></svg></span>
+          </a>
+        </figure>
+        <figure class="shot">
+          <a class="shot__link" href="images/site/room-ovation.jpg" data-image data-title="A standing ovation at a company dinner">
+            <img src="images/site/room-ovation.jpg" alt="An audience standing and applauding around banquet tables at a company holiday dinner" width="1600" height="900" loading="lazy" decoding="async">
+            <span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8 20 20M11 8.6v4.8M8.6 11h4.8"/></svg></span>
+          </a>
+        </figure>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====================== REVIEWS ======================
+       Kent's reviews, with the names and dates as written. The reference's
+       "Verified" chip is dropped along with the rest of that platform's
+       furniture: on this domain a verification badge would be this site
+       claiming to have verified them, which it has not.
+  -->
+  <section class="sec sec--night ppsec" aria-labelledby="rev-h">
+    <div class="wrap">
+
+      <div class="rulepair rulepair--sec" aria-hidden="true"><i></i><i></i></div>
+      <h2 class="pph2" id="rev-h">Reviews</h2>
+      <p class="ppsub">See what event planners are saying about their unforgettable experiences.</p>
+
+      <ul class="pprev">
+
+        <li class="pprev__card">
+          <div class="pprev__top">
+            <span class="pprev__av" aria-hidden="true">A</span>
+            <span class="pprev__who">
+              <b>Amy K.</b>
+              <time datetime="2025-09-08">September 8, 2025</time>
+            </span>
+          </div>
+          <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <span class="sr-only">Rated 5 out of 5</span>
+          <h3 class="pprev__title">Kent was excellent!</h3>
+          <p class="pprev__body">We will request him again the next Vegas event!</p>
+        </li>
+
+        <li class="pprev__card">
+          <div class="pprev__top">
+            <span class="pprev__av" aria-hidden="true">M</span>
+            <span class="pprev__who">
+              <b>Mike G.</b>
+              <time datetime="2022-11-18">November 18, 2022</time>
+            </span>
+          </div>
+          <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <span class="sr-only">Rated 5 out of 5</span>
+          <h3 class="pprev__title">High Energy. Great Fun. Mind-Blowing Talent.</h3>
+          <!-- Truncated at the source. Cut at the last complete sentence
+               rather than guessed at — the original continues "and was
+               focused on making…". Get the full text from Kent. -->
+          <p class="pprev__body">Kent brought fun energy and mind-blowing tricks to our party of 50. Even the skeptics were amazed and entertained by his ability. Kent was accommodating and flexible with our last-minute schedule change.</p>
+        </li>
+
+        <li class="pprev__card">
+          <div class="pprev__top">
+            <span class="pprev__av" aria-hidden="true">A</span>
+            <span class="pprev__who">
+              <b>Ashley H.</b>
+              <time datetime="2022-11-14">November 14, 2022</time>
+            </span>
+          </div>
+          <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <span class="sr-only">Rated 5 out of 5</span>
+          <h3 class="pprev__title">Extraordinary experience!</h3>
+          <p class="pprev__body">Kent was amazing to work with. Accommodating and Responsive! We are all still in awe of the experience we had! Thank you Kent! I look forward to working with you again very soon!</p>
+        </li>
+
+        <li class="pprev__card">
+          <div class="pprev__top">
+            <span class="pprev__av" aria-hidden="true">R</span>
+            <span class="pprev__who">
+              <b>Rich B.</b>
+              <time datetime="2022-06-01">June 1, 2022</time>
+            </span>
+          </div>
+          <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <span class="sr-only">Rated 5 out of 5</span>
+          <h3 class="pprev__title">My wife&rsquo;s birthday bash</h3>
+          <p class="pprev__body">Kent was fantastic, everyone at our party was awestruck with his performance! I strongly recommend him to anyone and everyone looking for a truly amazing magical and mystical experience.</p>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+  <!-- ====================== BOOKING INFORMATION ====================== -->
+  <section class="sec sec--night ppsec" aria-labelledby="book-h">
+    <div class="wrap">
+
+      <div class="rulepair rulepair--sec" aria-hidden="true"><i></i><i></i></div>
+      <h2 class="pph2" id="book-h">Booking information</h2>
+
+      <h3 class="pph3">At a glance</h3>
+      <dl class="ppglance">
+        <div>
+          <dt>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12"/><path d="M3 10h18"/></svg>
+            Price range
+          </dt>
+          <dd>Contact for pricing</dd>
+        </div>
+        <div>
+          <dt>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4"/><path d="M3.6 12h16.8M12 3.6c2.2 2.3 3.4 5.3 3.4 8.4s-1.2 6.1-3.4 8.4c-2.2-2.3-3.4-5.3-3.4-8.4S9.8 5.9 12 3.6Z"/></svg>
+            Languages
+          </dt>
+          <dd>English</dd>
+        </div>
+        <div>
+          <dt>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4"/><path d="M12 7.2V12l3.2 2"/></svg>
+            Gig length
+          </dt>
+          <dd>10 &ndash; 1000 minutes</dd>
+        </div>
+      </dl>
+
+      <h3 class="pph3 pph3--spaced">What to expect</h3>
+      <div class="ppbody">
+        <p>
+          When you hire Kent Axell, you&rsquo;re ensuring that your event is one
+          to remember. Minds will be blown as Kent performs astonishing feats of
+          mind reading, influence, and magic.
+        </p>
+        <p>
+          Kent is a magician and mentalist working out of Las Vegas. When you
+          hire Kent, you&rsquo;ll see that he&rsquo;s truly the life of the party
+          &mdash; his unique blend of magic technique, psychology, misdirection,
+          showmanship and influence leaves your guests absolutely mesmerized and
+          wanting more.
+        </p>
+      </div>
+
+      <h3 class="pph3 pph3--spaced">Additional booking notes</h3>
+      <div class="ppbody">
+        <p>
+          Kent has performed in broadway style theaters, or private living rooms.
+          The need determines the show.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====================== ABOUT ======================
+       First person, as Kent writes it. That is the honest frame: every
+       superlative below is visibly his own claim about his own career,
+       not this site asserting it on his behalf.
+  -->
+  <section class="sec sec--night ppsec" aria-labelledby="about-h">
+    <div class="wrap ppcol">
+
+      <div class="rulepair rulepair--sec" aria-hidden="true"><i></i><i></i></div>
+      <h2 class="pph2" id="about-h">About Kent</h2>
+
+      <div class="ppbody">
+        <p>
+          My name is Kent Axell. Search me out on YouTube to see some of my work,
+          and watch the hello video I&rsquo;ve put together.
+        </p>
+        <p>
+          My work has been featured from off-Broadway stages to national
+          television. You may have seen some of it on the Emmy Award-winning
+          National Geographic program <em>Brain Games</em>, or featured on New
+          York One, or Fox5.
+        </p>
+        <p>
+          I&rsquo;ve put on over 200 shows for celebrities and the public in a
+          single year, including my own recurring mentalism and magic show
+          <em>Determined</em> &mdash; an experience in mind reading never to be
+          forgotten &mdash; which plays frequently throughout the year in
+          Manhattan theaters.
+        </p>
+        <p>
+          I also direct and perform in the highest rated dinner and magic show in
+          New York City, <em>A Taste of Magic</em>.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====================== SERVICES OFFERED ====================== -->
+  <section class="sec sec--night ppsec ppsec--tight" aria-labelledby="serv-h">
+    <div class="wrap">
+
+      <div class="rulepair rulepair--sec" aria-hidden="true"><i></i><i></i></div>
+      <h2 class="pph2" id="serv-h">Services offered</h2>
+
+      <ul class="ppchips">
+        <li>Mentalist</li>
+        <li>Hypnotist</li>
+        <li>Illusionist</li>
+        <li>Magician</li>
+        <li>Motivational Speaker</li>
+        <li>Circus Entertainment</li>
+        <li>Industry Expert</li>
+        <li>Arts/Entertainment Speaker</li>
+        <li>Psychic Entertainment</li>
+        <li>Comedy Magician</li>
+        <li>Trade Show Magician</li>
+        <li>Sideshow</li>
+        <li>Strolling/Close-up Magician</li>
+        <li>Corporate Magician</li>
+      </ul>
+
+    </div>
+  </section>
+
+  <!-- ====================== CLOSING CALL ====================== -->
+  <section class="sec sec--night finalcall ppfinal" aria-labelledby="fin-h">
+    <div class="wrap finalcall__in">
+      <h2 class="h2 h2--gold" id="fin-h">Thinking about a date?</h2>
+      <p class="finalcall__sub">
+        Tell us what you&rsquo;re planning and we&rsquo;ll tell you straight away
+        whether Kent is free &mdash; and what the evening could look like.
+      </p>
+      <p class="finalcall__cta">
+        <a class="btn btn--red btn--lg" href="index.html#booking">Check Availability</a>
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="bulbs bulbs--strip" data-edge="strip" aria-hidden="true"></div>
+  <div class="wrap foot__grid">
+    <div class="foot__brand">
+      <img src="images/site/logo.png" alt="Vegas Magic Squad" width="140" height="174" loading="lazy" decoding="async">
+      <p>Magicians for corporate events and private parties. Las Vegas, Nevada.</p>
+    </div>
+
+    <nav class="foot__nav" aria-label="Footer">
+      <a href="index.html#about">The line-up</a>
+      <a href="index.html#services">What we do</a>
+      <a href="index.html#booking">Check Availability</a>
+    </nav>
+  </div>
+
+  <div class="wrap foot__legal">
+    <p>&copy; <span id="yr">2026</span> Vegas Magic Squad. All rights reserved.</p>
+    <p class="foot__legalnav">
+      <a href="privacy.html">Privacy policy</a>
+      <a href="terms.html">Terms &amp; conditions</a>
+    </p>
+  </div>
+</footer>
+
+<!-- The shared media viewer. Same ids script.js looks for, so the reels and
+     the gallery tiles above are upgraded with no page-specific code. -->
+<dialog class="lb" id="player" aria-label="Media viewer">
+  <div class="lb__in">
+    <p class="lb__title" id="lb-title"></p>
+    <video class="lb__vid" id="lb-video" controls playsinline preload="none" hidden></video>
+    <img class="lb__img" id="lb-image" alt="" hidden>
+    <button class="lb__x" type="button" id="lb-close" aria-label="Close">&times;</button>
+  </div>
+</dialog>
+
+<script defer src="/_vercel/insights/script.js"></script>
+<script src="script.js" defer></script>
+</body>
+</html>

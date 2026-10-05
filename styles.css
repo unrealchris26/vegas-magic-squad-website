@@ -1650,3 +1650,333 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
      line sits closest to the faces. */
   .bill__lede{letter-spacing:.05em}
 }
+
+
+/* ==========================================================================
+   Performer profile page  (kent-axell.html)
+   --------------------------------------------------------------------------
+   Structure follows the booking-directory profile the client supplied as a
+   reference: a media panel beside a fixed summary card, then overview, media,
+   reviews, booking information, bio and a service list, in that order.
+
+   None of its materials come across. No rounded cards, no purple, no badge
+   chips, no drop shadows under everything. The page is built from what this
+   site already owns: --night ground, --night-2 panels, 1px gold hairlines,
+   Josefin uppercase heads, Montserrat body, square corners throughout.
+
+   The reference's rating block, "verified bookings" counter and FEATURED flag
+   have no rules here because they have no markup - see the note at the top of
+   kent-axell.html. If a real rating is ever collected first-party, it belongs
+   between .pphero__tag and .ppmeta and nothing else has to move.
+   ========================================================================== */
+
+/* Clears the fixed header, same as .squadpage and .legalpage. */
+.pprofile{padding-top:calc(72px + env(safe-area-inset-top,0px))}
+
+.ppback{margin:0 0 clamp(18px,2.2vw,26px)}
+.ppback a{
+  font-family:var(--text); font-size:11.5px; font-weight:700;
+  letter-spacing:.17em; text-transform:uppercase;
+  color:var(--night-tx2); text-decoration:none;
+  border-bottom:1px solid transparent; padding-bottom:2px;
+  transition:color .25s var(--ease), border-color .25s var(--ease);
+}
+.ppback a:hover{color:var(--gold-hi); border-bottom-color:var(--gold)}
+
+/* --------------------------------------------------------------------------
+   Profile header
+   The reference runs media ~60 / card ~40. Kept, because the card has to stay
+   narrow enough that the meta rows read as a scannable list rather than as
+   sentences stretched across a column.
+   -------------------------------------------------------------------------- */
+.pphero{
+  background:var(--night); color:var(--night-tx);
+  padding-block:clamp(26px,3.4vw,44px) clamp(44px,6vw,78px);
+}
+.pphero__grid{
+  display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);
+  gap:clamp(20px,2.8vw,38px);
+  align-items:start;
+}
+
+/* The featured clip. .reel carries the frame, hairline, play button and
+   label already; only the crop changes - this is the page's lead image, not
+   a thumbnail in a strip. */
+.pphero__media{min-width:0}
+.pphero__reel img{aspect-ratio:16/9; filter:brightness(.72) saturate(.9)}
+.pphero__reel .reel__label{left:12px; top:11px; font-size:10.5px}
+
+.pphero__card{
+  background:var(--night-2);
+  border:1px solid rgba(200,168,80,.26);
+  padding:clamp(20px,2.2vw,28px);
+  display:flex; flex-direction:column; gap:clamp(16px,1.8vw,22px);
+}
+
+.pphero__id{display:grid; grid-template-columns:auto minmax(0,1fr); gap:15px; align-items:center}
+/* Square-cornered, but 4:5 rather than square — the reference's circular
+   avatar is the one borrowed shape that would have looked imported, and a
+   square crop of a 4:5 poster throws away a fifth of it. These portraits are
+   artwork with the performer's name set into them, and the standing rule on
+   this project is that they are not cropped. 4:5 is the source ratio, so
+   object-fit has nothing to remove. */
+.pphero__thumb{
+  width:62px; height:78px; object-fit:cover;
+  border:1px solid rgba(200,168,80,.42);
+}
+.pphero__name{
+  margin:0;
+  font-family:var(--disp); font-weight:700; text-transform:uppercase;
+  font-size:clamp(26px,3.1vw,38px); line-height:1.02; letter-spacing:.008em;
+  color:var(--gold-hi);
+}
+.pphero__tag{
+  margin:7px 0 0;
+  font-family:var(--text); font-size:10.5px; font-weight:800;
+  letter-spacing:.22em; text-transform:uppercase; color:var(--gold);
+}
+
+/* Same icon-row grammar as the line-up cards on the home page, so the two
+   read as one family. */
+.ppmeta{
+  list-style:none; margin:0; padding:clamp(15px,1.7vw,19px) 0 0; width:100%;
+  border-top:1px solid rgba(200,168,80,.18);
+  display:flex; flex-direction:column; gap:11px;
+}
+.ppmeta li{
+  display:grid; grid-template-columns:18px 1fr; gap:11px; align-items:center;
+  font-size:14px; line-height:1.45; color:var(--night-tx2);
+}
+.ppmeta svg{
+  width:16px; height:16px; fill:none;
+  stroke:var(--gold); stroke-width:1.5;
+  stroke-linecap:round; stroke-linejoin:round;
+}
+
+.pphero__acts{
+  display:flex; flex-direction:column; gap:10px;
+  padding-top:clamp(15px,1.7vw,19px);
+  border-top:1px solid rgba(200,168,80,.18);
+}
+
+/* --------------------------------------------------------------------------
+   Section rhythm
+   The page has seven sections. .sec's clamp(64px,9vw,140px) is tuned for the
+   home page's four big ones and would make this scroll forever, so the
+   profile sections run tighter and lean on the gold rule to separate them.
+   -------------------------------------------------------------------------- */
+.ppsec{padding-block:clamp(40px,5vw,66px)}
+.ppsec--tight{padding-block:clamp(32px,4vw,52px)}
+.ppsec .rulepair--sec{margin-bottom:clamp(18px,2.2vw,26px)}
+
+/* Long-form sections get a measure. 68ch is the legal pages' figure and it is
+   right for the same reason: this is reading, not scanning. */
+.ppcol .ppbody,
+.ppcol .pplede,
+.ppcol .pppress{max-width:68ch}
+
+.pph2{
+  font-family:var(--disp); font-weight:700; text-transform:uppercase;
+  font-size:clamp(21px,2.5vw,32px); line-height:1.04; letter-spacing:.012em;
+  color:var(--gold-hi); margin:0 0 clamp(16px,1.9vw,24px);
+}
+.pph3{
+  font-family:var(--disp); font-weight:700; text-transform:uppercase;
+  font-size:clamp(15px,1.5vw,19px); line-height:1.1; letter-spacing:.05em;
+  color:var(--night-tx); margin:0 0 clamp(14px,1.6vw,18px);
+}
+.pph3--spaced{margin-top:clamp(30px,3.6vw,44px)}
+.ppsub{
+  margin:-6px 0 clamp(22px,2.6vw,32px);
+  font-size:14.5px; line-height:1.6; color:var(--night-tx2); max-width:52ch;
+}
+
+.pplede{
+  margin:0 0 clamp(24px,3vw,36px);
+  font-family:var(--disp); font-weight:300;
+  font-size:clamp(18px,2.1vw,26px); line-height:1.34; letter-spacing:.004em;
+  color:var(--night-tx); text-wrap:balance;
+}
+
+.ppbody p{color:var(--night-tx2); font-size:15.5px; line-height:1.72; margin:0}
+.ppbody p + p{margin-top:1em}
+.ppbody em{color:var(--night-tx); font-style:italic}
+
+/* --------------------------------------------------------------------------
+   Press lines
+   Set as a bordered stack rather than as cards: there are only two, and two
+   cards in a row reads as a grid that lost its third item.
+   -------------------------------------------------------------------------- */
+.pppress{list-style:none; margin:0; padding:0; display:grid; gap:clamp(14px,1.7vw,20px)}
+.pppress li{border-left:2px solid var(--gold-deep); padding:2px 0 2px clamp(16px,1.8vw,22px)}
+.pppress blockquote{
+  margin:0;
+  font-family:var(--disp); font-weight:400; font-style:italic;
+  font-size:clamp(16px,1.7vw,21px); line-height:1.4; color:var(--night-tx);
+}
+.pppress cite{
+  display:block; margin-top:8px; font-style:normal;
+  font-family:var(--text); font-size:10.5px; font-weight:800;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
+}
+
+/* --------------------------------------------------------------------------
+   Photos
+   Two-up, not the home page gallery's three. There are four frames here that
+   are genuinely Kent's, and four tiles across a three-column grid leave one
+   hanging alone on a second row — which reads as a photo that failed to load
+   rather than as the end of the set. Two columns also runs them larger, which
+   a set this small can afford.
+   -------------------------------------------------------------------------- */
+.ppshots{margin:0; grid-template-columns:repeat(2,1fr)}
+
+/* --------------------------------------------------------------------------
+   Reviews
+   Two-up rather than the reference's masonry. These four run from one line to
+   four, and a masonry of four unequal cards leaves a ragged hole that reads as
+   a layout bug. Equal-height cards in a grid simply do not have that problem.
+   -------------------------------------------------------------------------- */
+.pprev{
+  list-style:none; margin:0; padding:0;
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:clamp(12px,1.6vw,18px);
+}
+.pprev__card{
+  background:linear-gradient(160deg,var(--night-2),#0a0e15);
+  border:1px solid rgba(200,168,80,.22);
+  padding:clamp(18px,2vw,24px);
+  display:flex; flex-direction:column; align-items:flex-start; gap:11px;
+  transition:border-color .35s var(--ease), transform .35s var(--ease);
+}
+.pprev__card:hover{border-color:var(--gold-deep); transform:translateY(-3px)}
+
+.pprev__top{display:grid; grid-template-columns:auto minmax(0,1fr); gap:12px; align-items:center; width:100%}
+/* Monogram, the same device as the testimonial rail on the home page. A real
+   photograph would be better and there are none, and a stock face standing in
+   for a named reviewer is a lie with a picture on it. */
+.pprev__av{
+  width:38px; height:38px; display:grid; place-items:center;
+  background:rgba(200,168,80,.13);
+  border:1px solid rgba(200,168,80,.34);
+  font-family:var(--disp); font-weight:700; font-size:16px;
+  letter-spacing:.02em; color:var(--gold-hi);
+}
+.pprev__who{display:flex; flex-direction:column; gap:2px; min-width:0}
+.pprev__who b{
+  font-family:var(--text); font-size:14px; font-weight:700;
+  letter-spacing:.01em; color:var(--night-tx);
+}
+.pprev__who time{font-size:12px; letter-spacing:.04em; color:var(--night-tx2)}
+
+.pprev__title{
+  margin:0;
+  font-family:var(--text); font-size:14.5px; font-weight:700;
+  line-height:1.4; color:var(--gold-hi);
+}
+.pprev__body{margin:0; font-size:14.5px; line-height:1.75; color:var(--night-tx2)}
+
+/* --------------------------------------------------------------------------
+   At a glance
+   -------------------------------------------------------------------------- */
+.ppglance{
+  margin:0; display:grid; grid-template-columns:repeat(3,1fr);
+  gap:clamp(12px,1.6vw,20px);
+}
+.ppglance > div{
+  border:1px solid rgba(200,168,80,.2);
+  background:var(--night-2);
+  padding:clamp(15px,1.7vw,20px);
+}
+.ppglance dt{
+  display:flex; align-items:center; gap:9px;
+  font-family:var(--text); font-size:10.5px; font-weight:800;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
+  margin-bottom:9px;
+}
+.ppglance dt svg{
+  width:15px; height:15px; flex:0 0 auto; fill:none;
+  stroke:var(--gold); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;
+}
+.ppglance dd{margin:0; font-size:15px; line-height:1.5; color:var(--night-tx)}
+
+/* --------------------------------------------------------------------------
+   Services offered
+   The reference's pill cloud, squared off. These are categories, not links -
+   nothing to click, so nothing is dressed as a button.
+   -------------------------------------------------------------------------- */
+.ppchips{
+  list-style:none; margin:0; padding:0;
+  display:flex; flex-wrap:wrap; gap:9px;
+}
+.ppchips li{
+  border:1px solid rgba(200,168,80,.28);
+  background:rgba(200,168,80,.05);
+  padding:9px 15px;
+  font-family:var(--text); font-size:12px; font-weight:600;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--night-tx2);
+}
+
+/* The closing call is borrowed from the home page, where .h2 at up to 4.4rem
+   is the largest thing in a section of its own. Here it follows six headings
+   capped at 32px, and at full size it stops reading as the end of the page and
+   starts reading as a different page. Brought down to sit a step above .pph2. */
+.ppfinal{padding-block:clamp(46px,6vw,82px)}
+.ppfinal .h2{
+  font-size:clamp(26px,3.4vw,44px);
+  max-width:16ch; margin-bottom:.44em;
+}
+
+/* --------------------------------------------------------------------------
+   Narrow
+   -------------------------------------------------------------------------- */
+@media (max-width:980px){
+  /* The summary card stops being a sidebar and becomes the block under the
+     video. Order is explicit so the card follows its media rather than
+     depending on source order surviving a future edit. */
+  .pphero__grid{grid-template-columns:1fr}
+  .pphero__media{order:1}
+  .pphero__card{order:2}
+}
+
+@media (max-width:760px){
+  .pprev{grid-template-columns:1fr}
+  .ppglance{grid-template-columns:1fr}
+}
+
+@media (max-width:420px){
+  .pphero__thumb{width:56px; height:56px}
+  .ppchips li{padding:8px 12px; font-size:11px; letter-spacing:.07em}
+}
+
+
+/* --------------------------------------------------------------------------
+   Line-up card: the links through to a performer profile
+   Only Kent has a page so far. These rules are written for all three, so
+   adding the markup to the other two cards is the whole job later.
+   -------------------------------------------------------------------------- */
+.pcard__figlink{display:block}
+.pcard__link{
+  display:inline-flex; align-items:center; gap:.4em;
+  color:inherit; text-decoration:none;
+  border-bottom:1px solid transparent; padding-bottom:1px;
+  transition:color .25s var(--ease), border-color .25s var(--ease);
+}
+.pcard__link svg{
+  width:.62em; height:.62em; flex:0 0 auto; fill:none;
+  stroke:currentColor; stroke-width:2.2;
+  stroke-linecap:round; stroke-linejoin:round;
+  /* nudged down: the arrow centres on the glyph box, which sits high against
+     an all-caps display face with no descenders in it */
+  translate:0 .06em;
+  opacity:.55;
+  transition:translate .3s var(--ease), opacity .3s var(--ease);
+}
+.pcard__link:hover{color:var(--gold); border-bottom-color:var(--gold-deep)}
+.pcard__link:hover svg{translate:.18em .06em; opacity:1}
+.pcard__link:focus-visible{outline:2px solid var(--gold); outline-offset:3px; border-bottom-color:transparent}
+/* the whole card lifts when either link is hovered, not just the one tile */
+.pcard:has(.pcard__link:hover) .pcard__fig img,
+.pcard:has(.pcard__figlink:hover) .pcard__fig img{transform:scale(1.05); filter:saturate(1) brightness(1)}
+
+/* squad.html: the button through to the full profile */
+.profile__more{margin-top:clamp(18px,2.2vw,26px)}
