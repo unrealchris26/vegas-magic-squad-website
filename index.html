@@ -637,28 +637,69 @@
 
     <ul class="lineup">
 
-      <li class="member">
-        <figure class="member__fig">
+      <!--
+        Card anatomy follows the reference layout: portrait, a tag over it,
+        name, a scannable icon list, a line of detail, then a per-card CTA.
+
+        What the reference also carries and this does NOT: star ratings, review
+        counts, "verified bookings" figures and "starts at $" prices. None of
+        those exist for this business, and inventing them is the same mistake
+        as the borrowed client logos. Every row below is either true or absent.
+        "Contact for pricing" is in the reference too, and here it happens to
+        be the honest answer - no price list is published.
+
+        When real reviews and a rating exist, they slot straight in under the
+        name without the card needing to change shape.
+      -->
+      <li class="pcard">
+        <figure class="pcard__fig">
           <img src="images/site/about-brandon.jpg" alt="Brandon Williams, The Card Shark, fanning a deck of cards" width="1080" height="1350" loading="lazy" decoding="async">
+          <span class="pcard__tag">The Card Shark</span>
         </figure>
-        <h3 class="member__name">Brandon Williams</h3>
-        <p class="member__bill">The Card Shark</p>
+        <div class="pcard__body">
+          <h3 class="pcard__name">Brandon Williams</h3>
+          <ul class="pcard__meta">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg><span>Las Vegas, NV</span></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c.6-3.8 3.6-6 7.2-6s6.6 2.2 7.2 6"/></svg><span>Close-up &amp; sleight of hand</span></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4"/><path d="M12 7.4v9.2M14.6 9.6c-.5-.8-1.5-1.2-2.6-1.2-1.5 0-2.5.7-2.5 1.8 0 2.5 5.2 1.3 5.2 3.9 0 1.2-1.1 1.9-2.7 1.9-1.2 0-2.2-.4-2.7-1.3"/></svg><span>Contact for pricing</span></li>
+          </ul>
+          <p class="pcard__note">Cards at arm&rsquo;s length, close enough that there is nowhere for a move to hide.</p>
+          <a class="btn btn--gold btn--sm pcard__cta" href="#booking">Book a Quick Call</a>
+        </div>
       </li>
 
-      <li class="member">
-        <figure class="member__fig">
+      <li class="pcard">
+        <figure class="pcard__fig">
           <img src="images/site/about-kent.jpg" alt="Kent Axell, The Mentalist, mid-performance" width="1080" height="1350" loading="lazy" decoding="async">
+          <span class="pcard__tag">The Mentalist</span>
         </figure>
-        <h3 class="member__name">Kent Axell</h3>
-        <p class="member__bill">The Mentalist</p>
+        <div class="pcard__body">
+          <h3 class="pcard__name">Kent Axell</h3>
+          <ul class="pcard__meta">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg><span>Las Vegas, NV</span></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c.6-3.8 3.6-6 7.2-6s6.6 2.2 7.2 6"/></svg><span>Mentalism, stage &amp; hosting</span></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4"/><path d="M12 7.4v9.2M14.6 9.6c-.5-.8-1.5-1.2-2.6-1.2-1.5 0-2.5.7-2.5 1.8 0 2.5 5.2 1.3 5.2 3.9 0 1.2-1.1 1.9-2.7 1.9-1.2 0-2.2-.4-2.7-1.3"/></svg><span>Contact for pricing</span></li>
+          </ul>
+          <p class="pcard__note">Mind-reading that runs on attention rather than props &mdash; your guests write half of it.</p>
+          <a class="btn btn--gold btn--sm pcard__cta" href="#booking">Book a Quick Call</a>
+        </div>
       </li>
 
-      <li class="member">
-        <figure class="member__fig">
+      <li class="pcard">
+        <figure class="pcard__fig">
           <img src="images/site/about-dream.jpg" alt="Dream Upright, The Magician, mid-performance" width="1080" height="1350" loading="lazy" decoding="async">
+          <span class="pcard__tag">The Magician</span>
         </figure>
-        <h3 class="member__name">Dream Upright</h3>
-        <p class="member__bill">The Magician</p>
+        <div class="pcard__body">
+          <h3 class="pcard__name">Dream Upright</h3>
+          <ul class="pcard__meta">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg><span>Las Vegas, NV</span></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c.6-3.8 3.6-6 7.2-6s6.6 2.2 7.2 6"/></svg><span>Classical magic &amp; illusion</span></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4"/><path d="M12 7.4v9.2M14.6 9.6c-.5-.8-1.5-1.2-2.6-1.2-1.5 0-2.5.7-2.5 1.8 0 2.5 5.2 1.3 5.2 3.9 0 1.2-1.1 1.9-2.7 1.9-1.2 0-2.2-.4-2.7-1.3"/></svg><span>Contact for pricing</span></li>
+          </ul>
+          <p class="pcard__note">Linking rings, silks and ropes, performed near enough to be inspected.</p>
+          <a class="btn btn--gold btn--sm pcard__cta" href="#booking">Book a Quick Call</a>
+        </div>
       </li>
 
     </ul>

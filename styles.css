@@ -1121,26 +1121,75 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   gap:clamp(12px,2.6vw,34px);
   align-items:start;
 }
-.member{display:flex; flex-direction:column; gap:14px; text-align:center}
-.member__fig{margin:0}
-/* Whole frame, nothing cropped and nothing faded: no object-fit, no mask. */
-.member__fig img{
-  display:block; width:100%; height:auto;
-  box-shadow:0 22px 40px rgba(0,0,0,.55);
+/* --------------------------------------------------------------------------
+   Performer cards
+   The anatomy of the reference layout - portrait, tag, name, scannable icon
+   rows, a line of detail, a CTA per card - rebuilt on this site's materials:
+   square corners, a gold hairline, the night panel fill. No rounded cards, no
+   wave divider, no borrowed palette.
+   -------------------------------------------------------------------------- */
+.pcard{
+  display:flex; flex-direction:column;
+  background:var(--night-2);
+  border:1px solid rgba(200,168,80,.22);
+  border-radius:0;
+  overflow:hidden;
+  transition:border-color .35s var(--ease), transform .35s var(--ease);
 }
-.member__name{
+.pcard:hover{border-color:var(--gold-deep); transform:translateY(-3px)}
+
+.pcard__fig{margin:0; position:relative; overflow:hidden}
+.pcard__fig img{
+  display:block; width:100%; height:auto; aspect-ratio:4/5;
+  object-fit:cover; object-position:50% 22%;
+  filter:saturate(.92) brightness(.92);
+  transition:transform .8s var(--ease), filter .5s var(--ease);
+}
+.pcard:hover .pcard__fig img{transform:scale(1.05); filter:saturate(1) brightness(1)}
+
+/* The reference's FEATURED ribbon, carrying something true instead: which of
+   the three disciplines this performer is. */
+.pcard__tag{
+  position:absolute; top:12px; left:12px;
+  padding:5px 10px;
+  background:var(--gold); color:var(--gold-ink);
+  font-family:var(--text); font-size:9.5px; font-weight:800;
+  letter-spacing:.16em; text-transform:uppercase;
+}
+
+.pcard__body{
+  display:flex; flex-direction:column; align-items:flex-start;
+  gap:12px; padding:18px 18px 20px;
+}
+.pcard__name{
   margin:0;
   font-family:var(--disp); font-weight:700;
-  font-size:clamp(15px,1.9vw,23px); letter-spacing:0; line-height:1.15;
+  font-size:clamp(19px,2.1vw,24px); letter-spacing:0; line-height:1.14;
   color:var(--gold-hi);
 }
-.member__bill{
-  margin:0;
-  font-family:var(--disp);
-  font-size:clamp(9.5px,1.05vw,13px);
-  font-weight:500; text-transform:uppercase; letter-spacing:.16em;
-  color:var(--night-tx2);
+
+/* Icon rows, the part that makes the card scannable. The gold hairline above
+   mirrors the reference's divider without importing its wave. */
+.pcard__meta{
+  list-style:none; margin:0; padding:12px 0 0; width:100%;
+  border-top:1px solid rgba(200,168,80,.18);
+  display:flex; flex-direction:column; gap:8px;
 }
+.pcard__meta li{
+  display:grid; grid-template-columns:18px 1fr; gap:10px; align-items:center;
+  font-size:13.5px; line-height:1.45; color:var(--night-tx2);
+}
+.pcard__meta svg{
+  width:15px; height:15px; fill:none;
+  stroke:var(--gold); stroke-width:1.5;
+  stroke-linecap:round; stroke-linejoin:round;
+}
+.pcard__note{
+  margin:0; padding-top:12px; width:100%;
+  border-top:1px solid rgba(200,168,80,.18);
+  font-size:13.5px; line-height:1.6; color:var(--night-tx);
+}
+.pcard__cta{margin-top:2px}
 .lineup__cta{margin:clamp(34px,4.6vw,56px) 0 0; text-align:center}
 
 /* his typographic system: light word-groups, <strong> carries the punch */
@@ -1203,13 +1252,11 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
     gap:clamp(14px,4vw,22px);
     align-items:start;
   }
-  .member{flex:0 0 min(70vw,300px); gap:12px}
-  /* The portrait carries the card now, so the type under it grows with it
-     rather than staying at the size it needed when three were crammed in. */
-  .member__name{font-size:21px}
-  .member__bill{font-size:11px; letter-spacing:.18em}
+  /* Wider than the old portrait-only card: these now carry three meta rows,
+     a line of copy and a button, and 70vw squeezed all of it. */
+  .pcard{flex:0 0 min(82vw,330px)}
   /* otherwise a mouse drag starting on a portrait becomes a native image drag */
-  .member__fig img{-webkit-user-drag:none}
+  .pcard__fig img{-webkit-user-drag:none}
 }
 
 
