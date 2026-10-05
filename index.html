@@ -669,18 +669,21 @@
       </li>
 
       <!--
-        Kent is the one performer with a full profile page so far. The portrait
-        and the name both open it; the portrait link is hidden from assistive
-        tech and from the tab order on purpose, because it goes to the same
-        place as the name directly beneath it and a second stop there is noise,
-        not access. Give Brandon and Dream the same two links when their pages
-        exist — nothing else on the card has to change.
+        Kent is the one performer with a full profile page so far.
+
+        ONE link, not two. It is the name, and .pcard--link stretches its hit
+        area over the whole card (styles.css, .pcard__link::after). An earlier
+        pass wrapped the portrait in a second anchor to the same page; on a
+        phone that gave two targets for one destination and still left most of
+        the card dead, which is the opposite of what a card wants. The CTA
+        below is lifted back above the overlay so it keeps its own tap.
+
+        Give Brandon and Dream the same treatment when their pages exist: add
+        .pcard--link to the li and wrap the name. Nothing else changes.
       -->
-      <li class="pcard">
+      <li class="pcard pcard--link">
         <figure class="pcard__fig">
-          <a class="pcard__figlink" href="kent-axell.html" tabindex="-1" aria-hidden="true">
-            <img src="images/site/about-kent.jpg" alt="Kent Axell, The Mentalist, mid-performance" width="1080" height="1350" loading="lazy" decoding="async">
-          </a>
+          <img src="images/site/about-kent.jpg" alt="Kent Axell, The Mentalist, mid-performance" width="1080" height="1350" loading="lazy" decoding="async">
           <span class="pcard__tag">The Mentalist</span>
         </figure>
         <div class="pcard__body">

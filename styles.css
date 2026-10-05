@@ -1950,17 +1950,33 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 
 
 /* --------------------------------------------------------------------------
-   Line-up card: the links through to a performer profile
+   Line-up card: the link through to a performer profile
    Only Kent has a page so far. These rules are written for all three, so
-   adding the markup to the other two cards is the whole job later.
+   adding .pcard--link and wrapping the name is the whole job later.
+
+   THE HIT AREA IS THE WHOLE CARD, and on a phone that is the entire point.
+   The name alone is about 112x24px — under half the 44px minimum in both
+   axes — and it sits in a rail that is drifting leftward under the finger.
+   A small moving target is a target most people miss, and missing it reads
+   as "the card isn't clickable", because nothing happens.
+
+   Done with a stretched ::after rather than by wrapping the card in an <a>:
+   the card already contains the booking CTA, and an anchor cannot contain
+   another anchor. The overlay covers everything, then .pcard__cta is lifted
+   back above it so it keeps its own tap.
    -------------------------------------------------------------------------- */
-.pcard__figlink{display:block}
+.pcard--link{position:relative; cursor:pointer}
 .pcard__link{
   display:inline-flex; align-items:center; gap:.4em;
   color:inherit; text-decoration:none;
   border-bottom:1px solid transparent; padding-bottom:1px;
   transition:color .25s var(--ease), border-color .25s var(--ease);
 }
+.pcard__link::after{
+  content:""; position:absolute; inset:0; z-index:1;
+}
+/* Above the overlay, so the booking CTA is still its own button. */
+.pcard__cta{position:relative; z-index:2}
 .pcard__link svg{
   width:.62em; height:.62em; flex:0 0 auto; fill:none;
   stroke:currentColor; stroke-width:2.2;
@@ -1971,12 +1987,16 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   opacity:.55;
   transition:translate .3s var(--ease), opacity .3s var(--ease);
 }
-.pcard__link:hover{color:var(--gold); border-bottom-color:var(--gold-deep)}
-.pcard__link:hover svg{translate:.18em .06em; opacity:1}
-.pcard__link:focus-visible{outline:2px solid var(--gold); outline-offset:3px; border-bottom-color:transparent}
-/* the whole card lifts when either link is hovered, not just the one tile */
-.pcard:has(.pcard__link:hover) .pcard__fig img,
-.pcard:has(.pcard__figlink:hover) .pcard__fig img{transform:scale(1.05); filter:saturate(1) brightness(1)}
+.pcard--link:hover .pcard__link{color:var(--gold); border-bottom-color:var(--gold-deep)}
+.pcard--link:hover .pcard__link svg{translate:.18em .06em; opacity:1}
+/* The focus ring goes on the card, because the card is what the link covers.
+   A ring drawn tight around the name would point at the wrong thing. */
+.pcard__link:focus-visible{outline:none; border-bottom-color:transparent}
+.pcard--link:has(.pcard__link:focus-visible){outline:2px solid var(--gold); outline-offset:3px}
+/* Touch has no hover, so the press gets its own feedback — without it a tap
+   on a drifting card gives nothing back until the next page paints. */
+.pcard--link:active{border-color:var(--gold-deep)}
+.pcard--link:active .pcard__fig img{filter:saturate(1) brightness(1)}
 
 /* squad.html: the button through to the full profile */
 .profile__more{margin-top:clamp(18px,2.2vw,26px)}

@@ -463,6 +463,17 @@
           // The same cards over again. Announced once.
           copy.setAttribute('aria-hidden', 'true');
           copy.setAttribute('data-clone', '');
+          /* Clones stay fully tappable — they are the same link, and a card
+             that looks live but eats the tap is worse than a duplicate. They
+             come out of the TAB ORDER, though: a focusable element inside
+             aria-hidden is invalid ARIA, and without this a keyboard user
+             tabs through three identical copies of every card, two of which
+             are scrolled out of sight. An id would be duplicated too, so any
+             that come along get dropped. */
+          copy.querySelectorAll('a[href],button,input,select,textarea,[tabindex]')
+            .forEach(function (el) { el.setAttribute('tabindex', '-1'); });
+          copy.querySelectorAll('[id]').forEach(function (el) { el.removeAttribute('id'); });
+          if (copy.id) copy.removeAttribute('id');
           track.appendChild(copy);
         });
       }
@@ -543,9 +554,13 @@
     rail.addEventListener('pointerdown', function (e) {
       if (!active) return;
       hold();
+      /* Cleared for every pointer type, not just mouse. A mouse drag that
+         ends off the rail fires no click on it, so the flag below stayed
+         true and the click-suppressor ate the NEXT genuine one. Harmless
+         while the cards were inert; not harmless now they are links. */
+      moved = false;
       if (e.pointerType !== 'mouse' || e.button !== 0) return;
       dragging = true;
-      moved = false;
       startX = e.clientX;
       startScroll = rail.scrollLeft;
       rail.classList.add('is-dragging');
