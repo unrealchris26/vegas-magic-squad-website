@@ -648,35 +648,21 @@
     return { enable: enable, disable: disable, remeasure: remeasure };
   }
 
-  // addEventListener is the modern spelling of a matchMedia listener,
-  // addListener the one older Safari still needs.
-  function watchMedia(mq, fn) {
-    if (mq.addEventListener) mq.addEventListener('change', fn);
-    else if (mq.addListener) mq.addListener(fn);
-  }
-
   var rails = [];
 
-  // Testimonials: always a rail, at every width.
+  /* Testimonials: always a rail, at every width. The ONLY driftRail on the
+     site now.
+
+     The line-up used to be the second one — a three-up grid on desktop that
+     became a drifting, swipeable rail below 720px. It was removed on request
+     and is now plain page flow that wraps: three across, then two, then one.
+     Nothing to enable here, and no matchMedia to watch, because there is no
+     longer a width at which the section behaves differently.
+
+     driftRail itself stays. It is still the testimonials' engine, and the
+     factory is written against a config rather than against either caller. */
   var quotes = driftRail({ rail: '.quotes__rail', track: '.quotes__track', speed: 32 });
   if (quotes) { quotes.enable(); rails.push(quotes); }
-
-  /* The line-up: a three-up grid on desktop, a rail on phones. Three portraits
-     abreast on a 390px screen is about 110px each, which is too small to read
-     a face in — so below 720px it becomes one large portrait at a time. A
-     touch slower than the testimonials: there are only three cards and they
-     are mostly picture, so the same speed reads as restless. */
-  var lineup = driftRail({ rail: '.lineup__rail', track: '.lineup', speed: 24 });
-  if (lineup) {
-    rails.push(lineup);
-    var phoneRail = window.matchMedia('(max-width: 720px)');
-    var syncLineup = function () {
-      if (phoneRail.matches) lineup.enable();
-      else lineup.disable();
-    };
-    watchMedia(phoneRail, syncLineup);
-    syncLineup();
-  }
 
   // No reduced-motion listener is needed: idle() reads reduced.matches on every
   // frame, so toggling the setting takes effect on the next one. The loop keeps

@@ -622,11 +622,17 @@
       <span class="fleuron" aria-hidden="true"></span>
     </header>
 
-    <!-- On phones this becomes a swipeable rail with the same drift engine as
-         the testimonials (script.js, driftRail). On desktop it stays a plain
-         three-up grid and the rail wrapper does nothing. tabindex is added by
-         JS only while the rail is live, so desktop gains no dead tab stop. -->
-    <div class="lineup__rail" role="group" aria-label="The line-up, drag or swipe to browse">
+    <!-- Plain page flow at every width: a three-up grid on desktop, two across
+         on tablets, one per row on phones. No rail, no scroller, no clones.
+
+         This used to be a swipeable drifting rail below 720px, sharing the
+         driftRail engine with the testimonials. It was removed on request.
+         Worth knowing why it is not coming back: the cards straddled the
+         viewport edges, so at any moment the left and right ones were cut
+         through the middle of a word, which read as broken text rather than
+         as "there is more this way". The testimonials still use driftRail and
+         are unaffected — short quotes survive being clipped at an edge in a
+         way a structured card does not. -->
     <p class="lineup__lede">
       Different personalities. Different specialties. One experience designed
       around you. From mind-reading and sleight of hand to stage performances
@@ -716,7 +722,6 @@
       </li>
 
     </ul>
-    </div>
 
     <p class="lineup__cta">
       <a class="btn btn--gold btn--lg" href="squad.html">Meet Our Performers</a>

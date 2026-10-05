@@ -1118,7 +1118,7 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 .lineup{
   list-style:none; margin:0; padding:0;
   display:grid; grid-template-columns:repeat(3,1fr);
-  gap:clamp(12px,2.6vw,34px);
+  gap:clamp(24px,2.6vw,32px);
   align-items:start;
 }
 /* --------------------------------------------------------------------------
@@ -1128,24 +1128,27 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    square corners, a gold hairline, the night panel fill. No rounded cards, no
    wave divider, no borrowed palette.
    -------------------------------------------------------------------------- */
+/* Nothing on these cards moves. The lift on hover and the slow zoom on the
+   portrait were both removed with the carousel: the section is a static list
+   now, and a card that rises under the cursor is the one piece of carousel
+   motion that would have survived the rest being taken out. Colour is the
+   only thing that changes. */
 .pcard{
   display:flex; flex-direction:column;
   background:var(--night-2);
   border:1px solid rgba(200,168,80,.22);
   border-radius:0;
   overflow:hidden;
-  transition:border-color .35s var(--ease), transform .35s var(--ease);
+  transition:border-color .35s var(--ease);
 }
-.pcard:hover{border-color:var(--gold-deep); transform:translateY(-3px)}
+.pcard:hover{border-color:var(--gold-deep)}
 
 .pcard__fig{margin:0; position:relative; overflow:hidden}
 .pcard__fig img{
   display:block; width:100%; height:auto; aspect-ratio:4/5;
   object-fit:cover; object-position:50% 22%;
   filter:saturate(.92) brightness(.92);
-  transition:transform .8s var(--ease), filter .5s var(--ease);
 }
-.pcard:hover .pcard__fig img{transform:scale(1.05); filter:saturate(1) brightness(1)}
 
 /* The reference's FEATURED ribbon, carrying something true instead: which of
    the three disciplines this performer is. */
@@ -1223,40 +1226,19 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 .btn--sm{padding:12px 22px; min-height:0; font-size:11px; letter-spacing:.14em}
 
 /* --------------------------------------------------------------------------
-   Phones: the line-up stops being a grid and becomes a rail.
-   Three abreast on a 390px screen gives each portrait about 110px, which is
-   too small to read a face in — so one large portrait at a time, swiped, with
-   the next peeking in at the edge. Same drift engine as the testimonials.
-   -------------------------------------------------------------------------- */
-@media (max-width:720px){
-  .lineup__rail{
-    overflow-x:auto; overscroll-behavior-x:contain;
-    scrollbar-width:none; -webkit-overflow-scrolling:touch;
-    /* must stay auto: html sets scroll-behavior:smooth globally, and a smooth
-       scroller fights the per-frame scrollLeft writes the drift makes */
-    scroll-behavior:auto;
-    /* full-bleed, so a card can sit half-off each edge and show there is more */
-    margin-inline:calc(var(--pad) * -1);
-    padding-inline:var(--pad);
-  }
-  .lineup__rail::-webkit-scrollbar{display:none}
-  .lineup__rail.is-live{cursor:grab}
-  .lineup__rail.is-dragging{cursor:grabbing; user-select:none}
-  .lineup__rail:focus-visible{outline:2px solid var(--gold); outline-offset:3px}
+   The line-up wraps. Nothing scrolls sideways.
+   Three abreast is right while each card has room for its three meta rows and
+   a button without hyphenating; below that it drops to two, then to one.
 
-  /* grid-template-columns is reset explicitly — leaving it set on a flex
-     container is harmless but reads as a leftover to whoever edits next */
-  .lineup{
-    display:flex; width:max-content;
-    grid-template-columns:none;
-    gap:clamp(14px,4vw,22px);
-    align-items:start;
-  }
-  /* Wider than the old portrait-only card: these now carry three meta rows,
-     a line of copy and a button, and 70vw squeezed all of it. */
-  .pcard{flex:0 0 min(82vw,330px)}
-  /* otherwise a mouse drag starting on a portrait becomes a native image drag */
-  .pcard__fig img{-webkit-user-drag:none}
+   620px rather than the gallery's 900px for the final drop, because these
+   cards carry text and the gallery tiles carry none: two 290px cards still
+   read, two 140px ones do not.
+   -------------------------------------------------------------------------- */
+@media (max-width:900px){
+  .lineup{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:620px){
+  .lineup{grid-template-columns:1fr}
 }
 
 
@@ -1956,9 +1938,9 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 
    THE HIT AREA IS THE WHOLE CARD, and on a phone that is the entire point.
    The name alone is about 112x24px — under half the 44px minimum in both
-   axes — and it sits in a rail that is drifting leftward under the finger.
-   A small moving target is a target most people miss, and missing it reads
-   as "the card isn't clickable", because nothing happens.
+   axes. The card no longer drifts, which removes the worst of it, but a
+   target that small is still one plenty of people miss, and a miss reads as
+   "the card isn't clickable", because nothing happens.
 
    Done with a stretched ::after rather than by wrapping the card in an <a>:
    the card already contains the booking CTA, and an anchor cannot contain
@@ -1982,21 +1964,27 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   stroke:currentColor; stroke-width:2.2;
   stroke-linecap:round; stroke-linejoin:round;
   /* nudged down: the arrow centres on the glyph box, which sits high against
-     an all-caps display face with no descenders in it */
+     an all-caps display face with no descenders in it. A static offset, not
+     an animated one — the arrow used to slide right on hover and that is
+     movement, which this section no longer does. */
   translate:0 .06em;
   opacity:.55;
-  transition:translate .3s var(--ease), opacity .3s var(--ease);
+  transition:opacity .25s var(--ease);
 }
 .pcard--link:hover .pcard__link{color:var(--gold); border-bottom-color:var(--gold-deep)}
-.pcard--link:hover .pcard__link svg{translate:.18em .06em; opacity:1}
+.pcard--link:hover .pcard__link svg{opacity:1}
 /* The focus ring goes on the card, because the card is what the link covers.
    A ring drawn tight around the name would point at the wrong thing. */
 .pcard__link:focus-visible{outline:none; border-bottom-color:transparent}
 .pcard--link:has(.pcard__link:focus-visible){outline:2px solid var(--gold); outline-offset:3px}
-/* Touch has no hover, so the press gets its own feedback — without it a tap
-   on a drifting card gives nothing back until the next page paints. */
+/* Touch has no hover, so a press needs its own feedback. Border colour only. */
 .pcard--link:active{border-color:var(--gold-deep)}
-.pcard--link:active .pcard__fig img{filter:saturate(1) brightness(1)}
+
+/* The global .btn lifts 1px on hover and dips 1px on press. That is right
+   everywhere else on the site and is left alone there; inside these cards it
+   is the last moving part, so it is cancelled here and nowhere else. */
+.pcard__cta:hover,
+.pcard__cta:active{transform:none}
 
 /* squad.html: the button through to the full profile */
 .profile__more{margin-top:clamp(18px,2.2vw,26px)}
