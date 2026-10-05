@@ -142,6 +142,7 @@
   at that point loses nothing.
 -->
 <section class="sec sec--night callform" id="booking" aria-labelledby="booking-h">
+  <span class="deco deco--spot deco--fan deco--grain" aria-hidden="true"></span>
   <!--
     The heading sits in its OWN .wrap, outside .callform__in, so it can use the
     full 1320px column while the form stays at 720px.
@@ -152,6 +153,7 @@
     max-width:var(--col) and so stays exactly where it was.
   -->
   <header class="wrap callform__head">
+    <p class="eyebrow">Book the squad</p>
     <h2 class="h2 h2--gold hl" id="booking-h"><span class="hl__l">Let&rsquo;s find the right</span>
       <span class="hl__l">entertainment for you</span></h2>
     <p class="callform__sub">
@@ -162,6 +164,7 @@
 
   <div class="wrap callform__in">
 
+    <div class="formframe">
     <form id="bookform" novalidate>
       <div class="f2">
         <p class="field">
@@ -321,6 +324,7 @@
         <a href="terms.html">terms &amp; conditions</a>.
       </p>
     </form>
+    </div>
 
     <!--
       STEP TWO. Revealed only after the lead is safely away. The calendar is an
@@ -421,10 +425,12 @@
   one-conversion rule. Nothing here states a price, a client or a headcount.
 -->
 <section class="sec sec--night services" id="services" aria-labelledby="services-h">
+  <span class="deco deco--suit deco--grain deco--vignette" aria-hidden="true"></span>
   <div class="wrap">
 
     <div class="rulepair rulepair--sec" aria-hidden="true"><i></i><i></i></div>
     <header class="services__head">
+      <p class="eyebrow eyebrow--start">Our services</p>
       <h2 class="h2 h2--gold" id="services-h">What we get booked for</h2>
       <p class="services__sub">Four kinds of evening we know well. Tell us which one is yours.</p>
     </header>
@@ -435,6 +441,7 @@
         <img src="images/site/corporate-reception.webp" alt="A magician showing a card to a laughing group at a corporate drinks reception, glasses still in hand" width="1078" height="745" loading="lazy" decoding="async">
       </figure>
       <div class="srow__copy">
+        <span class="srow__num" aria-hidden="true">01</span>
         <h3>Corporate parties &amp; receptions</h3>
         <p>
           Your guests are already mid-conversation, and the last thing you need is
@@ -461,6 +468,7 @@
         <img src="images/site/stage-emcee.jpg" alt="Kent Axell hosting from the stage under blue and green lighting, a guest laughing beside him" width="1600" height="900" loading="lazy" decoding="async">
       </figure>
       <div class="srow__copy">
+        <span class="srow__num" aria-hidden="true">02</span>
         <h3>Stage &amp; parlour sets</h3>
         <p>
           There is a moment after dinner where an evening either comes back together
@@ -488,6 +496,7 @@
         <img src="images/site/reception-crystal.jpg" alt="Dream Upright balancing a crystal ball on one hand at an evening reception" width="1080" height="1080" loading="lazy" decoding="async">
       </figure>
       <div class="srow__copy">
+        <span class="srow__num" aria-hidden="true">03</span>
         <h3>Private celebrations</h3>
         <p>
           A wedding reception, a milestone birthday, a big night at home. You have
@@ -513,6 +522,7 @@
         <img src="images/site/trade-show.jpg" alt="A magician holding a crowd of delegates at a trade-show stand, the front row laughing" width="1600" height="1200" loading="lazy" decoding="async">
       </figure>
       <div class="srow__copy">
+        <span class="srow__num" aria-hidden="true">04</span>
         <h3>Trade shows &amp; conference receptions</h3>
         <p>
           You have paid for the stand, the floor space and the flights, and people are
@@ -559,12 +569,15 @@
   booth on the other — and all three performers sit well inside the crop.
 -->
 <section class="sec sec--night gallery" id="gallery" aria-labelledby="gallery-h">
+  <span class="deco deco--spot deco--grain" aria-hidden="true"></span>
   <div class="wrap">
 
     <div class="rulepair rulepair--sec" aria-hidden="true"><i></i><i></i></div>
     <header class="gallery__head">
+      <p class="eyebrow eyebrow--start">The gallery</p>
       <h2 class="h2 h2--gold" id="gallery-h">What it looks like</h2>
       <p class="gallery__sub">Real rooms, real reactions</p>
+      <span class="fleuron" aria-hidden="true"></span>
     </header>
 
     <div class="shots">
@@ -645,9 +658,11 @@
   with the real profiles; nothing here needs to change when you do.
 -->
 <section class="about" id="about" aria-labelledby="about-h">
+  <span class="deco deco--spots3 deco--grain" aria-hidden="true"></span>
   <div class="wrap">
 
     <header class="sechead">
+      <p class="eyebrow">The line-up</p>
       <h2 id="about-h">The performers behind <strong>the experience</strong></h2>
       <span class="fleuron" aria-hidden="true"></span>
     </header>
@@ -789,9 +804,11 @@
   would be invented figures and invented people for this site.
 -->
 <section class="sec sec--night quotes" id="quotes" aria-labelledby="quotes-h">
+  <span class="deco deco--quote deco--grain" aria-hidden="true"></span>
   <div class="wrap">
 
     <header class="sechead">
+      <p class="eyebrow">Testimonials</p>
       <h2 id="quotes-h">What people <strong>are saying</strong></h2>
       <p class="sechead__sub">From the people who booked us</p>
       <span class="fleuron" aria-hidden="true"></span>
@@ -924,11 +941,15 @@
   </div>
 </section>
 
+<span class="fleuron fleuron--between" aria-hidden="true"></span>
+
 <!-- ============ FINAL CALL ============ -->
 <!-- Returns to the one form near the top rather than opening a second,
      longer one. A page with two different forms makes a visitor choose. -->
 <section class="sec sec--night finalcall" aria-labelledby="finalcall-h">
+  <span class="deco deco--sunburst deco--spot deco--grain" aria-hidden="true"></span>
   <div class="wrap finalcall__in">
+    <p class="eyebrow">Ready when you are</p>
     <h2 class="h2 h2--gold hl" id="finalcall-h"><span class="hl__l">Tell us what</span>
       <span class="hl__l">you&rsquo;re planning</span></h2>
     <p class="finalcall__sub">
