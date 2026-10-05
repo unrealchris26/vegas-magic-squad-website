@@ -441,7 +441,6 @@
         <img src="images/site/corporate-reception.webp" alt="A magician showing a card to a laughing group at a corporate drinks reception, glasses still in hand" width="1078" height="745" loading="lazy" decoding="async">
       </figure>
       <div class="srow__copy">
-        <span class="srow__num" aria-hidden="true">01</span>
         <h3>Corporate parties &amp; receptions</h3>
         <p>
           Your guests are already mid-conversation, and the last thing you need is
@@ -468,7 +467,6 @@
         <img src="images/site/stage-emcee.jpg" alt="Kent Axell hosting from the stage under blue and green lighting, a guest laughing beside him" width="1600" height="900" loading="lazy" decoding="async">
       </figure>
       <div class="srow__copy">
-        <span class="srow__num" aria-hidden="true">02</span>
         <h3>Stage &amp; parlour sets</h3>
         <p>
           There is a moment after dinner where an evening either comes back together
@@ -496,7 +494,6 @@
         <img src="images/site/reception-crystal.jpg" alt="Dream Upright balancing a crystal ball on one hand at an evening reception" width="1080" height="1080" loading="lazy" decoding="async">
       </figure>
       <div class="srow__copy">
-        <span class="srow__num" aria-hidden="true">03</span>
         <h3>Private celebrations</h3>
         <p>
           A wedding reception, a milestone birthday, a big night at home. You have
@@ -522,7 +519,6 @@
         <img src="images/site/trade-show.jpg" alt="A magician holding a crowd of delegates at a trade-show stand, the front row laughing" width="1600" height="1200" loading="lazy" decoding="async">
       </figure>
       <div class="srow__copy">
-        <span class="srow__num" aria-hidden="true">04</span>
         <h3>Trade shows &amp; conference receptions</h3>
         <p>
           You have paid for the stand, the floor space and the flights, and people are
@@ -734,7 +730,12 @@
       -->
       <li class="pcard pcard--link">
         <figure class="pcard__fig">
-          <img src="images/site/about-kent.jpg" alt="Kent Axell, The Mentalist, mid-performance" width="1080" height="1350" loading="lazy" decoding="async">
+          <!-- 4413x2942: a 3:2 stage frame dropped into a 4:5 box, so only 53%
+               of its width survives the crop. Kent stands at 61% across, which
+               centres him at --obj-x:74%. Measured off the pixels, not judged
+               by eye. --obj-y is inert here (full height is already shown) and
+               is set only so the pair reads as deliberate. -->
+          <img src="images/site/about-kent.jpg" style="--obj-x:74%; --obj-y:50%" alt="Kent Axell on stage with his arms open, in front of a backdrop reading Kent Axell, Psychological Illusionist" width="4413" height="2942" loading="lazy" decoding="async">
           <span class="pcard__tag">The Mentalist</span>
         </figure>
         <div class="pcard__body">
@@ -751,7 +752,9 @@
 
       <li class="pcard">
         <figure class="pcard__fig">
-          <img src="images/site/about-dream.jpg" alt="Dream Upright, The Magician, mid-performance" width="1080" height="1350" loading="lazy" decoding="async">
+          <!-- Natively 1080x1350, exactly the card ratio, so nothing is cropped
+               and object-position does not apply. No override needed. -->
+          <img src="images/site/about-dream.jpg" alt="Dream Upright in a red tailcoat and bowler hat, balancing a crystal ball on his fingertips" width="1080" height="1350" loading="lazy" decoding="async">
           <span class="pcard__tag">The Magician</span>
         </figure>
         <div class="pcard__body">

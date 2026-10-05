@@ -1174,9 +1174,16 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 .pcard:hover{border-color:var(--gold-deep)}
 
 .pcard__fig{margin:0; position:relative; overflow:hidden}
+/* The crop is per-image, because the sources are not one shape. A portrait
+   shot natively at 4:5 fills the box untouched and ignores both values; a
+   landscape stage frame shows barely half its width, so where that half is
+   taken from decides whether the performer is in the card or beside it.
+   Each img sets --obj-x / --obj-y when it needs something other than centre;
+   the default suits an upright portrait. */
 .pcard__fig img{
   display:block; width:100%; height:auto; aspect-ratio:4/5;
-  object-fit:cover; object-position:50% 22%;
+  object-fit:cover;
+  object-position:var(--obj-x,50%) var(--obj-y,22%);
   filter:saturate(.92) brightness(.92);
 }
 
@@ -2266,13 +2273,11 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 
 /* SERVICES — numbered rows, gold brackets on each photograph, a suit
    watermark behind them. */
-.srow__num{
-  display:block;
-  font-family:var(--disp); font-weight:700;
-  font-size:clamp(13px,1.3vw,16px); letter-spacing:.22em;
-  color:var(--gold-deep);
-  margin-bottom:.6em;
-}
+/* The 01-04 markers that sat here are gone. They implied a sequence the
+   content does not have: the four rows are parallel kinds of booking, not
+   steps, so a reader who follows the numbers is being told something untrue.
+   DESIGN.md's Rank-By-Size Rule says the same thing from the other side -
+   hierarchy is carried by type size, not by added markers. */
 .srow__fig::before{
   content:""; position:absolute; inset:10px; pointer-events:none; z-index:1;
   /* four corner brackets drawn with one element: gradients painted only at
