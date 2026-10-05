@@ -164,12 +164,10 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   max-width:var(--wrap); margin-inline:auto; padding-inline:var(--pad);
   height:72px; display:flex; align-items:center; gap:clamp(14px,2.4vw,34px);
 }
-.nav__brand{display:flex; align-items:center; gap:11px; text-decoration:none; margin-right:auto}
+/* Mark only — the wordmark beside it was removed. margin-right:auto is what
+   pushes the links and the CTA to the right, so it stays. */
+.nav__brand{display:flex; align-items:center; text-decoration:none; margin-right:auto}
 .nav__brand img{width:38px; height:auto}
-.nav__brandtx{
-  font-family:var(--disp); font-weight:700; font-size:13px; line-height:1.1;
-  color:var(--gold); letter-spacing:-.005em;
-}
 .nav__links{display:flex; gap:clamp(16px,2vw,30px)}
 .nav__links a{
   font-size:11.5px; font-weight:600; letter-spacing:.2em; text-transform:uppercase;
