@@ -130,7 +130,7 @@
   Sits directly under the hero on purpose. The previous version made a visitor
   scroll the whole page before they could contact anyone, and asked for a date,
   a venue, a headcount and an event type before it would accept them — all of
-  which an early-stage enquirer does not have, and any one of which is a reason
+  which an early-stage inquirer does not have, and any one of which is a reason
   to leave.
 
   Three required fields and one optional box. Nothing here asks the visitor to
@@ -260,20 +260,42 @@
       </p>
 
       <!--
-        A2P 10DLC consent. Unticked, optional, and separate from the phone
-        field above - consent that is a condition of submitting is not consent,
-        and texting must never be the only way we follow up.
+        A2P 10DLC consent. Two separate opt-ins, because a carrier treats them
+        as two different things: transactional messages about THIS inquiry, and
+        marketing. Bundling them into one tick is the single most common reason
+        a campaign is rejected.
+
+        Both are unticked, both are optional, and neither gates the submit.
+        Consent that is a condition of submitting is not consent, and texting
+        must never be the only way we follow up.
+
+        The links sit inline inside the sentence. They used to break out into a
+        column of their own on narrow screens: .field label is display:flex so
+        the "REQUIRED" chip can sit beside the label text, and this block
+        inherits .field, so each <a> was being laid out as a flex item rather
+        than as part of the sentence. .field--check > label sets display:block
+        to stop that - see styles.css.
       -->
       <p class="field field--check">
-        <input type="checkbox" id="f-sms" name="smsConsent" value="yes">
+        <input type="checkbox" id="f-sms" name="sms_consent_transactional" value="Yes">
         <label for="f-sms">
-          Text me as well as calling. By checking this box you agree to receive
-          SMS from Vegas Magic Squad about your enquiry. Message frequency
-          varies. Message and data rates may apply. Reply STOP to opt out or
-          HELP for help. See our <a href="privacy.html">Privacy Policy</a> and
-          <a href="terms.html">Terms</a>.
+          I agree to receive text messages from Vegas Magic Squad about my
+          booking inquiry, including call scheduling, reminders, and follow-ups.
+          Message frequency varies. Message and data rates may apply. Reply STOP
+          to opt out or HELP for help. See our
+          <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
+          and <a href="terms.html" target="_blank" rel="noopener">Terms</a>.
         </label>
-        <span class="err" data-err="f-sms" aria-live="polite"></span>
+      </p>
+
+      <p class="field field--check">
+        <input type="checkbox" id="f-sms-mkt" name="sms_consent_marketing" value="Yes">
+        <label for="f-sms-mkt">
+          I agree to receive marketing text messages from Vegas Magic Squad,
+          such as offers and event announcements. Message frequency varies.
+          Message and data rates may apply. Reply STOP to opt out. Consent is
+          not a condition of purchase.
+        </label>
       </p>
 
       <button class="btn btn--red btn--lg btn--block" type="submit" id="submit">
@@ -284,7 +306,7 @@
       <p class="formnote" id="formstatus" role="status" aria-live="polite"></p>
 
       <p class="formlegal">
-        We use these details to answer your enquiry and nothing else. They are
+        We use these details to answer your inquiry and nothing else. They are
         sent to our booking system, GoHighLevel. See our
         <a href="privacy.html">privacy policy</a> and
         <a href="terms.html">terms &amp; conditions</a>.

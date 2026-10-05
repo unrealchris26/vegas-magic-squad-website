@@ -685,21 +685,17 @@
   /* Ticking "text me" without leaving a number is a dead end, and it would
      also record a consent to SMS against no number at all - which is worse
      than useless if the consent is ever audited. */
-  function checkSmsUsable() {
-    var sms = document.getElementById('f-sms');
-    var phone = document.getElementById('f-phone');
-    if (!sms || !phone || !sms.checked) { if (sms) clearError(sms); return true; }
-    if ((phone.value || '').trim()) { clearError(sms); return true; }
-    setError(sms, 'Add a phone number, or untick this box.');
-    return false;
-  }
-
   var fields = Array.prototype.slice.call(
     form.querySelectorAll('input, select, textarea')
   );
 
-  var smsBox = document.getElementById('f-sms');
-  if (smsBox) smsBox.addEventListener('change', checkSmsUsable);
+  /* There was a checkSmsUsable() here that blocked the submit when the SMS box
+     was ticked and the phone field was empty. It is gone, deliberately.
+
+     Both consent boxes are optional and must never stop the form going
+     through. The check was also dead in practice — the phone field is
+     required, so it can never be empty at submit time — and a rule that can
+     only ever fire as a false positive is worse than no rule. */
 
   fields.forEach(function (el) {
     el.addEventListener('blur', function () { if (el.value.trim() || el.hasAttribute('required')) checkField(el); });
@@ -714,7 +710,6 @@
     fields.forEach(function (el) {
       if (!checkField(el)) { ok = false; if (!firstBad) firstBad = el; }
     });
-    if (!checkSmsUsable()) { ok = false; if (!firstBad) firstBad = document.getElementById('f-sms'); }
 
     if (!ok) {
       status.textContent = 'Check the highlighted fields and send again.';
@@ -729,7 +724,7 @@
       // A checkbox reports its value attribute whether or not it is ticked,
       // so reading .value here would record consent from everyone.
       payload[el.name] = (el.type === 'checkbox')
-        ? (el.checked ? 'yes' : 'no')
+        ? (el.checked ? 'Yes' : 'No')
         : el.value.trim();
     });
 
@@ -748,10 +743,10 @@
 
     submit.classList.add('is-sending');
     submit.disabled = true;
-    status.textContent = 'Checking your enquiry.';
+    status.textContent = 'Checking your inquiry.';
     status.className = 'formnote';
 
-    sendEnquiry(payload)
+    sendInquiry(payload)
       .then(function () {
         /* Step two. The lead is already saved at this point, so the calendar
            is an offer and never a gate - and leaving now loses nothing. */
@@ -760,12 +755,12 @@
         fields.forEach(clearError);
         // Deliberately does not claim delivery: the handler below transmits
         // nothing. Replace this string when the form is wired to a real endpoint.
-        status.textContent = 'Thank you — your enquiry is in. We will come back to you with what we would do with your evening, and what it would cost.';
+        status.textContent = 'Thank you — your inquiry is in. We will come back to you with what we would do with your evening, and what it would cost.';
         status.className = 'formnote is-ok';
       })
       .catch(function (err) {
         // Two different failures, two different truths. Neither claims the
-        // enquiry arrived, because in neither case do we know that it did.
+        // inquiry arrived, because in neither case do we know that it did.
         status.textContent = (err && err.message === 'not-configured')
           ? 'This form is not connected yet, so nothing was sent. Please email unrealvegas@gmail.com or call (207) 458-3115.'
           : 'That did not send. Please email unrealvegas@gmail.com or call (207) 458-3115 and we will pick it up there.';
@@ -780,7 +775,7 @@
   /* ==================================================================== *
    * GO HIGH LEVEL  --  inbound webhook
    * --------------------------------------------------------------------
-   * LIVE. Enquiries POST to the workflow's Inbound Webhook trigger.
+   * LIVE. Inquiries POST to the workflow's Inbound Webhook trigger.
    * Verified 2026-09-17: preflight and POST both return
    * Access-Control-Allow-Origin: *, and the endpoint answers 200 with
    * {"status":"Success: test request received"} — so the browser can post
@@ -804,9 +799,10 @@
   var GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/w6jm6XLgzoiHN5ovEKdL/webhook-trigger/4bdd60bb-bdd0-4aca-b6bd-1ffacd5dd53e';
   var GHL_TIMEOUT = 15000;       // ms before we stop waiting and say so
 
-  // The exact sentence the visitor was shown, taken from the page itself.
-  function consentWording() {
-    var lab = document.querySelector('label[for="f-sms"]');
+  // The exact sentence the visitor was shown, taken from the page itself, so
+  // the record can never describe wording nobody was given.
+  function consentWording(id) {
+    var lab = document.querySelector('label[for="' + id + '"]');
     return lab ? lab.textContent.replace(/\s+/g, ' ').trim() : '';
   }
 
@@ -846,7 +842,7 @@
     done.focus();
   }
 
-  function sendEnquiry(data) {
+  function sendInquiry(data) {
     if (!GHL_WEBHOOK) {
       return Promise.reject(new Error('not-configured'));
     }
@@ -864,17 +860,32 @@
       lastName: cut === -1 ? '' : whole.slice(cut + 1),
       email: data.email || '',
       phone: data.phone || '',
-      /* A2P 10DLC evidence. A carrier or a complaint can ask you to show that
-         a specific person agreed, at a specific moment, to specific wording -
-         so all three are sent. consentText is read out of the live label
-         rather than duplicated here, because a copy would drift the first time
-         the wording on the page is edited and the record would then describe
-         something nobody was ever shown. */
-      smsConsent: data.smsConsent === 'yes' ? 'yes' : 'no',
-      smsConsentText: data.smsConsent === 'yes' ? consentWording() : '',
-      smsConsentAt: data.smsConsent === 'yes' ? new Date().toISOString() : '',
+      /* A2P 10DLC evidence, kept as TWO records because a carrier treats the
+         two permissions as different things. A complaint or an audit can ask
+         you to show that a specific person agreed, at a specific moment, to
+         specific wording — so for each box: the answer, the exact sentence,
+         and the timestamp.
+
+         The wording is read out of the live label rather than duplicated here.
+         A copy would drift the first time the page is edited, and the record
+         would then describe something nobody was ever shown. */
+      sms_consent_transactional: data.sms_consent_transactional === 'Yes' ? 'Yes' : 'No',
+      sms_consent_transactional_text: data.sms_consent_transactional === 'Yes' ? consentWording('f-sms') : '',
+      sms_consent_transactional_at: data.sms_consent_transactional === 'Yes' ? new Date().toISOString() : '',
+
+      sms_consent_marketing: data.sms_consent_marketing === 'Yes' ? 'Yes' : 'No',
+      sms_consent_marketing_text: data.sms_consent_marketing === 'Yes' ? consentWording('f-sms-mkt') : '',
+      sms_consent_marketing_at: data.sms_consent_marketing === 'Yes' ? new Date().toISOString() : '',
+
+      /* The old key, still sent, mirroring the transactional box.
+         GoHighLevel maps on key name, and there is already a workflow mapped
+         to smsConsent. Renaming without this would have silently dropped
+         consent from every lead until someone noticed — which is exactly how
+         five fields arrived blank on this form once before.
+         DELETE THIS LINE once GHL is remapped to sms_consent_transactional. */
+      smsConsent: data.sms_consent_transactional === 'Yes' ? 'yes' : 'no',
       /* The form no longer asks for a date, venue, type or headcount - an
-         early-stage enquirer has none of them and every one was a reason to
+         early-stage inquirer has none of them and every one was a reason to
          abandon. They are sent as empty strings rather than dropped so the
          GHL field mapping keeps working untouched. */
       eventDate: '',
@@ -906,7 +917,7 @@
       /* A TypeError with no status is the signature of a blocked
          cross-origin request, not of a rejected one — the POST may well have
          arrived and the browser simply refused to show us the response. It
-         is reported as a failure regardless: telling someone their enquiry
+         is reported as a failure regardless: telling someone their inquiry
          was received when we cannot confirm it is worse than asking them to
          email. If this turns out to be the failure mode, the fix is the
          Netlify Function proxy noted above, not a more hopeful message. */

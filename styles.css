@@ -729,25 +729,38 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 /* The SMS consent row. Grid rather than an inline checkbox so the label wraps
    as a proper block beside the box instead of running under it, and so the
    error can sit full-width beneath both. */
+/* minmax(0,1fr), not 1fr: a 1fr track floors at min-content, so one long
+   unbroken word in the consent sentence could push the box wider than the
+   form. 18px rather than auto for the first track keeps the two consent
+   blocks' text aligned with each other whatever the checkbox renders at. */
 .field--check{
-  display:grid; grid-template-columns:auto 1fr; gap:4px 12px;
+  display:grid; grid-template-columns:18px minmax(0,1fr); gap:0 12px;
   align-items:start;
-  margin-top:clamp(18px,2.4vw,26px);
+  margin-top:clamp(14px,1.8vw,20px);
   padding:16px 18px;
   background:var(--night-2);
   border:1px solid rgba(200,168,80,.22);
 }
+.field--check + .field--check{margin-top:10px}
 .field--check input[type="checkbox"]{
   width:18px; height:18px; margin:2px 0 0;
   accent-color:var(--gold); cursor:pointer; flex:none;
 }
-.field--check label{
+/* display:block is the whole point of this rule, not a leftover.
+   .field label is display:flex so the REQUIRED / OPTIONAL chip can sit beside
+   the label text, and this block carries .field too — so the consent label
+   inherited it and every <a> inside became a flex ITEM. The result was the
+   sentence in one narrow column with "Privacy Policy" and "Terms" stacked in a
+   second column beside it. Block puts them back in the text where they belong.
+   The child combinator keeps this off any future nested label. */
+.field--check > label{
+  display:block;
   font-size:13px; line-height:1.6; color:var(--night-tx2);
   font-weight:400; letter-spacing:0; text-transform:none; cursor:pointer;
+  text-wrap:pretty;
 }
-.field--check label a{color:var(--gold-hi); text-underline-offset:3px}
-.field--check label a:hover{color:var(--gold)}
-.field--check .err{grid-column:1 / -1}
+.field--check > label a{color:var(--gold-hi); text-underline-offset:3px}
+.field--check > label a:hover{color:var(--gold)}
 .field--check input[type="checkbox"]:focus-visible{outline:2px solid var(--gold); outline-offset:3px}
 .err:empty{display:none}
 
