@@ -700,7 +700,12 @@
       -->
       <li class="pcard">
         <figure class="pcard__fig">
-          <img src="images/site/about-brandon.jpg" alt="Brandon Williams, The Card Shark, fanning a deck of cards" width="1080" height="1350" loading="lazy" decoding="async">
+          <!-- 2080x3120, a 2:3 portrait in a 4:5 box: full width shows and
+               83.3% of the height survives. He fills the frame top to bottom
+               (measured 1.6% to 99.9%), so the default --obj-y:22% would have
+               taken the crop from the middle and sliced the top of his head.
+               0% anchors the window to the top: head intact, legs cropped. -->
+          <img src="images/site/about-brandon.jpg" style="--obj-y:0%" alt="Brandon Williams in a black suit springing a deck of cards between his hands" width="2080" height="3120" loading="lazy" decoding="async">
           <span class="pcard__tag">The Card Shark</span>
         </figure>
         <div class="pcard__body">
