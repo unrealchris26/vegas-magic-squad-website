@@ -439,27 +439,43 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    column it sits above. --col is set per section, so the headline, the
    sub-headline and the form all share one width and their edges line up.
    ========================================================================== */
-.hl{
-  max-width:var(--col);
+/* .h2.hl, not .hl. This rule used to be written as plain .hl and was dead:
+   .h2 is the same specificity and sits later in this sheet, so .h2 won every
+   property the two shared — font-size, max-width, line-height. The headline
+   was rendering at .h2's 5.4vw inside .h2's 18ch box, which is what broke it
+   onto four ragged lines. Two classes beats one, whatever the order.
+
+   Only the three properties that need to differ are set here. line-height,
+   letter-spacing and margin-bottom are deliberately left to .h2 so this
+   headline keeps the same weight and spacing as every other on the site.
+
+   THE SIZE IS DERIVED, NOT GUESSED. Measured in the browser, the longest line
+   is "entertainment for you" at 14.07em, and its container is a .wrap, so the
+   width available is 0.9 x viewport up to 1320px. One line therefore fits
+   while font-size stays under viewport*0.9/14.07 = 6.4vw. 5.8vw holds about
+   10% in reserve, which is the margin for the fallback face if Josefin has
+   not loaded. The 4.4rem cap is .h2's own maximum, so desktop is unchanged. */
+.h2.hl{
+  max-width:none;
   margin-inline:auto;
   text-align:center;
-  /* 3.5rem keeps "ENTERTAINMENT FOR YOU" at roughly 95% of 720px rather than
-     overflowing it. Lower bound fits "ENTERTAINMENT" on a 375px screen with
-     the side padding intact. */
-  font-size:clamp(2rem, 5.2vw, 3.5rem);
-  line-height:1.04;
-  letter-spacing:.006em;
-  /* Fallback for any width where the authored breaks are switched off. */
-  text-wrap:balance;
-  margin-bottom:clamp(1rem, 1.6vw, 1.5rem);
+  font-size:clamp(1.75rem, 5.8vw, 4.4rem);
 }
-.hl__l{display:block}
+/* One authored line each, and nowrap so neither can split further. The nowrap
+   is safe only because the font-size above is derived from the longest line —
+   without that pairing, nowrap is just a way to overflow the page. */
+.hl__l{display:block; white-space:nowrap}
 
-@media (max-width:640px){
-  /* Below this the authored breaks start working against the narrower column,
-     so they come off and text-wrap:balance takes over. The spans fall back to
-     inline and the whitespace between them in the markup becomes the space. */
-  .hl__l{display:inline}
+@media (max-width:479px){
+  /* Under 480 the two lines cannot both fit at a size worth reading — holding
+     them would mean dropping below about 1.75rem, which the design will not
+     take. So the authored breaks come off, the spans fall back to inline, the
+     whitespace between them in the markup becomes the space, and
+     text-wrap:balance (from .h2) splits the phrase evenly instead.
+
+     This is the one width where the headline is not two lines, and that is the
+     intended behaviour rather than a fallback that got missed. */
+  .hl__l{display:inline; white-space:normal}
 }
 
 /* ==========================================================================
@@ -506,7 +522,10 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    ========================================================================== */
 .finalcall{padding-block:clamp(48px,7vw,96px); text-align:center}
 .finalcall{--col:620px}
-.finalcall__in{max-width:var(--col); margin-inline:auto}
+/* Full wrap width, not --col, so the headline inside has room for its two
+   lines. Nothing else here widens with it: .finalcall__sub carries its own
+   max-width:var(--col), and the CTA is a centred button in a centred section. */
+.finalcall__in{max-width:var(--wrap); margin-inline:auto}
 .finalcall__sub{
   margin:0 auto; max-width:var(--col); font-size:16px; line-height:1.62;
   color:var(--night-tx2);

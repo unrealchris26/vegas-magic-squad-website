@@ -142,16 +142,25 @@
   at that point loses nothing.
 -->
 <section class="sec sec--night callform" id="booking" aria-labelledby="booking-h">
-  <div class="wrap callform__in">
+  <!--
+    The heading sits in its OWN .wrap, outside .callform__in, so it can use the
+    full 1320px column while the form stays at 720px.
 
-    <header class="callform__head">
-      <h2 class="h2 h2--gold hl" id="booking-h"><span class="hl__l">Let&rsquo;s find the right</span>
-        <span class="hl__l">entertainment for you</span></h2>
-      <p class="callform__sub">
-        Start with a quick conversation. You don&rsquo;t need a confirmed date,
-        a venue, or a finished plan &mdash; we&rsquo;ll help you explore the options.
-      </p>
-    </header>
+    It has to be a sibling rather than a child: the form fields are direct
+    children of .callform__in, so widening that container to give the headline
+    room would have widened the form with it. The sub-heading keeps its own
+    max-width:var(--col) and so stays exactly where it was.
+  -->
+  <header class="wrap callform__head">
+    <h2 class="h2 h2--gold hl" id="booking-h"><span class="hl__l">Let&rsquo;s find the right</span>
+      <span class="hl__l">entertainment for you</span></h2>
+    <p class="callform__sub">
+      Start with a quick conversation. You don&rsquo;t need a confirmed date,
+      a venue, or a finished plan &mdash; we&rsquo;ll help you explore the options.
+    </p>
+  </header>
+
+  <div class="wrap callform__in">
 
     <form id="bookform" novalidate>
       <div class="f2">
