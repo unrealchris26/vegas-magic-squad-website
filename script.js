@@ -796,7 +796,7 @@
    *   booking form; if it gets abused, move this call behind a Netlify
    *   Function and keep the URL in an environment variable instead.
    * ==================================================================== */
-  var GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/w6jm6XLgzoiHN5ovEKdL/webhook-trigger/4bdd60bb-bdd0-4aca-b6bd-1ffacd5dd53e';
+  var GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/p42pZbPGavSVSjo9bBLQ/webhook-trigger/67db4f1a-eb82-436c-925c-b97b3211260b';
   var GHL_TIMEOUT = 15000;       // ms before we stop waiting and say so
 
   // The exact sentence the visitor was shown, taken from the page itself, so
