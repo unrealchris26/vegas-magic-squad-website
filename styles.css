@@ -1243,10 +1243,11 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 
 
 /* ==========================================================================
-   Testimonials : Kent Axell's .quotes__rail
-   His three-card rail, gradient card, gold stars, footer attribution over a
-   hairline. Palette is this site's. His avatar column is dropped — there are
-   no reviewers to picture yet.
+   Testimonials
+   Started as Kent Axell's .quotes__rail and kept his card: gradient fill, gold
+   stars, footer attribution over a hairline, in this site's palette. The rail
+   part is gone — it is a wrapping grid now, collapsed to the first three with
+   a button for the rest.
    ========================================================================== */
 .quotes .sechead{text-align:center; margin-bottom:clamp(20px,2.8vw,32px)}
 .quotes .sechead h2{
@@ -1283,51 +1284,46 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    visitor can swipe; script.js clones the set twice and adds the drift and the
    mouse-drag on top. Native scrolling is what makes the thing draggable, so it
    is the one property here that must not be traded away. */
-.quotes{--qgap:clamp(14px,2vw,24px)}
-.quotes__rail{
-  overflow-x:auto; overscroll-behavior-x:contain;
-  scrollbar-width:none; -webkit-overflow-scrolling:touch;
-  /* Room for .quote:hover's 3px lift and the focus ring's 3px offset.
-     A scroll container cannot have overflow-y:visible — the spec computes it
-     to auto the moment overflow-x is auto — so the lifted card was being
-     clipped along its top edge and read as popping out from behind a mask.
-     Padding gives it room; the negative margin keeps the layout where it was. */
-  padding-block:10px; margin-block:-10px;
+/* --------------------------------------------------------------------------
+   The reviews wrap. Nothing scrolls sideways, nothing drifts.
+   Same column rhythm as the line-up, and for the same reason: three while each
+   card has room for a paragraph plus its attribution row, two on tablets, one
+   per row on phones.
+
+   Was a drifting, draggable, cloned rail at every width. Removed on request.
+   -------------------------------------------------------------------------- */
+.quotes{--qgap:clamp(24px,2.6vw,32px)}
+.quotes__grid{
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:var(--qgap);
+  align-items:stretch;
 }
-.quotes__rail::-webkit-scrollbar{display:none}
-.quotes__track{display:flex; gap:var(--qgap); width:max-content; align-items:stretch}
+@media (max-width:900px){
+  .quotes__grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:620px){
+  .quotes__grid{grid-template-columns:1fr}
+}
 
-/* The drift is driven from script.js by writing scrollLeft, NOT by animating a
-   transform. That is what makes the rail draggable: the cards stay where the
-   browser thinks they are, so a finger, a trackpad or the arrow keys can take
-   the scroller over mid-drift. Pausing on hover and focus is handled in JS
-   alongside the other reasons to stop, so there is one rule about it, not two.
+/* Collapsed to the first three until the button says otherwise. The class is
+   put on by script.js, so the default state of this markup is "all of them
+   showing" — see the note above the list in index.html. display:none rather
+   than visibility or height, so the hidden four are out of the tab order and
+   out of the accessibility tree while they are away. */
+.quotes__grid.is-clipped > .quotes__extra{display:none}
 
-   scroll-behavior must stay auto here — html sets it to smooth globally, and a
-   smooth scroller fights per-frame scrollLeft writes. */
-.quotes__rail{scroll-behavior:auto}
-.quotes__rail.is-live{cursor:grab}
-.quotes__rail.is-dragging{cursor:grabbing; user-select:none}
-.quotes__rail.is-dragging .quote{pointer-events:none}
-
-/* The rail is a scroll region, so it takes keyboard focus and has to show it. */
-.quotes__rail:focus-visible{outline:2px solid var(--gold); outline-offset:3px}
-
-/* Otherwise a mouse drag starting on a photograph becomes a native image drag,
-   ghost image and all, and the rail never moves. The CSS covers WebKit; the
-   draggable="false" attribute on each img is what covers Firefox. */
-.quote__shot img{-webkit-user-drag:none}
+.quotes__more{margin:clamp(26px,3.4vw,42px) 0 0; text-align:center}
 
 .quote{
-  flex:0 0 clamp(268px,28vw,344px);
   margin:0; overflow:hidden;
   background:linear-gradient(var(--night-2), var(--night));
   border:1px solid rgba(200,168,80,.18);
   padding:clamp(24px,3vw,34px);
   display:flex; flex-direction:column; gap:16px;
-  transition:border-color .35s var(--ease), transform .35s var(--ease);
+  transition:border-color .35s var(--ease);
 }
-.quote:hover{border-color:var(--gold-deep); transform:translateY(-3px)}
+/* Colour only. The 3px lift went with the carousel — see .pcard. */
+.quote:hover{border-color:var(--gold-deep)}
 .stars{
   color:var(--gold-hi); font-size:17px; letter-spacing:.2em; line-height:1;
   /* the glow is what actually reads as "lit" — raising the colour alone just
@@ -1358,13 +1354,13 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 }
 /* Spread around the site's gold rather than off into arbitrary hues, so seven
    discs read as a set instead of a paint chart. */
-.quotes__track > .quote:nth-child(7n+1) .quote__avatar{--av:44 55% 62%}
-.quotes__track > .quote:nth-child(7n+2) .quote__avatar{--av:34 48% 58%}
-.quotes__track > .quote:nth-child(7n+3) .quote__avatar{--av:50 52% 64%}
-.quotes__track > .quote:nth-child(7n+4) .quote__avatar{--av:24 44% 56%}
-.quotes__track > .quote:nth-child(7n+5) .quote__avatar{--av:40 60% 66%}
-.quotes__track > .quote:nth-child(7n+6) .quote__avatar{--av:14 38% 55%}
-.quotes__track > .quote:nth-child(7n+7) .quote__avatar{--av:47 46% 60%}
+.quotes__grid > .quote:nth-child(7n+1) .quote__avatar{--av:44 55% 62%}
+.quotes__grid > .quote:nth-child(7n+2) .quote__avatar{--av:34 48% 58%}
+.quotes__grid > .quote:nth-child(7n+3) .quote__avatar{--av:50 52% 64%}
+.quotes__grid > .quote:nth-child(7n+4) .quote__avatar{--av:24 44% 56%}
+.quotes__grid > .quote:nth-child(7n+5) .quote__avatar{--av:40 60% 66%}
+.quotes__grid > .quote:nth-child(7n+6) .quote__avatar{--av:14 38% 55%}
+.quotes__grid > .quote:nth-child(7n+7) .quote__avatar{--av:47 46% 60%}
 .quote footer b{
   font-family:var(--disp); font-size:13px; font-weight:700;
   letter-spacing:.03em; color:var(--night-tx);
@@ -1406,11 +1402,6 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   filter:brightness(.74) saturate(.92);
 }
 
-@media (max-width:680px){
-  /* Narrower cards so more than one edge is visible at phone width — a single
-     full-bleed card gives no sign the rail moves. */
-  .quote{flex-basis:min(78vw,300px)}
-}
 
 
 /* ==========================================================================

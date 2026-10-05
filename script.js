@@ -91,7 +91,7 @@
    * ------------------------------------------------------------------ */
   /* Guarded because this file is shared with squad.html, which has no burger.
      Without the guard the whole IIFE throws here and every module below it —
-     the rails, the form, the year — silently never runs. */
+     the lightbox, the form, the year — silently never runs. */
   var toggle = document.getElementById('navtoggle');
   var links = document.getElementById('navlinks');
 
@@ -415,269 +415,58 @@
   })();
 
   /* ------------------------------------------------------------------ *
-   * 4b. Drift rails : they scroll left on their own, and you can drag them.
+   * 4b. Reviews: show three, reveal the rest.
    *
-   *     Two of these now — the testimonials, and the line-up once it drops to
-   *     phone width — so the engine is a factory rather than a copy.
+   *     This is all that is left of what used to be the drift-rail engine —
+   *     a ~230 line factory that turned a container into a self-scrolling,
+   *     draggable, cloned carousel. It drove the testimonials and, below
+   *     720px, the line-up. Both are plain wrapping grids now, so the whole
+   *     factory went with them rather than sitting here unreferenced.
    *
-   *     It was a CSS transform marquee until the rail had to become
-   *     draggable. A translated track cannot be swiped: the cards are no
-   *     longer where the browser thinks they are, and there is no scroll
-   *     position for a finger to take hold of. So the drift moves scrollLeft
-   *     instead, and the rail is a real scroll container underneath.
-   *
-   *     What that buys: touch swipe, trackpad, shift-wheel and keyboard
-   *     arrows all work without a line of code, with the platform's own
-   *     momentum and rubber-band. The only hand-written gesture is mouse
-   *     drag, because that is the one a scroll container does not give you.
-   *
-   *     Three copies of the set, parked in the middle one. Two would loop
-   *     leftward fine, but dragging RIGHT from the start would hit scrollLeft
-   *     0 and stop dead before there was any chance to wrap. With a full set
-   *     either side, the wrap always happens with content already rendered on
-   *     both sides of it.
+   *     The collapse is applied here rather than in the markup on purpose.
+   *     The HTML ships every review visible, so no-JS readers and crawlers
+   *     get the lot; this hides the extras and reveals the button only once
+   *     it is certain the button will work.
    * ------------------------------------------------------------------ */
-  function driftRail(cfg) {
-    var rail = document.querySelector(cfg.rail);
-    var track = rail && rail.querySelector(cfg.track);
-    if (!track) return null;
+  (function moreReviews() {
+    var list = document.getElementById('quotelist');
+    var btn = document.getElementById('quotes-more');
+    if (!list || !btn) return;
 
-    var originals = Array.prototype.slice.call(track.children);
-    if (originals.length < 2) return null;
+    var extras = list.querySelectorAll('.quotes__extra');
+    // Nothing to collapse: fewer reviews than the fold allows. Leave the
+    // button hidden rather than offering to expand nothing.
+    if (!extras.length) return;
 
-    var SPEED = cfg.speed || 32;   // px per second
-    var HOLD = 2800;               // ms of stillness after a drag or swipe
-    var COPIES = 3;                // sets in the track; index 1 is home
+    var label = btn.querySelector('[data-more-label]');
+    var MORE = 'Read More Reviews';
+    var LESS = 'Show Fewer Reviews';
 
-    var active = false, built = false, dragging = false, hovering = false;
-    var holding = false, onScreen = true, holdTimer = null;
-    var startX = 0, startScroll = 0, last = 0, frame = null, moved = false;
-    var pos = 0;                   // the drift position we own, in float px
-    var setW = 0;                  // cached width of one set
+    function set(open) {
+      list.classList.toggle('is-clipped', !open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (label) label.textContent = open ? LESS : MORE;
+    }
 
-    function build() {
-      if (built) return;
-      for (var c = 1; c < COPIES; c++) {
-        originals.forEach(function (card) {
-          var copy = card.cloneNode(true);
-          // The same cards over again. Announced once.
-          copy.setAttribute('aria-hidden', 'true');
-          copy.setAttribute('data-clone', '');
-          /* Clones stay fully tappable — they are the same link, and a card
-             that looks live but eats the tap is worse than a duplicate. They
-             come out of the TAB ORDER, though: a focusable element inside
-             aria-hidden is invalid ARIA, and without this a keyboard user
-             tabs through three identical copies of every card, two of which
-             are scrolled out of sight. An id would be duplicated too, so any
-             that come along get dropped. */
-          copy.querySelectorAll('a[href],button,input,select,textarea,[tabindex]')
-            .forEach(function (el) { el.setAttribute('tabindex', '-1'); });
-          copy.querySelectorAll('[id]').forEach(function (el) { el.removeAttribute('id'); });
-          if (copy.id) copy.removeAttribute('id');
-          track.appendChild(copy);
-        });
+    set(false);
+    btn.hidden = false;
+
+    btn.addEventListener('click', function () {
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      set(!open);
+
+      /* Collapsing can leave the reader below the section's new bottom, so
+         the page jumps and the reviews they were reading are gone. Put them
+         back at the top of the section instead. Only on collapse — on expand
+         the next card is already where they are looking. */
+      if (open) {
+        var sec = document.getElementById('quotes');
+        if (sec && sec.getBoundingClientRect().top < 0) {
+          sec.scrollIntoView({ block: 'start' });
+        }
       }
-      built = true;
-    }
-
-    function strip() {
-      track.querySelectorAll('[data-clone]').forEach(function (c) { c.remove(); });
-      built = false;
-      setW = 0;
-    }
-
-    // One set, gaps included. Measured off the DOM so a gap change in CSS needs
-    // no matching edit here — but measured ONCE and cached, because offsetLeft
-    // forces a layout flush, and doing that every frame next to a scroll write
-    // is textbook layout thrashing. That was what made the drift stutter.
-    function measure() {
-      setW = built
-        ? track.children[originals.length].offsetLeft - track.children[0].offsetLeft
-        : 0;
-    }
-
-    // Keep the position inside the middle set, in both directions, because the
-    // rail can be dragged backwards as far as anyone likes.
-    function wrapped(x) {
-      if (setW <= 0) return x;
-      if (x >= setW * 2) return x - setW;
-      if (x < setW) return x + setW;
-      return x;
-    }
-
-    function idle() {
-      return active && !dragging && !hovering && !holding && onScreen &&
-             !document.hidden && !reduced.matches;
-    }
-
-    function tick(now) {
-      var dt = now - last;
-      last = now;
-      // A backgrounded tab returns one enormous dt; capping it stops the rail
-      // teleporting on the first frame back.
-      if (dt > 80) dt = 80;
-
-      if (idle()) {
-        /* The position is accumulated here as a float and then assigned, never
-           read back out of scrollLeft and added to. At this speed a frame is
-           well under a pixel, and browsers round the value they hand back from
-           scrollLeft — so `scrollLeft += 0.4` reads 0, writes 0.4, reads 0
-           again, and the rail never moves at all. Owning the number is what
-           makes a sub-pixel-per-frame drift possible. */
-        pos = wrapped(pos + SPEED * dt / 1000);
-        rail.scrollLeft = pos;
-      } else if (active) {
-        /* Someone else is driving — a drag, a swipe still carrying momentum,
-           a wheel, an arrow key. Follow their position rather than write one,
-           because assigning scrollLeft mid-momentum cancels the momentum.
-           The one exception is the seam, where the wrap has to happen. */
-        pos = rail.scrollLeft;
-        var w = wrapped(pos);
-        if (w !== pos) { pos = w; rail.scrollLeft = w; }
-      }
-
-      frame = requestAnimationFrame(tick);
-    }
-
-    // Any interaction stops the drift, then it eases back in after a pause.
-    function hold() {
-      if (!active) return;
-      holding = true;
-      clearTimeout(holdTimer);
-      holdTimer = setTimeout(function () { holding = false; }, HOLD);
-    }
-
-    /* --- mouse drag ---------------------------------------------------- *
-     * Touch and pen are left strictly alone: the browser already scrolls
-     * them, with momentum this code could only approximate badly. Taking
-     * those over with pointermove would make the rail worse, not better. */
-    rail.addEventListener('pointerdown', function (e) {
-      if (!active) return;
-      hold();
-      /* Cleared for every pointer type, not just mouse. A mouse drag that
-         ends off the rail fires no click on it, so the flag below stayed
-         true and the click-suppressor ate the NEXT genuine one. Harmless
-         while the cards were inert; not harmless now they are links. */
-      moved = false;
-      if (e.pointerType !== 'mouse' || e.button !== 0) return;
-      dragging = true;
-      startX = e.clientX;
-      startScroll = rail.scrollLeft;
-      rail.classList.add('is-dragging');
-      if (rail.setPointerCapture) rail.setPointerCapture(e.pointerId);
     });
-
-    rail.addEventListener('pointermove', function (e) {
-      if (!dragging) return;
-      e.preventDefault();
-      if (Math.abs(e.clientX - startX) > 4) moved = true;
-      rail.scrollLeft = startScroll - (e.clientX - startX);
-    });
-
-    function endDrag(e) {
-      if (!dragging) return;
-      dragging = false;
-      rail.classList.remove('is-dragging');
-      if (rail.releasePointerCapture && e.pointerId != null) {
-        try { rail.releasePointerCapture(e.pointerId); } catch (err) {}
-      }
-      hold();
-    }
-    rail.addEventListener('pointerup', endDrag);
-    rail.addEventListener('pointercancel', endDrag);
-
-    // A drag that ends on a card must not also register as a click on it.
-    // Keyed off actual movement during THIS drag — comparing scroll positions
-    // instead would misfire after a touch swipe, which never sets startScroll.
-    rail.addEventListener('click', function (e) {
-      if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
-    }, true);
-
-    /* --- everything else that should stop it ---------------------------- */
-    rail.addEventListener('mouseenter', function () { hovering = true; });
-    rail.addEventListener('mouseleave', function () { hovering = false; });
-    rail.addEventListener('focusin', function () { hovering = true; });
-    rail.addEventListener('focusout', function () { hovering = false; });
-    rail.addEventListener('wheel', hold, { passive: true });
-    rail.addEventListener('touchstart', hold, { passive: true });
-    rail.addEventListener('keydown', hold);
-
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (entries) {
-        onScreen = entries[0].isIntersecting;
-      }, { threshold: 0 }).observe(rail);
-    }
-
-    function enable() {
-      if (active) return;
-      active = true;
-      build();
-      rail.classList.add('is-live');
-      // A scroll region has to be reachable by keyboard. Set here rather than
-      // in the HTML so a rail that is only live on phones does not leave a
-      // dead tab stop on desktop.
-      rail.setAttribute('tabindex', '0');
-      measure();
-      // Park in the middle set so there is a full set to drag into either way.
-      pos = setW;
-      rail.scrollLeft = pos;
-      if (frame) cancelAnimationFrame(frame);
-      last = performance.now();
-      frame = requestAnimationFrame(tick);
-    }
-
-    function disable() {
-      if (!active) return;
-      active = false;
-      if (frame) { cancelAnimationFrame(frame); frame = null; }
-      clearTimeout(holdTimer);
-      holding = dragging = false;
-      rail.classList.remove('is-live', 'is-dragging');
-      rail.removeAttribute('tabindex');
-      strip();
-      rail.scrollLeft = 0;
-    }
-
-    function remeasure() {
-      if (!active) return;
-      measure();
-      pos = wrapped(rail.scrollLeft);
-      rail.scrollLeft = pos;
-    }
-
-    return { enable: enable, disable: disable, remeasure: remeasure };
-  }
-
-  var rails = [];
-
-  /* Testimonials: always a rail, at every width. The ONLY driftRail on the
-     site now.
-
-     The line-up used to be the second one — a three-up grid on desktop that
-     became a drifting, swipeable rail below 720px. It was removed on request
-     and is now plain page flow that wraps: three across, then two, then one.
-     Nothing to enable here, and no matchMedia to watch, because there is no
-     longer a width at which the section behaves differently.
-
-     driftRail itself stays. It is still the testimonials' engine, and the
-     factory is written against a config rather than against either caller. */
-  var quotes = driftRail({ rail: '.quotes__rail', track: '.quotes__track', speed: 32 });
-  if (quotes) { quotes.enable(); rails.push(quotes); }
-
-  // No reduced-motion listener is needed: idle() reads reduced.matches on every
-  // frame, so toggling the setting takes effect on the next one. The loop keeps
-  // running either way — dragging and swiping still work, which is the point.
-  // The setting turns off motion nobody asked for, not the rail.
-
-  var railResize;
-  window.addEventListener('resize', function () {
-    clearTimeout(railResize);
-    // Card widths are vw-based, so the loop distance changes with the viewport
-    // and the cached set width has to be re-derived or the seam drifts.
-    railResize = setTimeout(function () {
-      rails.forEach(function (r) { r.remeasure(); });
-    }, 200);
-  });
+  })();
 
   /* ------------------------------------------------------------------ *
    * 4c. Video lightbox.

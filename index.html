@@ -769,10 +769,18 @@
 
     <p class="quotes__note">From the event directors, HR leads, and executive assistants who put their name on the booking.</p>
 
-    <!-- tabindex makes the scroll region reachable by keyboard: without it the
-         rail is draggable and swipeable but unreachable by arrow keys. -->
-    <div class="quotes__rail" role="group" aria-label="Testimonials, drag or swipe to browse" tabindex="0">
-      <div class="quotes__track">
+    <!--
+      Plain page flow that wraps: three across, two on tablets, one per row on
+      phones. This was a drifting, draggable, cloned rail at every width; it
+      was removed on request, along with the line-up's.
+
+      The first three show by default and the rest are revealed by the button
+      below. That collapse is applied BY SCRIPT, not in the markup: with no
+      JavaScript every review is simply present, which is also what a crawler
+      sees. Hiding four reviews in HTML and relying on a script to bring them
+      back would mean a script failure takes content off the page for good.
+    -->
+    <div class="quotes__grid" id="quotelist">
 
       <blockquote class="quote is-sample">
         <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
@@ -814,7 +822,7 @@
         </footer>
       </blockquote>
 
-      <blockquote class="quote is-sample">
+      <blockquote class="quote quotes__extra is-sample">
         <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
         <p>
           Half our guests had never met the other half. Twenty minutes in, people who
@@ -827,7 +835,7 @@
         </footer>
       </blockquote>
 
-      <blockquote class="quote is-sample">
+      <blockquote class="quote quotes__extra is-sample">
         <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
         <p>
           We were three stands down from the coffee and getting nothing. Brandon
@@ -840,7 +848,7 @@
         </footer>
       </blockquote>
 
-      <blockquote class="quote is-sample">
+      <blockquote class="quote quotes__extra is-sample">
         <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
         <p>
           I booked it for my husband and ended up enjoying it more than he did. Kent
@@ -852,7 +860,7 @@
         </footer>
       </blockquote>
 
-      <blockquote class="quote quote--shot is-sample">
+      <blockquote class="quote quotes__extra quote--shot is-sample">
         <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
         <p>
           Our drinks reception is the slot people normally skip to go back to their
@@ -868,8 +876,21 @@
         </footer>
       </blockquote>
 
-      </div>
     </div>
+
+    <!--
+      Hidden until script.js collapses the list, so a reader without
+      JavaScript is never shown a button that does nothing. aria-expanded is
+      the state; the label changes with it so the button reads correctly
+      whether or not the surrounding text is being announced.
+    -->
+    <p class="quotes__more">
+      <button class="btn btn--ghost" type="button" id="quotes-more"
+              hidden aria-expanded="false" aria-controls="quotelist">
+        <span data-more-label>Read More Reviews</span>
+      </button>
+    </p>
+
   </div>
 </section>
 
