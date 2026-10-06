@@ -142,7 +142,7 @@
   at that point loses nothing.
 -->
 <section class="sec sec--night callform" id="booking" aria-labelledby="booking-h">
-  <span class="deco deco--spot deco--fan deco--grain" aria-hidden="true"></span>
+  <span class="deco deco--top deco--grain" aria-hidden="true"></span>
   <!--
     The heading sits in its OWN .wrap, outside .callform__in, so it can use the
     full 1320px column while the form stays at 720px.
@@ -425,7 +425,7 @@
   one-conversion rule. Nothing here states a price, a client or a headcount.
 -->
 <section class="sec sec--night services" id="services" aria-labelledby="services-h">
-  <span class="deco deco--suit deco--grain deco--vignette" aria-hidden="true"></span>
+  <span class="deco deco--top deco--grain" aria-hidden="true"></span>
   <div class="wrap">
 
     <div class="rulepair rulepair--sec" aria-hidden="true"><i></i><i></i></div>
@@ -565,7 +565,7 @@
   booth on the other — and all three performers sit well inside the crop.
 -->
 <section class="sec sec--night gallery" id="gallery" aria-labelledby="gallery-h">
-  <span class="deco deco--spot deco--grain" aria-hidden="true"></span>
+  <span class="deco deco--top deco--grain" aria-hidden="true"></span>
   <div class="wrap">
 
     <div class="rulepair rulepair--sec" aria-hidden="true"><i></i><i></i></div>
@@ -654,7 +654,7 @@
   with the real profiles; nothing here needs to change when you do.
 -->
 <section class="about" id="about" aria-labelledby="about-h">
-  <span class="deco deco--spots3 deco--grain" aria-hidden="true"></span>
+  <span class="deco deco--top deco--grain" aria-hidden="true"></span>
   <div class="wrap">
 
     <header class="sechead">
@@ -808,7 +808,7 @@
   and the "Read more reviews" button below re-enables itself.
 -->
 <section class="sec sec--night quotes" id="quotes" aria-labelledby="quotes-h">
-  <span class="deco deco--quote deco--grain" aria-hidden="true"></span>
+  <span class="deco deco--top deco--quote deco--grain" aria-hidden="true"></span>
   <div class="wrap">
 
     <header class="sechead">
@@ -847,11 +847,12 @@
         </footer>
       </blockquote>
 
-      <!-- Nathan's Google avatar is their default letter-circle with a Local
-           Guide badge burnt into it, in Google's own typeface. Importing that
-           would put another platform's furniture on the page, so he gets this
-           site's monogram like every reviewer without a real photograph. -->
-      <blockquote class="quote">
+      <!-- Nathan's own Google avatar, kept as Google renders it: their letter
+           circle, their typeface, their colour, Local Guide badge and all. It
+           was a site monogram until the client asked for the real thing, and
+           the real thing is what a reader recognises as a Google review.
+           The photograph is the one he attached to the review himself. -->
+      <blockquote class="quote quote--shot">
         <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
         <span class="sr-only">Rated 5 out of 5</span>
         <div class="quote__body">
@@ -864,8 +865,11 @@
             literally MAKE the event a success.
           </p>
         </div>
+        <figure class="quote__shot">
+          <img draggable="false" src="images/site/review-nathan-photo.jpg" alt="Kent Axell performing to a standing crowd under balloon clusters and pendant lights at an evening event" width="1200" height="900" loading="lazy" decoding="async">
+        </figure>
         <footer>
-          <span class="quote__avatar" aria-hidden="true">NG</span><span class="quote__who"><b>Nathan Gorrondona</b><span>Google review</span></span>
+          <img class="quote__avatar quote__avatar--photo" src="images/site/review-nathan-avatar.png" alt="" width="144" height="144" loading="lazy" decoding="async"><span class="quote__who"><b>Nathan Gorrondona</b><span>Google review</span></span>
         </footer>
       </blockquote>
 
@@ -907,13 +911,11 @@
   </div>
 </section>
 
-<span class="fleuron fleuron--between" aria-hidden="true"></span>
-
 <!-- ============ FINAL CALL ============ -->
 <!-- Returns to the one form near the top rather than opening a second,
      longer one. A page with two different forms makes a visitor choose. -->
 <section class="sec sec--night finalcall" aria-labelledby="finalcall-h">
-  <span class="deco deco--sunburst deco--spot deco--grain" aria-hidden="true"></span>
+  <span class="deco deco--top deco--spot deco--grain" aria-hidden="true"></span>
   <div class="wrap finalcall__in">
     <p class="eyebrow">Ready when you are</p>
     <h2 class="h2 h2--gold hl" id="finalcall-h"><span class="hl__l">Tell us what</span>

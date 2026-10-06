@@ -255,11 +255,36 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    Everything stays transparent so the photograph reads through. */
 .bill__name .word{display:inline-block; background:none}
 .bill__name .ltr{display:inline-block; background:none; transform-origin:50% 50%}
-.rulepair{display:flex; flex-direction:column; gap:3px; width:100%; margin:clamp(20px,2.6vw,34px) 0 clamp(18px,2.2vw,28px)}
-.rulepair i{display:block; height:2px; background:linear-gradient(to right,rgba(200,168,80,.18),var(--gold),rgba(200,168,80,.18)); }
-.rulepair i:last-child{height:1px; opacity:.6}
+/* The section rule, as a deco marquee divider rather than two plain lines.
+   Three changes, all borrowed from the lettering this world already uses:
+   the long rule fades to nothing at both ends instead of to a dim gold, the
+   second rule is short and centred under it rather than the same length, and
+   a gold lozenge sits on the join. That stepped-and-centred arrangement is
+   what a 1930s bill actually did between blocks; two equal lines is what a
+   stylesheet does by default. */
+.rulepair{
+  position:relative;
+  display:flex; flex-direction:column; align-items:center; gap:5px;
+  width:100%; margin:clamp(20px,2.6vw,34px) 0 clamp(18px,2.2vw,28px);
+}
+.rulepair i{
+  display:block; width:100%; height:2px;
+  background:linear-gradient(90deg, transparent, var(--gold-deep) 10%, var(--gold) 50%, var(--gold-deep) 90%, transparent);
+}
+.rulepair i:last-child{
+  height:1px; width:min(46%,320px); opacity:.85;
+  background:linear-gradient(90deg, transparent, var(--gold-deep) 22%, var(--gold-deep) 78%, transparent);
+}
+/* the lozenge, sitting astride both rules */
+.rulepair::after{
+  content:""; position:absolute; left:50%; top:1px;
+  width:7px; height:7px; translate:-50% 0; rotate:45deg;
+  background:var(--gold);
+}
 .rulepair--sec{margin:0 0 clamp(26px,3.4vw,46px)}
-.sec--bill .rulepair--sec i{background:linear-gradient(to right,var(--ink),rgba(20,16,12,.16))}
+.sec--bill .rulepair--sec i{background:linear-gradient(90deg, transparent, var(--ink) 10%, var(--ink) 90%, transparent)}
+.sec--bill .rulepair--sec i:last-child{background:linear-gradient(90deg, transparent, rgba(20,16,12,.45) 22%, rgba(20,16,12,.45) 78%, transparent)}
+.sec--bill .rulepair--sec::after{background:var(--ink)}
 
 /* Tight to the title. This block holds the subtitle and the buttons, and at
    58px it left the subtitle floating mid-air rather than reading as a line
@@ -1344,10 +1369,15 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    Was a drifting, draggable, cloned rail at every width. Removed on request.
    -------------------------------------------------------------------------- */
 .quotes{--qgap:clamp(24px,2.6vw,32px)}
+/* start, not stretch. Stretch made every card as tall as the tallest, which
+   was fine when all seven were invented and the same length; with real reviews
+   of real lengths, and a photograph on one of them, it left two hundred pixels
+   of empty panel in the cards either side. Each card is now its own height.
+   Three unequal cards in a row is what three unequal reviews look like. */
 .quotes__grid{
   display:grid; grid-template-columns:repeat(3,1fr);
   gap:var(--qgap);
-  align-items:stretch;
+  align-items:start;
 }
 @media (max-width:900px){
   .quotes__grid{grid-template-columns:repeat(2,1fr)}
@@ -1385,7 +1415,7 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    piece of proof the page has; they were reading as caption-grade text. */
 .quote__body{flex:1; display:flex; flex-direction:column; gap:13px}
 .quote__body p{flex:0 0 auto}
-.quote p{color:var(--night-tx); font-size:14.5px; font-weight:400; line-height:1.75; margin:0}
+.quote p{color:#fff; font-size:14.5px; font-weight:400; line-height:1.75; margin:0}
 
 /* The "more" control. A real button, not a link: it reveals text in place and
    goes nowhere, and a link that does not navigate is a lie to a screen reader.
@@ -1472,17 +1502,22 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    slack instead of the paragraph: .quote p gives up flex:1 and the figure
    claims it. The two cards with photos end up exactly as tall as they were,
    and the picture simply occupies the gap the short quote left behind. */
-.quote--shot .quote__body{flex:0 0 auto}
 /* A pair, side by side. As grid items the two images stretch to the row height
    on their own, which is why neither needs absolute positioning any more. */
+/* auto-fit, so one photograph fills the width and two still sit side by side.
+   The old fixed 1fr 1fr left a single image stranded in the left half. */
+/* Fixed ratio rather than "take whatever slack is left". The old rule existed
+   to soak up the dead space that stretch created; with the cards sized to
+   their content there is no slack to soak, and a photograph that changes
+   height with its neighbours' word count is not a photograph, it is a spacer. */
 .quote__shot{
-  flex:1 1 auto; min-height:104px;
-  margin:0; display:grid; grid-template-columns:1fr 1fr; gap:8px;
+  flex:0 0 auto;
+  margin:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(45%,1fr)); gap:8px;
 }
 .quote__shot img{
-  display:block; width:100%; height:100%; min-height:0;
+  display:block; width:100%; height:auto; aspect-ratio:4/3;
   object-fit:cover;
-  filter:brightness(.74) saturate(.92);
+  filter:brightness(.82) saturate(.95);
 }
 
 
@@ -2153,94 +2188,52 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 }
 
 /* --------------------------------------------------------------------------
-   Spotlight
-   A soft warm pool behind the heading, as if one lamp were aimed at it.
-   Positioned with background-position so each section can aim its own.
+   Light from above: THE decoration grammar for this page.
+
+   There used to be five of these - edge fans, a sunburst, a spade watermark, a
+   vignette and three pools on the thirds - one per section, each inventing its
+   own idea. Five different ornaments across six sections is not a system, it
+   is the look of something assembled, and two of them (hairline grids used as
+   decoration, a glow with no source) are on every list of the tells this kind
+   of page gives off.
+
+   One gesture now, repeated: a whisper of warm light decaying from the top
+   edge, as if each section sat under the same lamp. It carries the warmth, it
+   costs one gradient, and it reads as intentional precisely because it does
+   not change from section to section. The tones do the separating; this does
+   the atmosphere.
    -------------------------------------------------------------------------- */
+.deco--top::before{
+  content:""; position:absolute; left:0; right:0; top:0; height:clamp(140px,22vw,260px);
+  background:linear-gradient(180deg, rgba(200,168,80,.05), transparent);
+}
+
+/* The one place that gets more than the others, because it is the last thing
+   asked of a visitor. Spend the boldness once. */
 .deco--spot::before{
   content:""; position:absolute; inset:0;
-  background:radial-gradient(60% 46% at 50% 0%, var(--deco-glow), transparent 70%);
-}
-/* three pools instead of one, on the thirds — reads as a lit row */
-.deco--spots3::before{
-  content:""; position:absolute; inset:0;
-  background:
-    radial-gradient(26% 30% at 16.6% 34%, var(--deco-glow), transparent 68%),
-    radial-gradient(26% 30% at 50%   30%, var(--deco-glow), transparent 68%),
-    radial-gradient(26% 30% at 83.3% 34%, var(--deco-glow), transparent 68%);
+  background:radial-gradient(54% 60% at 50% 16%, rgba(200,168,80,.11), transparent 72%);
 }
 
-/* --------------------------------------------------------------------------
-   Vignette
-   Darkens the corners so the middle of a section reads as the lit part.
-   -------------------------------------------------------------------------- */
-.deco--vignette{
-  box-shadow:inset 0 0 clamp(80px,14vw,220px) rgba(0,0,0,.55);
-}
 
-/* --------------------------------------------------------------------------
-   Deco edge pattern
-   A fan of hairlines along one edge. repeating-linear-gradient rather than an
-   SVG because the angle and spacing then scale with the box for free.
-   -------------------------------------------------------------------------- */
-.deco--fan::before{
-  content:""; position:absolute; top:0; bottom:0; left:0; width:min(16vw,190px);
-  background:repeating-linear-gradient(68deg, transparent 0 13px, var(--deco-line) 13px 14px);
-  -webkit-mask-image:linear-gradient(90deg,#000,transparent);
-          mask-image:linear-gradient(90deg,#000,transparent);
-}
-.deco--fan::after{
-  content:""; position:absolute; top:0; bottom:0; right:0; width:min(16vw,190px);
-  background:repeating-linear-gradient(-68deg, transparent 0 13px, var(--deco-line) 13px 14px);
-  -webkit-mask-image:linear-gradient(270deg,#000,transparent);
-          mask-image:linear-gradient(270deg,#000,transparent);
-}
 
-/* Sunburst — the deco motif proper. A fan of rays from a point above the
-   headline. Same reasoning as the quote mark: hairline rays spread over a
-   1100px circle need more alpha than a solid shape to register at all. */
-.deco--sunburst::before{
-  content:""; position:absolute;
-  left:50%; top:-26%; width:min(1100px,130%); aspect-ratio:1;
-  translate:-50% 0;
-  background:repeating-conic-gradient(from -90deg at 50% 50%,
-    rgba(200,168,80,.10) 0deg 1.2deg, transparent 1.2deg 6.4deg);
-  -webkit-mask-image:radial-gradient(closest-side,#000 14%,transparent 66%);
-          mask-image:radial-gradient(closest-side,#000 14%,transparent 66%);
-}
 
-/* --------------------------------------------------------------------------
-   Watermarks
-   A suit, and a quotation mark, set large and cropped by the section edge so
-   they read as texture rather than as a graphic someone placed.
-   -------------------------------------------------------------------------- */
-.deco--suit::before{
-  content:""; position:absolute;
-  right:-6%; top:12%; width:min(46vw,520px); aspect-ratio:1;
-  background:var(--deco-mark);
-  /* spade, drawn as a mask so the fill stays one flat brand gold */
-  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C9 6 4 8.5 4 13a4 4 0 0 0 7 2.7c-.2 2.3-1 4-2.4 5.3h6.8C14 19.7 13.2 18 13 15.7A4 4 0 0 0 20 13c0-4.5-5-7-8-11z'/%3E%3C/svg%3E") no-repeat center / contain;
-          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C9 6 4 8.5 4 13a4 4 0 0 0 7 2.7c-.2 2.3-1 4-2.4 5.3h6.8C14 19.7 13.2 18 13 15.7A4 4 0 0 0 20 13c0-4.5-5-7-8-11z'/%3E%3C/svg%3E") no-repeat center / contain;
-}
-/* Top left and cropped by the section edge, NOT centred. Centred it lands
-   squarely behind the heading, where it is both invisible against the text
-   and competing with it — the one place a watermark must not be. Out here it
-   has empty ground to read against.
+/* The supplied quotation mark, drawn rather than typed. It was the "C"
+   glyph in the display face, which meant its weight and proportion were
+   whatever Josefin happened to give it. This is the mark the client sent: two
+   heavy geometric blocks with a tail falling away to the left, mirrored
+   horizontally as asked.
 
-   Deliberately stronger than --deco-mark too: a quote mark this size is mostly
-   empty space with two thin strokes in it, so at the 3.5% that reads correctly
-   on a solid shape like the spade it disappears entirely. Thin marks need more
-   alpha than solid ones to carry the same weight. */
+   A mask rather than a fill, so the colour stays a brand token instead of
+   being baked into the data URI. */
 .deco--quote::before{
-  content:"\201C";
-  position:absolute; left:1.5%; top:0;
-  font-family:var(--disp); font-weight:700;
-  /* line-height:1, not a tight one. Under 1 the half-leading goes negative and
-     the glyph is painted ABOVE the element's own top edge, where the section's
-     overflow:clip takes most of it — which rendered as two stray blocks in the
-     corner rather than as a quotation mark. */
-  font-size:min(34vw,380px); line-height:1;
-  color:rgba(200,168,80,.085);
+  content:""; position:absolute;
+  left:-1.5%; top:-2%;
+  width:min(32vw,370px); aspect-ratio:230/100;
+  background:rgba(200,168,80,.085);
+  transform:scaleX(-1);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 230 100'%3E%3Cpath d='M0 0H100V58L55 100H18L62 58H0Z M130 0H230V58L185 100H148L192 58H130Z'/%3E%3C/svg%3E") no-repeat center / contain;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 230 100'%3E%3Cpath d='M0 0H100V58L55 100H18L62 58H0Z M130 0H230V58L185 100H148L192 58H130Z'/%3E%3C/svg%3E") no-repeat center / contain;
 }
 
 /* --------------------------------------------------------------------------
@@ -2319,9 +2312,7 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 /* FORM — a lamp on the headline, deco fans down both edges, and a gold frame
    with deco corners around the form itself. */
 .callform__in{position:relative; z-index:1}
-.callform .deco--fan::before,
-.callform .deco--fan::after{top:8%; bottom:auto; height:62%}
-.formframe{
+.callform .formframe{
   position:relative;
   border:1px solid rgba(200,168,80,.20);
   padding:clamp(22px,3vw,40px);
@@ -2383,9 +2374,6 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   border-top:1px solid rgba(200,168,80,.26);
   border-bottom:1px solid rgba(200,168,80,.26);
 }
-.finalcall .deco--spot::before{
-  background:radial-gradient(54% 60% at 50% 18%, rgba(200,168,80,.13), transparent 70%);
-}
 
 /* --------------------------------------------------------------------------
    Phones
@@ -2393,13 +2381,7 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    behind a headline is not atmosphere, it is a texture fighting the text.
    -------------------------------------------------------------------------- */
 @media (max-width:767px){
-  .deco--fan::before,
-  .deco--fan::after,
-  .deco--sunburst::before,
-  .deco--suit::before{display:none}
-  .deco--quote::before{font-size:min(70vw,300px); opacity:.6}
-  .deco--vignette{box-shadow:none}
-  .deco--grain::after{opacity:.03}
+      .deco--grain::after{opacity:.03}
   .srow__fig::before{inset:7px; opacity:.4}
   .formframe{padding:clamp(16px,4vw,22px)}
   .fleuron--between{padding-block:clamp(20px,6vw,30px)}
