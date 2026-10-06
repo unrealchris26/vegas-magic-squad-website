@@ -1,32 +1,45 @@
 <!doctype html>
-<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<html lang="en" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="x-apple-disable-message-reformatting">
 <meta name="format-detection" content="telephone=no">
-<meta name="color-scheme" content="light">
-<meta name="supported-color-schemes" content="light">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
 <title>New booking inquiry</title>
 <!--[if mso]>
 <noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
 <![endif]-->
 <style>
-  /* The only style block in the file. Everything that matters is inlined
-     below; this carries the three things an inline attribute cannot express.
-     Gmail keeps head styles, Outlook keeps the media query out of the way, and
-     a client that strips all of it still gets a correct single-column email. */
-  @media only screen and (max-width:620px){
-    .pad       { padding-left:20px !important; padding-right:20px !important; }
-    .stackpad  { padding-left:20px !important; padding-right:20px !important; }
-    .btn-a     { display:block !important; width:auto !important; }
-    .h1        { font-size:23px !important; }
-    .big       { font-size:17px !important; }
+  /* Same conventions as the customer confirmation so the two read as one
+     family: .bg for the ground, .pad-x for the gutter, .h1 for the headline. */
+  body, table, td, a { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+  table, td { mso-table-lspace:0pt; mso-table-rspace:0pt; }
+  img { -ms-interpolation-mode:bicubic; border:0; outline:none; text-decoration:none; }
+
+  /* This email is dark by design, so the job here is to stop clients
+     "helpfully" inverting it. Outlook.com uses [data-ogsc]. */
+  [data-ogsc] .bg    { background-color:#07090f !important; }
+  [data-ogsc] .panel { background-color:#0d1119 !important; }
+  [data-ogsc] .tx    { color:#efe9dd !important; }
+  [data-ogsc] .gold  { color:#e6d193 !important; }
+  [data-ogsc] .dim   { color:#a89c89 !important; }
+
+  @media (prefers-color-scheme: dark) {
+    .bg    { background-color:#07090f !important; }
+    .panel { background-color:#0d1119 !important; }
+    .tx    { color:#efe9dd !important; }
+    .gold  { color:#e6d193 !important; }
+    .dim   { color:#a89c89 !important; }
   }
-  /* Stop iOS and Gmail auto-linking the phone/date in their own blue. Ours
-     are already real links; theirs would be a second, unstyled one. */
-  a[x-apple-data-detectors]{color:inherit !important; text-decoration:none !important; font-size:inherit !important; font-family:inherit !important; font-weight:inherit !important; line-height:inherit !important;}
-  u + #body a{color:inherit; text-decoration:none; font-size:inherit; font-family:inherit; font-weight:inherit; line-height:inherit;}
+
+  @media only screen and (max-width:480px) {
+    .pad-x { padding-left:24px !important; padding-right:24px !important; }
+    .h1    { font-size:29px !important; line-height:1.06 !important; }
+    .logo  { width:132px !important; max-width:132px !important; }
+    .btn-a { display:block !important; }
+  }
 </style>
 </head>
 
@@ -38,210 +51,217 @@
 
   SUBJECT    New booking inquiry: {{contact.name}}
   PREHEADER  New Vegas Magic Squad booking inquiry. Reply fast.
-             (the preheader is also the first element in the body, hidden)
+
+  WHY THERE IS NO VML HERE, AND WHY THAT IS THE FIX
+  The first version wrapped the CTA in the usual bulletproof pair: a
+  v:roundrect inside an mso conditional, and the real anchor inside a
+  downlevel-revealed conditional. The button did not render in GoHighLevel.
+
+  In the downlevel-revealed form the anchor sits BETWEEN the opening marker and
+  the endif rather than outside them. A sanitizer that treats a conditional as
+  one unit, matching from the opening marker through to the endif, therefore
+  takes the anchor with it and leaves nothing to render.
+
+  So there are no conditional comments around the button now. It is a table
+  cell carrying the background colour with a padded anchor inside, which every
+  client renders including Word-engine Outlook. VML is only needed for rounded
+  corners, and this design has square ones, so it was buying nothing and
+  costing the whole control.
+
+  The customer confirmation email still uses the VML pattern and still renders,
+  so it has been left alone. If it ever disappears the same way, this is the
+  fix to port across.
 
   ONE THING THAT WILL BITE YOU IF IT IS MISSED
   The contact. tags only resolve once a contact exists. If the workflow is
   Inbound Webhook -> Send Email with nothing between, the name, email, phone
   and the GHL button link all render empty. Put a Create/Update Contact action
   before this email and map name / email / phone from the webhook first.
-  The inboundWebhookRequest. tags do not have this problem - they read
-  the raw POST body and work with or without a contact.
-
-  WHY IT IS DARK AT THE TOP AND LIGHT BELOW
-  This is the site's own two-grounds system, not a decoration. Night (#07090f)
-  is the marquee; bill (#f2ece0) is the printed handbill. An internal
-  notification is something you scan, forward and sometimes print, which is
-  what the bill ground is for. Branding sits in the band at the top where it
-  costs nothing.
+  The inboundWebhookRequest. tags do not have this problem - they read the raw
+  POST body and work with or without a contact.
 
   COLOURS, taken from styles.css :root
     --night #07090f   --night-2 #0d1119   --night-tx #efe9dd
-    --gold  #c8a850   --gold-hi #e6d193   --gold-ink #2a2008
-    --bill  #f2ece0   --bill-2  #e6ddcb   --ink #14100c   --ink-2 #574c3c
+    --gold  #c8a850   --gold-hi #e6d193   --night-tx2 #a89c89
     --red   #a8141d   --red-fg  #fdf6ea
-  #7d6228 is the site's --gold-bill: --gold-deep only reaches 4.15:1 on the
-  bill ground, this one clears 4.89:1. Used for every label on the light half.
+  #4a3f22 is the flattened hairline and #2e2718 the flattened panel border;
+  email clients do not render the fading gradient the site uses.
 
-  LOGO is signature-logo.png, not email-logo.png. Both are hosted and both
-  render, but signature-logo is colorType 6 with real per-pixel alpha, so it
-  sits on any dark value without having to match a flattened background. The
-  palette one is opaque and would show its own square.
+  LOGO is email-logo.png, the same file the confirmation uses: an opaque
+  palette PNG flattened onto #07090f, which is this email's ground, so it is
+  seamless. Served 2x (360x448), displayed at 180x224.
 -->
 
-<body id="body" style="margin:0; padding:0; width:100%; background-color:#07090f;">
+<body class="bg" style="margin:0; padding:0; background-color:#07090f; color:#efe9dd;">
 
-<!-- Preheader. Visible in the inbox list, never in the open email. The run of
-     zero-width joiners after it stops Gmail pulling body copy in behind it. -->
-<div style="display:none; font-size:1px; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all;">
+<!-- Preheader. Visible in the inbox list, never in the open email. -->
+<div style="display:none; font-size:1px; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all; font-family:Arial,sans-serif; color:#07090f;">
   New Vegas Magic Squad booking inquiry. Reply fast.
   &#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;&#8204;
 </div>
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; background-color:#07090f;">
+<table role="presentation" class="bg" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#07090f; margin:0; padding:0;">
   <tr>
     <td align="center" style="padding:0;">
 
-      <!--[if mso]><table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
+      <!--[if mso]>
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"><tr><td>
+      <![endif]-->
       <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%; max-width:600px; border-collapse:collapse;">
 
-        <!-- ============ MARQUEE BAND ============ -->
+        <!-- ============ HEADER ============ -->
         <tr>
-          <td class="pad" align="left" bgcolor="#07090f" style="background-color:#07090f; padding:26px 32px 22px 32px;">
-            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+          <td align="center" class="pad-x" style="padding:36px 40px 26px 40px;">
+            <img class="logo" src="https://vegas-magic-squad-website.vercel.app/images/site/email-logo.png" width="180" height="224" alt="Vegas Magic Squad" style="display:block; border:0; outline:none; text-decoration:none; width:180px; max-width:180px; height:auto;">
+          </td>
+        </tr>
+
+        <tr>
+          <td class="pad-x" style="padding:0 40px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr><td height="1" style="height:1px; line-height:1px; font-size:0; background-color:#4a3f22;">&nbsp;</td></tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- ============ LABEL + HEADLINE ============ -->
+        <tr>
+          <td class="pad-x" style="padding:38px 40px 0 40px;">
+            <p class="gold" style="margin:0 0 16px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:2.2px; text-transform:uppercase; color:#c8a850;">
+              New inquiry
+            </p>
+            <h1 class="h1 gold" style="margin:0 0 22px 0; font-family:'Josefin Sans','Century Gothic','Helvetica Neue',Arial,sans-serif; font-size:38px; font-weight:700; line-height:1.02; letter-spacing:0.3px; text-transform:uppercase; color:#e6d193;">
+              New booking<br>inquiry
+            </h1>
+          </td>
+        </tr>
+
+        <!-- ============ INTRO ============ -->
+        <tr>
+          <td class="pad-x" style="padding:0 40px;">
+            <p class="tx" style="margin:0 0 26px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:16px; line-height:1.62; color:#efe9dd;">
+              Someone has just submitted the booking form on the Vegas Magic
+              Squad website. Their details are below.
+            </p>
+          </td>
+        </tr>
+
+        <!-- ============ CONTACT DETAILS ============ -->
+        <tr>
+          <td class="pad-x" style="padding:0 40px 14px 40px;">
+            <table role="presentation" class="panel" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#0d1119; border:1px solid #2e2718; border-radius:0;">
               <tr>
-                <td valign="middle" style="padding:0 14px 0 0;">
-                  <img src="https://vegas-magic-squad-website.vercel.app/images/site/signature-logo.png"
-                       width="52" height="65" alt="Vegas Magic Squad"
-                       style="display:block; width:52px; height:65px; border:0; outline:none; text-decoration:none;">
-                </td>
-                <td valign="middle" style="padding:0;">
-                  <p style="margin:0 0 4px 0; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:10.5px; font-weight:800; letter-spacing:2.4px; text-transform:uppercase; color:#c8a850; line-height:1.3;">
-                    Website booking form
+                <td style="padding:22px 24px;">
+                  <p class="gold" style="margin:0 0 16px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:2.2px; text-transform:uppercase; color:#c8a850;">
+                    Contact details
                   </p>
-                  <p class="h1" style="margin:0; font-family:'Josefin Sans','Century Gothic','Helvetica Neue',Arial,Helvetica,sans-serif; font-size:27px; font-weight:700; letter-spacing:0.4px; text-transform:uppercase; line-height:1.1; color:#e6d193;">
-                    New booking inquiry
-                  </p>
+
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td class="dim" width="76" valign="top" style="width:76px; padding:0 10px 12px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:12px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:#a89c89; line-height:1.7;">Name</td>
+                      <td class="tx" valign="top" style="padding:0 0 12px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:16px; font-weight:700; color:#efe9dd; line-height:1.6; word-break:break-word;">{{contact.name}}</td>
+                    </tr>
+                    <tr>
+                      <td class="dim" width="76" valign="top" style="width:76px; padding:0 10px 12px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:12px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:#a89c89; line-height:1.7;">Email</td>
+                      <td valign="top" style="padding:0 0 12px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:16px; line-height:1.6; word-break:break-word;">
+                        <a class="gold" href="mailto:{{contact.email}}" style="color:#e6d193; text-decoration:underline;">{{contact.email}}</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="dim" width="76" valign="top" style="width:76px; padding:0 10px 0 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:12px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:#a89c89; line-height:1.7;">Phone</td>
+                      <td valign="top" style="padding:0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:16px; line-height:1.6; word-break:break-word;">
+                        <a class="gold" href="tel:{{contact.phone}}" style="color:#e6d193; text-decoration:underline;">{{contact.phone}}</a>
+                      </td>
+                    </tr>
+                  </table>
+
                 </td>
               </tr>
             </table>
           </td>
         </tr>
 
-        <!-- gold hairline: the site separates grounds with a rule, never a shadow -->
-        <tr><td height="2" bgcolor="#c8a850" style="height:2px; line-height:2px; font-size:0; background-color:#c8a850;">&nbsp;</td></tr>
-
-        <!-- ============ THE BILL ============ -->
+        <!-- ============ THEIR MESSAGE ============ -->
         <tr>
-          <td class="pad" bgcolor="#f2ece0" style="background-color:#f2ece0; padding:28px 32px 10px 32px;">
-            <p class="big" style="margin:0; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:16px; line-height:1.55; color:#14100c;">
-              New booking inquiry from the Vegas Magic Squad website.
-            </p>
-          </td>
-        </tr>
-
-        <!-- ---------- CONTACT DETAILS ---------- -->
-        <tr>
-          <td class="pad" bgcolor="#f2ece0" style="background-color:#f2ece0; padding:22px 32px 0 32px;">
-            <p style="margin:0 0 12px 0; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:11px; font-weight:800; letter-spacing:2.2px; text-transform:uppercase; color:#7d6228; line-height:1.3;">
-              Contact details
-            </p>
-
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; border-top:1px solid #d8cfb8;">
+          <td class="pad-x" style="padding:0 40px 14px 40px;">
+            <table role="presentation" class="panel" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#0d1119; border:1px solid #2e2718; border-radius:0;">
               <tr>
-                <td width="78" valign="top" style="padding:11px 10px 11px 0; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:12px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; color:#574c3c; line-height:1.5;">Name</td>
-                <td valign="top" style="padding:11px 0; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:16px; font-weight:700; color:#14100c; line-height:1.5; word-break:break-word;">{{contact.name}}</td>
-              </tr>
-              <tr>
-                <td width="78" valign="top" style="padding:11px 10px 11px 0; border-top:1px solid #d8cfb8; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:12px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; color:#574c3c; line-height:1.5;">Email</td>
-                <td valign="top" style="padding:11px 0; border-top:1px solid #d8cfb8; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:16px; line-height:1.5; word-break:break-word;">
-                  <a href="mailto:{{contact.email}}" style="color:#14100c; text-decoration:underline; text-underline-offset:2px;">{{contact.email}}</a>
-                </td>
-              </tr>
-              <tr>
-                <td width="78" valign="top" style="padding:11px 10px 11px 0; border-top:1px solid #d8cfb8; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:12px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; color:#574c3c; line-height:1.5;">Phone</td>
-                <td valign="top" style="padding:11px 0; border-top:1px solid #d8cfb8; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:16px; line-height:1.5; word-break:break-word;">
-                  <a href="tel:{{contact.phone}}" style="color:#14100c; text-decoration:underline; text-underline-offset:2px;">{{contact.phone}}</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-        <!-- ---------- THEIR MESSAGE ---------- -->
-        <tr>
-          <td class="pad" bgcolor="#f2ece0" style="background-color:#f2ece0; padding:26px 32px 0 32px;">
-            <p style="margin:0 0 12px 0; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:11px; font-weight:800; letter-spacing:2.2px; text-transform:uppercase; color:#7d6228; line-height:1.3;">
-              Their message
-            </p>
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
-              <tr>
-                <td bgcolor="#e6ddcb" style="background-color:#e6ddcb; padding:16px 18px; border-left:3px solid #c8a850;">
+                <td style="padding:22px 24px;">
+                  <p class="gold" style="margin:0 0 16px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:2.2px; text-transform:uppercase; color:#c8a850;">
+                    Their message
+                  </p>
                   <!-- white-space:pre-wrap keeps the visitor's own line breaks in
                        Gmail, Apple Mail and every webmail. Outlook's Word engine
                        ignores it and reflows to one paragraph; the words all
                        survive, only the breaks do not. word-break stops a pasted
                        URL pushing the table past 600px. -->
-                  <div style="margin:0; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:15px; line-height:1.65; color:#14100c; white-space:pre-wrap; word-break:break-word; overflow-wrap:break-word;">{{inboundWebhookRequest.message}}</div>
+                  <div class="tx" style="margin:0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:15px; line-height:1.65; color:#efe9dd; white-space:pre-wrap; word-break:break-word; overflow-wrap:break-word;">{{inboundWebhookRequest.message}}</div>
                 </td>
               </tr>
             </table>
           </td>
         </tr>
 
-        <!-- ---------- SMS CONSENT ---------- -->
+        <!-- ============ SMS CONSENT ============ -->
+        <!-- Its own panel because these two values decide whether the team may
+             legally text this person, and the line under it tells them to text.
+             A row buried in a list would be read past. -->
         <tr>
-          <td class="pad" bgcolor="#f2ece0" style="background-color:#f2ece0; padding:26px 32px 0 32px;">
-            <p style="margin:0 0 12px 0; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:11px; font-weight:800; letter-spacing:2.2px; text-transform:uppercase; color:#7d6228; line-height:1.3;">
-              SMS consent
-            </p>
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; border:1px solid #c8a850;">
+          <td class="pad-x" style="padding:0 40px;">
+            <table role="presentation" class="panel" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#0d1119; border:1px solid #2e2718; border-radius:0;">
               <tr>
-                <td style="padding:14px 18px 10px 18px;">
-                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+                <td style="padding:22px 24px;">
+                  <p class="gold" style="margin:0 0 16px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:2.2px; text-transform:uppercase; color:#c8a850;">
+                    SMS consent
+                  </p>
+
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
-                      <td valign="top" style="padding:0 10px 8px 0; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:14px; color:#574c3c; line-height:1.5;">Booking texts</td>
-                      <td valign="top" align="right" style="padding:0 0 8px 0; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:15px; font-weight:800; letter-spacing:0.6px; text-transform:uppercase; color:#14100c; line-height:1.5;">{{inboundWebhookRequest.sms_consent_transactional}}</td>
+                      <td class="tx" valign="top" style="padding:0 10px 10px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:15px; color:#efe9dd; line-height:1.6;">Booking texts</td>
+                      <td class="gold" valign="top" align="right" style="padding:0 0 10px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:15px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:#e6d193; line-height:1.6;">{{inboundWebhookRequest.sms_consent_transactional}}</td>
                     </tr>
                     <tr>
-                      <td valign="top" style="padding:8px 10px 0 0; border-top:1px solid #d8cfb8; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:14px; color:#574c3c; line-height:1.5;">Marketing texts</td>
-                      <td valign="top" align="right" style="padding:8px 0 0 0; border-top:1px solid #d8cfb8; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:15px; font-weight:800; letter-spacing:0.6px; text-transform:uppercase; color:#14100c; line-height:1.5;">{{inboundWebhookRequest.sms_consent_marketing}}</td>
+                      <td class="tx" valign="top" style="padding:10px 10px 0 0; border-top:1px solid #2e2718; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:15px; color:#efe9dd; line-height:1.6;">Marketing texts</td>
+                      <td class="gold" valign="top" align="right" style="padding:10px 0 0 0; border-top:1px solid #2e2718; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:15px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:#e6d193; line-height:1.6;">{{inboundWebhookRequest.sms_consent_marketing}}</td>
                     </tr>
                   </table>
-                </td>
-              </tr>
-              <tr>
-                <td bgcolor="#e6ddcb" style="background-color:#e6ddcb; padding:10px 18px; border-top:1px solid #d8cfb8;">
-                  <p style="margin:0; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:12.5px; line-height:1.55; color:#574c3c;">
-                    Text them only if <strong style="color:#14100c;">Booking texts</strong> says Yes. Calling and email are fine either way.
+
+                  <p class="dim" style="margin:16px 0 0 0; padding-top:14px; border-top:1px solid #2e2718; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:13px; line-height:1.6; color:#a89c89;">
+                    Text them only if <span class="tx" style="color:#efe9dd; font-weight:700;">Booking texts</span> says Yes. Calling and email are fine either way.
                   </p>
+
                 </td>
               </tr>
             </table>
           </td>
         </tr>
 
-        <!-- ---------- NEXT STEP + BUTTON ---------- -->
+        <!-- ============ NEXT STEP ============ -->
         <tr>
-          <td class="pad" bgcolor="#f2ece0" style="background-color:#f2ece0; padding:26px 32px 0 32px;">
-            <p style="margin:0 0 12px 0; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:11px; font-weight:800; letter-spacing:2.2px; text-transform:uppercase; color:#7d6228; line-height:1.3;">
-              Next step
+          <td class="pad-x" style="padding:28px 40px 0 40px;">
+            <p class="tx" style="margin:0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:16px; line-height:1.62; color:#efe9dd;">
+              Call or text them within the hour if possible. Fast replies win
+              bookings.
             </p>
-            <p style="margin:0 0 20px 0; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:15px; line-height:1.65; color:#14100c;">
-              Call or text them within the hour if possible. Fast replies win bookings.
-            </p>
-
-            <!-- Bulletproof button. arcsize 0% because this world has square
-                 corners; red because red is the primary action and nothing
-                 else on the site. -->
-            <!--[if mso]>
-            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://app.gohighlevel.com/v2/location/{{location.id}}/contacts/detail/{{contact.id}}" style="height:50px; v-text-anchor:middle; width:280px;" arcsize="0%" stroke="f" fillcolor="#a8141d">
-              <w:anchorlock/>
-              <center style="color:#fdf6ea; font-family:Arial,Helvetica,sans-serif; font-size:13px; font-weight:bold; letter-spacing:1.6px;">OPEN CONTACT IN GHL</center>
-            </v:roundrect>
-            <![endif]-->
-            <!--[if !mso]><!-->
-            <a class="btn-a" href="https://app.gohighlevel.com/v2/location/{{location.id}}/contacts/detail/{{contact.id}}"
-               style="display:inline-block; background-color:#a8141d; color:#fdf6ea; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:13px; font-weight:800; letter-spacing:1.6px; text-transform:uppercase; text-decoration:none; padding:17px 30px; border-radius:0; mso-hide:all;">
-              Open contact in GHL
-            </a>
-            <!--<![endif]-->
           </td>
         </tr>
 
-        <!-- ---------- SUBMISSION CONTEXT ---------- -->
+        <!-- ============ CTA ============ -->
+        <!-- No VML and no conditional comments. See the note at the top of the
+             file: the conditional wrapper is what made this button vanish in
+             GoHighLevel. A background-coloured cell with a padded anchor inside
+             renders in every client, Word-engine Outlook included, and the
+             square corner this design wants comes free. mso-padding-alt is the
+             one hint Word needs to honour the anchor's padding. -->
         <tr>
-          <td class="pad" bgcolor="#f2ece0" style="background-color:#f2ece0; padding:26px 32px 30px 32px;">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; border-top:1px solid #d8cfb8;">
+          <td align="center" class="pad-x" style="padding:26px 40px 8px 40px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
               <tr>
-                <td style="padding:14px 0 0 0;">
-                  <p style="margin:0 0 5px 0; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:12.5px; line-height:1.6; color:#574c3c;">
-                    Submitted {{right_now.middle_endian_date}} at {{right_now.time}}
-                  </p>
-                  <p style="margin:0; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:12.5px; line-height:1.6; color:#574c3c; word-break:break-word;">
-                    {{inboundWebhookRequest.requestType}} &middot; {{inboundWebhookRequest.source}}<br>
-                    {{inboundWebhookRequest.pageUrl}}
-                  </p>
+                <td align="center" bgcolor="#a8141d" style="background-color:#a8141d; border:1px solid #a8141d; mso-padding-alt:17px 34px;">
+                  <a class="btn-a" href="https://app.gohighlevel.com/v2/location/{{location.id}}/contacts/detail/{{contact.id}}"
+                     style="display:inline-block; padding:17px 34px; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:13px; font-weight:700; letter-spacing:2.6px; text-transform:uppercase; color:#fdf6ea; text-decoration:none;">
+                    Open contact in GHL
+                  </a>
                 </td>
               </tr>
             </table>
@@ -249,10 +269,23 @@
         </tr>
 
         <!-- ============ FOOT ============ -->
-        <tr><td height="1" bgcolor="#c8a850" style="height:1px; line-height:1px; font-size:0; background-color:#c8a850;">&nbsp;</td></tr>
         <tr>
-          <td class="pad" bgcolor="#07090f" align="center" style="background-color:#07090f; padding:18px 32px 24px 32px;">
-            <p style="margin:0; font-family:'Montserrat','Segoe UI',Arial,Helvetica,sans-serif; font-size:11px; line-height:1.6; letter-spacing:0.4px; color:#a89c89;">
+          <td class="pad-x" style="padding:34px 40px 0 40px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr><td height="1" style="height:1px; line-height:1px; font-size:0; background-color:#4a3f22;">&nbsp;</td></tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td align="center" class="pad-x" style="padding:22px 40px 40px 40px;">
+            <p class="dim" style="margin:0 0 6px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:13px; line-height:1.6; color:#a89c89;">
+              Submitted {{right_now.middle_endian_date}} at {{right_now.time}}
+            </p>
+            <p class="dim" style="margin:0 0 14px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:13px; line-height:1.6; color:#a89c89;">
+              {{inboundWebhookRequest.requestType}} &middot; {{inboundWebhookRequest.source}}
+            </p>
+            <p class="dim" style="margin:0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:12px; line-height:1.6; letter-spacing:0.4px; color:#a89c89;">
               Internal notification &middot; Vegas Magic Squad
             </p>
           </td>

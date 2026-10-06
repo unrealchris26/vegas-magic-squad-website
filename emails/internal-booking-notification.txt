@@ -18,7 +18,8 @@ Merge tags are identical to the HTML version, so the two never drift.
 NEW BOOKING INQUIRY
 Website booking form
 
-New booking inquiry from the Vegas Magic Squad website.
+Someone has just submitted the booking form on the Vegas Magic
+Squad website. Their details are below.
 
 
 CONTACT DETAILS
@@ -54,7 +55,6 @@ https://app.gohighlevel.com/v2/location/{{location.id}}/contacts/detail/{{contac
 ---------------------------------------------------------------
 Submitted {{right_now.middle_endian_date}} at {{right_now.time}}
 {{inboundWebhookRequest.requestType}} - {{inboundWebhookRequest.source}}
-{{inboundWebhookRequest.pageUrl}}
 
 Internal notification - Vegas Magic Squad
 =================== EMAIL : COPY TO HERE ===================
