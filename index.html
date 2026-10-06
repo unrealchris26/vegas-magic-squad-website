@@ -576,7 +576,7 @@
       <span class="fleuron" aria-hidden="true"></span>
     </header>
 
-    <div class="shots">
+    <div class="shots" id="shotgrid">
       <figure class="shot">
         <a class="shot__link" href="images/site/reaction-corporate.jpg" data-image aria-label="View full size: a guest at a corporate reception reacting with astonishment to a close-up effect">
           <img src="images/site/reaction-corporate.jpg" alt="A guest at a corporate reception reacting with open-mouthed astonishment to a close-up effect, colleagues laughing around her" width="1080" height="1080" loading="lazy" decoding="async">
@@ -608,8 +608,8 @@
         </a>
       </figure>
       <figure class="shot">
-        <a class="shot__link" href="images/site/stage-prediction.jpg" data-image aria-label="View full size: A guest on stage holding a prediction card as the performer throws his arm wide">
-          <img src="images/site/stage-prediction.jpg" alt="A guest on stage holding a prediction card as the performer throws his arm wide" width="1600" height="900" loading="lazy" decoding="async">
+        <a class="shot__link" href="images/site/strolling-sciencecentre.jpg" data-image aria-label="View full size: close-up card magic at a table of seated guests under blue event lighting">
+          <img src="images/site/strolling-sciencecentre.jpg" alt="A magician fanning cards across a table for seated guests under blue event lighting, a bowler hat resting between them" width="1170" height="1170" loading="lazy" decoding="async">
           <span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8 21 21M8.5 11h5M11 8.5v5"/></svg></span>
         </a>
       </figure>
@@ -631,7 +631,26 @@
           <span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8 21 21M8.5 11h5M11 8.5v5"/></svg></span>
         </a>
       </figure>
+
+      <!--
+        Tenth. Held back on desktop behind "See more" and shown outright on
+        phones, where the grid is one column and an extra row costs a swipe
+        rather than a whole band of screen. The clipping class is applied by
+        script.js, so with no JavaScript all ten are simply present.
+      -->
+      <figure class="shot shot--extra">
+        <a class="shot__link" href="images/site/stage-prediction.jpg" data-image aria-label="View full size: A guest on stage holding a prediction card as the performer throws his arm wide">
+          <img src="images/site/stage-prediction.jpg" alt="A guest on stage holding a prediction card as the performer throws his arm wide" width="1600" height="900" loading="lazy" decoding="async">
+          <span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8 21 21M8.5 11h5M11 8.5v5"/></svg></span>
+        </a>
+      </figure>
     </div>
+
+    <p class="shots__more">
+      <button class="btn btn--ghost btn--sm" type="button" id="shots-more" hidden aria-expanded="false" aria-controls="shotgrid">
+        See more
+      </button>
+    </p>
 
     <p class="gallery__cta"><a class="btn btn--red btn--lg" href="#booking">Book a Quick Call</a></p>
 

@@ -255,35 +255,39 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    Everything stays transparent so the photograph reads through. */
 .bill__name .word{display:inline-block; background:none}
 .bill__name .ltr{display:inline-block; background:none; transform-origin:50% 50%}
-/* The section rule, as a deco marquee divider rather than two plain lines.
-   Three changes, all borrowed from the lettering this world already uses:
-   the long rule fades to nothing at both ends instead of to a dim gold, the
-   second rule is short and centred under it rather than the same length, and
-   a gold lozenge sits on the join. That stepped-and-centred arrangement is
-   what a 1930s bill actually did between blocks; two equal lines is what a
-   stylesheet does by default. */
+/* ONE line and one diamond. It was two stacked rules with a lozenge sitting on
+   the join, which read as a bar rather than a divider.
+
+   Deliberately the same ornament as .fleuron, the small divider under "Real
+   rooms, real reactions", just at full content width: a hairline that fades to
+   nothing at both ends with a rotated square centred on it. Two devices doing
+   the same job in two different shapes is what made the page feel assembled.
+
+   The <i> children are kept because the markup is shared across six sections;
+   the first draws the line, the second is folded away rather than left to
+   stack a second rule. The diamond is centred with absolute positioning plus
+   a translate, so nothing depends on a hand-tuned margin. */
 .rulepair{
   position:relative;
-  display:flex; flex-direction:column; align-items:center; gap:5px;
-  width:100%; margin:clamp(20px,2.6vw,34px) 0 clamp(18px,2.2vw,28px);
+  display:block;
+  width:100%; height:9px;
+  margin:clamp(20px,2.6vw,34px) 0 clamp(18px,2.2vw,28px);
 }
 .rulepair i{
-  display:block; width:100%; height:2px;
-  background:linear-gradient(90deg, transparent, var(--gold-deep) 10%, var(--gold) 50%, var(--gold-deep) 90%, transparent);
+  display:block; position:absolute; left:0; right:0; top:50%;
+  height:1px; margin-top:-0.5px;
+  background:linear-gradient(90deg, transparent, var(--gold) 22%, var(--gold) 78%, transparent);
 }
-.rulepair i:last-child{
-  height:1px; width:min(46%,320px); opacity:.85;
-  background:linear-gradient(90deg, transparent, var(--gold-deep) 22%, var(--gold-deep) 78%, transparent);
-}
-/* the lozenge, sitting astride both rules */
+/* the second <i> is markup this component cannot drop; it draws nothing */
+.rulepair i + i{display:none}
 .rulepair::after{
-  content:""; position:absolute; left:50%; top:1px;
-  width:7px; height:7px; translate:-50% 0; rotate:45deg;
+  content:""; position:absolute; left:50%; top:50%;
+  width:9px; height:9px;
+  transform:translate(-50%,-50%) rotate(45deg);
   background:var(--gold);
 }
-.rulepair--sec{margin:0 0 clamp(26px,3.4vw,46px)}
-.sec--bill .rulepair--sec i{background:linear-gradient(90deg, transparent, var(--ink) 10%, var(--ink) 90%, transparent)}
-.sec--bill .rulepair--sec i:last-child{background:linear-gradient(90deg, transparent, rgba(20,16,12,.45) 22%, rgba(20,16,12,.45) 78%, transparent)}
+
+.sec--bill .rulepair--sec i{background:linear-gradient(90deg, transparent, var(--ink) 22%, var(--ink) 78%, transparent)}
 .sec--bill .rulepair--sec::after{background:var(--ink)}
 
 /* Tight to the title. This block holds the subtitle and the buttons, and at
@@ -958,6 +962,13 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 /* the rule strikes in with the filament grammar */
 .clients__panel .rulepair--sec i{transform:scaleX(var(--lit,1)); transform-origin:50% 50%;
   transition:transform .9s var(--ease)}
+/* The diamond strikes in with the rule it sits on. Without this it is already
+   there at full size while the line is still collapsed to nothing, which reads
+   as a stray lozenge floating in the panel for the length of the animation. */
+.clients__panel .rulepair--sec::after{
+  transform:translate(-50%,-50%) rotate(45deg) scale(var(--lit,1));
+  transition:transform .9s var(--ease);
+}
 .clients__eyebrow{
   font-size:11px; font-weight:800; letter-spacing:.26em; text-transform:uppercase;
   color:var(--gold-bill); margin-bottom:1.4em;
@@ -1032,6 +1043,7 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   .logoloop__set li:hover img,
   .logoloop__set li:focus-within img{transform:none}
   .clients__panel .rulepair--sec i{transform:none}
+  .clients__panel .rulepair--sec::after{transform:translate(-50%,-50%) rotate(45deg)}
 }
 
 
@@ -1148,6 +1160,25 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   transition:box-shadow .35s var(--ease);
 }
 .shot:hover::after{box-shadow:inset 0 0 0 1px var(--gold)}
+
+/* The tenth photograph, and the control that reveals it.
+
+   Desktop only. At three columns a tenth tile starts a fourth row holding one
+   image and two gaps, which reads as a loading failure rather than a gallery.
+   On a phone the grid is one column, so a tenth is simply one more swipe and
+   there is nothing to hide it from - the media query below switches the
+   clipping off and the button with it.
+
+   .is-clipped is applied by script.js, never in the markup, so a reader with
+   no JavaScript gets all ten. */
+.shots.is-clipped > .shot--extra{display:none}
+.shots__more{margin:clamp(18px,2.2vw,26px) 0 0; text-align:center}
+
+@media (max-width:900px){
+  /* two columns: ten tiles is five clean rows, nothing to hold back */
+  .shots.is-clipped > .shot--extra{display:block}
+  .shots__more{display:none}
+}
 
 .gallery__cta{margin:clamp(28px,3.6vw,48px) 0 0; text-align:center}
 
@@ -2300,7 +2331,6 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 .callform{background:var(--tone-a)}
 .services{background:var(--tone-b)}
 .gallery{background:var(--tone-a)}
-.about{background:var(--tone-c)}
 .quotes{background:var(--tone-b)}
 .finalcall{background:var(--tone-a)}
 .foot{background:var(--tone-foot)}
@@ -2357,12 +2387,20 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   border:1px solid rgba(200,168,80,.17);
 }
 
-/* PERFORMERS — three pools of light behind the row, and a curve on the top
-   edge, the same shape the brands panel uses on its bottom edge. */
-.about{
-  border-radius:50% 50% 0 0 / clamp(22px,4vw,56px) clamp(22px,4vw,56px) 0 0;
-}
-/* the existing hairlines would now cut across the curve */
+/* PERFORMERS. The curved top edge is gone, on request: the section's top is
+   flat and full width.
+
+   The curve also needed the section to be a different tone from the gallery
+   above it, or there was nothing for the arc to read against. With it removed
+   that tone difference becomes a visible horizontal step instead, so this
+   section now takes --tone-a and meets the gallery seamlessly. The gold
+   hairline that used to sit on this edge stays off for the same reason - a
+   1px rule IS the seam the brief asks to remove.
+
+   .quotes below is still --tone-b, so the alternation survives where it can
+   still be seen. Nothing inside the section changes, and the gold wave on
+   each performer card is untouched. */
+.about{background:var(--tone-a)}
 .about::before{display:none}
 
 /* TESTIMONIALS — one large quotation mark, cropped by the heading. */

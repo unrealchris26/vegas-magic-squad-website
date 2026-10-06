@@ -524,6 +524,37 @@
   })();
 
   /* ------------------------------------------------------------------ *
+   * 4b-iii. Gallery: hold the tenth photograph back on desktop.
+   *
+   *     Ten tiles in a three-column grid leaves one image alone on a fourth
+   *     row. Below 900px the grid is one or two columns, ten divides cleanly,
+   *     and the CSS switches both the clipping and this button off - so the
+   *     control is only ever offered where it does something.
+   *
+   *     Same contract as the reviews: the markup ships complete and is
+   *     clipped here, never the other way round.
+   * ------------------------------------------------------------------ */
+  (function moreShots() {
+    var grid = document.getElementById('shotgrid');
+    var btn = document.getElementById('shots-more');
+    if (!grid || !btn) return;
+    if (!grid.querySelectorAll('.shot--extra').length) return;
+
+    function set(open) {
+      grid.classList.toggle('is-clipped', !open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.textContent = open ? 'See less' : 'See more';
+    }
+
+    set(false);
+    btn.hidden = false;
+
+    btn.addEventListener('click', function () {
+      set(btn.getAttribute('aria-expanded') !== 'true');
+    });
+  })();
+
+  /* ------------------------------------------------------------------ *
    * 4c. Video lightbox.
    *
    *     Every trigger is a real anchor pointing straight at its .mp4 file
