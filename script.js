@@ -469,6 +469,61 @@
   })();
 
   /* ------------------------------------------------------------------ *
+   * 4b-ii. Reviews: clip the long ones to a preview, with a "more".
+   *
+   *     A real review runs as long as the person felt like writing, and two
+   *     of the three here run past 600 characters. Left full, one card sets
+   *     the height of the whole row and the section turns into a wall.
+   *
+   *     The FULL text ships in the markup and is clipped here at runtime, so
+   *     a reader without JavaScript, and a crawler, still get every word. The
+   *     opposite - shipping a stub and expanding by script - hides the content
+   *     from both.
+   * ------------------------------------------------------------------ */
+  (function clipReviews() {
+    var MAX = 236;
+    var bodies = document.querySelectorAll('.quote__body');
+    if (!bodies.length) return;
+
+    Array.prototype.forEach.call(bodies, function (body) {
+      var full = body.innerHTML;
+      var text = (body.textContent || '').replace(/\s+/g, ' ').trim();
+      if (text.length <= MAX) return;
+
+      /* Cut on a word, not mid-syllable. The 0.6 floor stops a freak run of
+         one very long word collapsing the preview to almost nothing. */
+      var cut = text.slice(0, MAX);
+      var space = cut.lastIndexOf(' ');
+      if (space > MAX * 0.6) cut = cut.slice(0, space);
+      // trailing punctuation before an ellipsis reads as a typo
+      cut = cut.replace(/[\s.,;:!?–—-]+$/, '');
+
+      var p = document.createElement('p');
+      p.appendChild(document.createTextNode(cut + '… '));
+
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'quote__more';
+      btn.textContent = 'more';
+      // the visible word is "more"; on its own that is meaningless out of context
+      btn.setAttribute('aria-label', 'Read the rest of this review');
+      p.appendChild(btn);
+
+      body.innerHTML = '';
+      body.appendChild(p);
+
+      btn.addEventListener('click', function () {
+        body.innerHTML = full;
+        /* Focus moves to the text that just appeared. Without this the focus
+           ring is left on a button that no longer exists and a keyboard user
+           is dropped back at the top of the document. */
+        body.setAttribute('tabindex', '-1');
+        body.focus();
+      });
+    });
+  })();
+
+  /* ------------------------------------------------------------------ *
    * 4c. Video lightbox.
    *
    *     Every trigger is a real anchor pointing straight at its .mp4 file

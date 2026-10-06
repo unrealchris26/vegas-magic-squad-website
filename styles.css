@@ -146,6 +146,16 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 .btn--ghost:hover{--bg:rgba(200,168,80,.13); --bd:var(--gold)}
 
 .btn[disabled]{opacity:.5; cursor:not-allowed; transform:none}
+/* .btn sets display:inline-flex, which is an AUTHOR rule and therefore beats
+   the user agent's [hidden]{display:none} outright - origin wins before
+   specificity is even consulted. So any .btn carrying the hidden attribute
+   stayed visible. The lightbox hit this and was patched locally
+   (.lb__vid[hidden]); it was never fixed at the source.
+
+   Two buttons were affected: "Read more reviews", which showed with nothing to
+   reveal, and "Choose a time" on the booking confirmation, which rendered as a
+   live control pointing at href="#" because CALENDAR_URL is still empty. */
+.btn[hidden]{display:none !important}
 .btn__spin{display:none; width:15px; height:15px; border:2px solid rgba(253,246,234,.35);
   border-top-color:#fdf6ea; border-radius:50%; animation:spin .7s linear infinite}
 .is-sending .btn__spin{display:block}
@@ -1371,7 +1381,26 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
      makes them paler against the dark card */
   text-shadow:0 0 10px rgba(230,209,147,.45);
 }
-.quote p{color:var(--night-tx2); font-size:14.5px; font-weight:400; line-height:1.75; flex:1; margin:0}
+/* White, not the muted secondary. These are real people's words and the one
+   piece of proof the page has; they were reading as caption-grade text. */
+.quote__body{flex:1; display:flex; flex-direction:column; gap:13px}
+.quote__body p{flex:0 0 auto}
+.quote p{color:var(--night-tx); font-size:14.5px; font-weight:400; line-height:1.75; margin:0}
+
+/* The "more" control. A real button, not a link: it reveals text in place and
+   goes nowhere, and a link that does not navigate is a lie to a screen reader.
+   Styled to sit inside the sentence it ends. */
+.quote__more{
+  appearance:none; -webkit-appearance:none;
+  background:none; border:0; padding:0; margin:0;
+  font:inherit; line-height:inherit;
+  color:var(--gold-hi); cursor:pointer;
+  text-decoration:underline; text-underline-offset:3px;
+}
+.quote__more:hover{color:var(--gold)}
+.quote__more:focus-visible{outline:2px solid var(--gold); outline-offset:2px}
+.quote__body:focus{outline:none}
+.quote__body:focus-visible{outline:2px solid var(--gold); outline-offset:4px}
 .quote footer{
   display:flex; align-items:center; gap:12px;
   padding-top:14px; border-top:1px solid rgba(200,168,80,.18);
@@ -1414,11 +1443,6 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   text-transform:uppercase; letter-spacing:.16em; color:var(--gold);
 }
 
-/* A sample card reads as unfinished on purpose. Only the dashed edge is left
-   doing that now: the "Sample" chip was removed, and the stars are lit rather
-   than dimmed. The banner above the rail is what actually tells a reader these
-   seven are invented, so it has to stay until real reviews replace them.
-   Deleting .is-sample is all that is needed to make a card look real. */
 /* A real reviewer's own photograph instead of a monogram. The monogram exists
    because the placeholder names are invented and a stock face against a made-up
    person would be a lie with a picture on it; a real review has a real face and
@@ -1435,15 +1459,11 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   box-shadow:none;
 }
 
-/* The genuine review carries a slightly brighter edge than the placeholders
-   around it. Their dashed border is meant to mark them as unfinished, but at
-   1px of near-black on near-black it is close to invisible, so the contrast is
-   made from this side instead. Remove this rule once every card is real. */
-.quote--real{border-color:rgba(200,168,80,.45)}
-
-.quote.is-sample{border-style:dashed}
-/* .is-sample no longer dims the stars — they are meant to read as lit. The
-   dashed card edge and the banner above the rail carry that signal instead. */
+/* .quote.is-sample and .quote--real both lived here and are gone. Every review
+   on the page is real now, so there is nothing to mark as unfinished and
+   nothing to distinguish from it. If placeholders ever return they need a
+   signal far louder than the 1px dashed edge this was: near-black on
+   near-black, effectively invisible at every breakpoint. */
 
 /* A photograph on the two shortest reviews.
    The cards are align-items:stretch, so every card is as tall as the tallest —
@@ -1452,7 +1472,7 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    slack instead of the paragraph: .quote p gives up flex:1 and the figure
    claims it. The two cards with photos end up exactly as tall as they were,
    and the picture simply occupies the gap the short quote left behind. */
-.quote--shot p{flex:0 0 auto}
+.quote--shot .quote__body{flex:0 0 auto}
 /* A pair, side by side. As grid items the two images stretch to the row height
    on their own, which is why neither needs absolute positioning any more. */
 .quote__shot{

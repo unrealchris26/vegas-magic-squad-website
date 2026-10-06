@@ -785,31 +785,27 @@
 
 <!-- ============ TESTIMONIALS ============ -->
 <!--
-  Ported from the Kent Axell site (section.sec.quotes): sechead, a three-card
-  rail, stars, body, footer attribution.
+  EVERY REVIEW HERE IS REAL. The seven invented placeholders that used to sit
+  in this section are gone, along with the is-sample dashed-border device and
+  the banner that was meant to disclose them.
 
-  ⚠ EVERY REVIEW BELOW IS A PLACEHOLDER. Not one is from a real client.
-  They exist so the layout can be built and tested with realistic text lengths,
-  and they are marked as placeholders on the page itself so they cannot be
-  mistaken for endorsements if this ships before real ones arrive.
+  1. Kerry Pegg        Google, 5 stars  https://maps.app.goo.gl/TynWbjXq1JKgPjvw9
+  2. Nathan Gorrondona Google, 5 stars  https://maps.app.goo.gl/RTto1qa9K3ZUTDC7A
+  3. Susan B.          August 11 2024, 5 stars, supplied by the client as a
+                       screenshot. The platform is not named on the card
+                       because the screenshot does not name it; its "Hired as"
+                       field suggests a booking marketplace. Confirm and label.
 
-  The names and job titles are invented too, added at the user's request to see
-  the layout with realistic attribution. No invented COMPANY names: a made-up
-  reviewer is a placeholder, but a made-up employer reads as a named client the
-  squad never had. Titles stay generic ("national insurance group") for that
-  reason, and must be replaced along with everything else.
+  All three are copied word for word. Two are about Kent and one about Dream,
+  and each says so in its own text, so none of them reads as a claim about the
+  squad as a whole. Keep it that way.
 
-  TODO BEFORE LAUNCH — do all four or delete the section:
-  1. Replace each review body with a real one you have permission to publish.
-  2. Replace the name and the line under it with the real reviewer and where the
-     review came from (Google review, event, company).
-  3. Delete the quotes__note banner and the is-sample class on each card.
-     That banner is now the ONLY thing on the page saying these are invented —
-     the per-card "Sample" chip was removed at the user's request, so the
-     dashed border and dimmed stars are the only other signal left.
-  Two things were deliberately NOT carried over from Kent's version: his
-  "Rated 5.0 from 90 Google reviews" subhead and his reviewer avatars. Both
-  would be invented figures and invented people for this site.
+  Long reviews are CLIPPED TO 236 CHARACTERS with a "more" control, added by
+  script.js at runtime. The full text is what ships in the markup, so a reader
+  without JavaScript, and a crawler, get the whole thing.
+
+  Adding a fourth: copy a .quote block, give it class="quote quotes__extra"
+  and the "Read more reviews" button below re-enables itself.
 -->
 <section class="sec sec--night quotes" id="quotes" aria-labelledby="quotes-h">
   <span class="deco deco--quote deco--grain" aria-hidden="true"></span>
@@ -822,155 +818,84 @@
       <span class="fleuron" aria-hidden="true"></span>
     </header>
 
-    <p class="quotes__note">From the event directors, HR leads, and executive assistants who put their name on the booking.</p>
+    <p class="quotes__note">Real reviews, copied word for word from where they were left.</p>
 
-    <!--
-      Plain page flow that wraps: three across, two on tablets, one per row on
-      phones. This was a drifting, draggable, cloned rail at every width; it
-      was removed on request, along with the line-up's.
-
-      The first three show by default and the rest are revealed by the button
-      below. That collapse is applied BY SCRIPT, not in the markup: with no
-      JavaScript every review is simply present, which is also what a crawler
-      sees. Hiding four reviews in HTML and relying on a script to bring them
-      back would mean a script failure takes content off the page for good.
-    -->
     <div class="quotes__grid" id="quotelist">
 
-      <!--
-        THE ONLY REAL REVIEW ON THIS PAGE.
-
-        Kerry Pegg, five stars, left on Kent Axell's Google Business Profile
-        ("Kent Axell - Mind Reader and Magician") about two months before this
-        was added. Copied verbatim, both paragraphs, nothing trimmed.
-        Source: https://maps.app.goo.gl/TynWbjXq1JKgPjvw9
-
-        It carries NO is-sample class, because it is not a sample. That class
-        and its dashed border are the only thing separating it from the six
-        invented placeholders around it, so do not add it here and do not
-        remove it from them until they are real too.
-
-        The avatar is her actual Google profile photo, pulled at 144px and
-        self-hosted rather than hot-linked. Hot-linking would have put a
-        googleusercontent request on every page load, handed Google every
-        visitor's IP, and broken silently the day that URL rotates.
-
-        The attribution says "Google review" rather than inventing a job title.
-        It is the one thing we genuinely know about her, and it is also what
-        makes the review checkable.
-      -->
-      <blockquote class="quote quote--real">
+      <blockquote class="quote">
         <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
         <span class="sr-only">Rated 5 out of 5</span>
-        <p>
-          We had the pleasure of booking Kent for one of our events, and he was
-          absolutely fantastic. From the moment he arrived, he was engaging,
-          personable, and had a brilliant way of interacting with our guests. His
-          magic was exceptional, leaving everyone genuinely amazed and creating a
-          real buzz throughout the event.
-        </p>
-        <p>
-          Kent struck the perfect balance between professionalism and
-          entertainment, making guests of all ages feel included and involved. We
-          received so many compliments about his performance, and it was clear he
-          made a lasting impression. We wouldn&rsquo;t hesitate to book Kent again
-          and highly recommend him to anyone looking for first-class, interactive
-          entertainment.
-        </p>
+        <div class="quote__body">
+          <p>
+            We had the pleasure of booking Kent for one of our events, and he was
+            absolutely fantastic. From the moment he arrived, he was engaging,
+            personable, and had a brilliant way of interacting with our guests. His
+            magic was exceptional, leaving everyone genuinely amazed and creating a
+            real buzz throughout the event.
+          </p>
+          <p>
+            Kent struck the perfect balance between professionalism and
+            entertainment, making guests of all ages feel included and involved. We
+            received so many compliments about his performance, and it was clear he
+            made a lasting impression. We wouldn&rsquo;t hesitate to book Kent again
+            and highly recommend him to anyone looking for first-class, interactive
+            entertainment.
+          </p>
+        </div>
         <footer>
           <img class="quote__avatar quote__avatar--photo" src="images/site/review-kerry-pegg.png" alt="" width="144" height="144" loading="lazy" decoding="async"><span class="quote__who"><b>Kerry Pegg</b><span>Google review</span></span>
         </footer>
       </blockquote>
 
-      <blockquote class="quote is-sample">
+      <!-- Nathan's Google avatar is their default letter-circle with a Local
+           Guide badge burnt into it, in Google's own typeface. Importing that
+           would put another platform's furniture on the page, so he gets this
+           site's monogram like every reviewer without a real photograph. -->
+      <blockquote class="quote">
         <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-        <p>
-          We booked all three for the company party and it worked far better than a
-          single act would have. The close-up carried the reception, and the stage
-          set pulled the whole room back together after dinner.
-        </p>
+        <span class="sr-only">Rated 5 out of 5</span>
+        <div class="quote__body">
+          <p>
+            KENT STOLE THE SHOW!! In the best possible way! His performances were
+            incredible and had the entire group in awe.
+          </p>
+          <p>
+            I couldn&rsquo;t recommend his entertainment services enough, he will
+            literally MAKE the event a success.
+          </p>
+        </div>
         <footer>
-          <span class="quote__avatar" aria-hidden="true">AW</span><span class="quote__who"><b>Aaron Whitfield</b><span>Head of Internal Communications</span></span>
+          <span class="quote__avatar" aria-hidden="true">NG</span><span class="quote__who"><b>Nathan Gorrondona</b><span>Google review</span></span>
         </footer>
       </blockquote>
 
-      <blockquote class="quote quote--shot is-sample">
+      <blockquote class="quote">
         <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-        <p>
-          Our guests are still talking about it. Half of them tried to explain what
-          they had seen on the way out to the car park, and not one of them could
-          get to the end of the story.
-        </p>
-        <figure class="quote__shot">
-          <img draggable="false" src="images/site/reaction-dinner.jpg" alt="Brandon Williams showing two cards at a dinner table as one guest laughs and another covers her face in disbelief" width="1080" height="1080" loading="lazy" decoding="async">
-          <img draggable="false" src="images/site/strolling-0.jpg" alt="A magician performing close-up card magic for guests standing at a corporate reception" width="1080" height="1080" loading="lazy" decoding="async">
-        </figure>
+        <span class="sr-only">Rated 5 out of 5</span>
+        <div class="quote__body">
+          <p>
+            I hired Dream Upright, a magician, for my husband&rsquo;s 50th birthday
+            party, which had over 100 guests. Initially, I brought him on to perform
+            strolling magic during the cocktail hour, but the feedback from our
+            guests was so overwhelmingly positive that I asked him to stay later
+            into the night. As the host, I truly appreciated how self-sufficient
+            Dream was&mdash;he arrived early, was incredibly personable, and even
+            added a surprising touch of humor to his act. His professionalism
+            allowed me to relax and enjoy the event without having to manage him. I
+            would definitely hire him again and highly recommend his services.
+          </p>
+        </div>
         <footer>
-          <span class="quote__avatar" aria-hidden="true">PR</span><span class="quote__who"><b>Priya Raghunathan</b><span>Executive Assistant to the CEO</span></span>
-        </footer>
-      </blockquote>
-
-      <blockquote class="quote quotes__extra is-sample">
-        <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-        <p>
-          Half our guests had never met the other half. Twenty minutes in, people who
-          had been standing in separate corners were leaning over the same table
-          trying to work out what they had just watched. It did more for the night
-          than the playlist did.
-        </p>
-        <footer>
-          <span class="quote__avatar" aria-hidden="true">CB</span><span class="quote__who"><b>Chloe Bennett</b><span>Wedding reception</span></span>
-        </footer>
-      </blockquote>
-
-      <blockquote class="quote quotes__extra is-sample">
-        <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-        <p>
-          We were three stands down from the coffee and getting nothing. Brandon
-          pulled a crowd and held it, and our team spent two days opening
-          conversations mid-flow instead of from scratch. Easiest line item I have
-          ever had to justify.
-        </p>
-        <footer>
-          <span class="quote__avatar" aria-hidden="true">DM</span><span class="quote__who"><b>Devon Marsh</b><span>Field Marketing Manager, medical devices</span></span>
-        </footer>
-      </blockquote>
-
-      <blockquote class="quote quotes__extra is-sample">
-        <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-        <p>
-          I booked it for my husband and ended up enjoying it more than he did. Kent
-          worked the whole room without ever making anyone feel picked on, which was
-          the thing I had actually been worried about.
-        </p>
-        <footer>
-          <span class="quote__avatar" aria-hidden="true">TN</span><span class="quote__who"><b>Teresa Nakamura</b><span>60th birthday party</span></span>
-        </footer>
-      </blockquote>
-
-      <blockquote class="quote quotes__extra quote--shot is-sample">
-        <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-        <p>
-          Our drinks reception is the slot people normally skip to go back to their
-          rooms. This year they stayed for all of it. The squad is already in the
-          budget for next year&rsquo;s programme.
-        </p>
-        <figure class="quote__shot">
-          <img draggable="false" src="images/site/reception-crystal.jpg" alt="Dream Upright balancing a crystal ball on one hand at an evening reception" width="1080" height="1080" loading="lazy" decoding="async">
-          <img draggable="false" src="images/site/conference-table.jpg" alt="Brandon Williams fanning a deck of cards for badged delegates seated at a conference table" width="1080" height="1080" loading="lazy" decoding="async">
-        </figure>
-        <footer>
-          <span class="quote__avatar" aria-hidden="true">GI</span><span class="quote__who"><b>Gregory Ilic</b><span>Conference Producer</span></span>
+          <span class="quote__avatar" aria-hidden="true">SB</span><span class="quote__who"><b>Susan B.</b><span>August 2024</span></span>
         </footer>
       </blockquote>
 
     </div>
 
     <!--
-      Hidden until script.js collapses the list, so a reader without
-      JavaScript is never shown a button that does nothing. aria-expanded is
-      the state; the label changes with it so the button reads correctly
-      whether or not the surrounding text is being announced.
+      Hidden until there is something to reveal. script.js only shows it when
+      a .quotes__extra card exists, so with three reviews it stays out of the
+      way and re-enables itself the moment a fourth is added.
     -->
     <p class="quotes__more">
       <button class="btn btn--ghost" type="button" id="quotes-more"
