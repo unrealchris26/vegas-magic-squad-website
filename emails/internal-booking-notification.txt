@@ -1,0 +1,60 @@
+VEGAS MAGIC SQUAD - INTERNAL BOOKING NOTIFICATION (plain text)
+===========================================================================
+Paste into the plain-text half of the same GoHighLevel "Send Email" action.
+Everything between the two markers is the email; nothing above or below.
+
+SUBJECT    New booking inquiry: {{contact.name}}
+PREHEADER  New Vegas Magic Squad booking inquiry. Reply fast.
+
+A plain-text part is not decoration. A multipart message with only an HTML
+part is one of the cheaper spam signals, and some clients and most watches
+and screen readers will show this instead of the HTML.
+
+Merge tags are identical to the HTML version, so the two never drift.
+===========================================================================
+
+
+=================== EMAIL : COPY FROM HERE ===================
+NEW BOOKING INQUIRY
+Website booking form
+
+New booking inquiry from the Vegas Magic Squad website.
+
+
+CONTACT DETAILS
+---------------------------------------------------------------
+Name:   {{contact.name}}
+Email:  {{contact.email}}
+Phone:  {{contact.phone}}
+
+
+THEIR MESSAGE
+---------------------------------------------------------------
+{{inboundWebhookRequest.message}}
+
+
+SMS CONSENT
+---------------------------------------------------------------
+Booking texts:    {{inboundWebhookRequest.sms_consent_transactional}}
+Marketing texts:  {{inboundWebhookRequest.sms_consent_marketing}}
+
+Text them only if "Booking texts" says Yes.
+Calling and email are fine either way.
+
+
+NEXT STEP
+---------------------------------------------------------------
+Call or text them within the hour if possible. Fast replies win
+bookings.
+
+Open contact in GHL:
+https://app.gohighlevel.com/v2/location/{{location.id}}/contacts/detail/{{contact.id}}
+
+
+---------------------------------------------------------------
+Submitted {{right_now.middle_endian_date}} at {{right_now.time}}
+{{inboundWebhookRequest.requestType}} - {{inboundWebhookRequest.source}}
+{{inboundWebhookRequest.pageUrl}}
+
+Internal notification - Vegas Magic Squad
+=================== EMAIL : COPY TO HERE ===================
