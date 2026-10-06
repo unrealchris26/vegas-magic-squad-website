@@ -1419,6 +1419,28 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    than dimmed. The banner above the rail is what actually tells a reader these
    seven are invented, so it has to stay until real reviews replace them.
    Deleting .is-sample is all that is needed to make a card look real. */
+/* A real reviewer's own photograph instead of a monogram. The monogram exists
+   because the placeholder names are invented and a stock face against a made-up
+   person would be a lie with a picture on it; a real review has a real face and
+   gets to use it.
+
+   Self-hosted, not hot-linked from googleusercontent: a third-party request on
+   every page load hands Google every visitor's IP and breaks silently the day
+   that URL rotates. box-sizing so the ring does not grow the disc. */
+.quote__avatar--photo{
+  box-sizing:border-box;
+  background:none;
+  object-fit:cover;
+  border:1px solid rgba(200,168,80,.42);
+  box-shadow:none;
+}
+
+/* The genuine review carries a slightly brighter edge than the placeholders
+   around it. Their dashed border is meant to mark them as unfinished, but at
+   1px of near-black on near-black it is close to invisible, so the contrast is
+   made from this side instead. Remove this rule once every card is real. */
+.quote--real{border-color:rgba(200,168,80,.45)}
+
 .quote.is-sample{border-style:dashed}
 /* .is-sample no longer dims the stars — they are meant to read as lit. The
    dashed card edge and the banner above the rail carry that signal instead. */
