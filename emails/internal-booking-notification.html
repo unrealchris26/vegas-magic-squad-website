@@ -20,11 +20,33 @@
 
   /* This email is dark by design, so the job here is to stop clients
      "helpfully" inverting it. Outlook.com uses [data-ogsc]. */
+  /* LINK COLOUR, the thing that actually broke the button.
+     Several clients - Gmail and GoHighLevel's own renderer among them - apply
+     their own anchor colour and underline, and in some cases drop display and
+     padding off the anchor entirely. An inline style on the <a> is not enough
+     on its own. Three defences, all cheap:
+       1. the padding lives on the surrounding <td>, so the button keeps its
+          size even when the anchor is reduced to plain text;
+       2. the label is wrapped in a <span> carrying the colour, because a
+          client that restyles <a> rarely restyles its descendants;
+       3. !important on both, plus the rules below.
+     This is also why the email address was rendering blue instead of gold. */
+  a, a:link, a:visited { color:#e6d193; }
+  .btn-a, .btn-a:link, .btn-a:visited,
+  .btn-s { color:#fdf6ea !important; text-decoration:none !important; }
+  .gold, .gold:link, .gold:visited { color:#e6d193 !important; }
+
+  /* Stops iOS and some webmail turning the phone number into their own blue,
+     boxed, auto-detected link on top of the real one we already drew. */
+  a[x-apple-data-detectors] { color:inherit !important; text-decoration:inherit !important; font-size:inherit !important; font-family:inherit !important; font-weight:inherit !important; line-height:inherit !important; }
+  u + #body a { color:inherit; text-decoration:inherit; font-size:inherit; font-family:inherit; font-weight:inherit; line-height:inherit; }
+
   [data-ogsc] .bg    { background-color:#07090f !important; }
   [data-ogsc] .panel { background-color:#0d1119 !important; }
   [data-ogsc] .tx    { color:#efe9dd !important; }
   [data-ogsc] .gold  { color:#e6d193 !important; }
   [data-ogsc] .dim   { color:#a89c89 !important; }
+  [data-ogsc] .btn-s { color:#fdf6ea !important; }
 
   @media (prefers-color-scheme: dark) {
     .bg    { background-color:#07090f !important; }
@@ -32,6 +54,7 @@
     .tx    { color:#efe9dd !important; }
     .gold  { color:#e6d193 !important; }
     .dim   { color:#a89c89 !important; }
+    .btn-s { color:#fdf6ea !important; }
   }
 
   @media only screen and (max-width:480px) {
@@ -49,28 +72,30 @@
   Paste the whole file into a GoHighLevel workflow "Send Email" action set to
   custom HTML. Trigger: the Inbound Webhook that receives the website form.
 
-  SUBJECT    New booking inquiry: {{contact.name}}
+  SUBJECT    New booking inquiry: {{inboundWebhookRequest.name}}
   PREHEADER  New Vegas Magic Squad booking inquiry. Reply fast.
 
-  WHY THERE IS NO VML HERE, AND WHY THAT IS THE FIX
-  The first version wrapped the CTA in the usual bulletproof pair: a
-  v:roundrect inside an mso conditional, and the real anchor inside a
-  downlevel-revealed conditional. The button did not render in GoHighLevel.
+  WHY THE BUTTON IS BUILT THE WAY IT IS
+  It rendered as blue underlined text on a shrink-wrapped red box: the anchor
+  kept its href and lost everything else. The email address in the panel above
+  went blue at the same time, which is the tell - this is the client applying
+  its own anchor colour and underline and discarding display and padding off
+  the <a>. An inline style on the anchor does not survive that.
 
-  In the downlevel-revealed form the anchor sits BETWEEN the opening marker and
-  the endif rather than outside them. A sanitizer that treats a conditional as
-  one unit, matching from the opening marker through to the endif, therefore
-  takes the anchor with it and leaves nothing to render.
+  (An earlier note here blamed conditional comments around the CTA. That was
+  wrong. The customer confirmation email uses the same conditional pattern and
+  its button renders, so the conditionals were never the cause. They are still
+  gone, because VML only buys rounded corners and this design has square ones,
+  but removing them is not what fixed this.)
 
-  So there are no conditional comments around the button now. It is a table
-  cell carrying the background colour with a padded anchor inside, which every
-  client renders including Word-engine Outlook. VML is only needed for rounded
-  corners, and this design has square ones, so it was buying nothing and
-  costing the whole control.
-
-  The customer confirmation email still uses the VML pattern and still renders,
-  so it has been left alone. If it ever disappears the same way, this is the
-  fix to port across.
+  Three defences, so no single one has to hold:
+    1. the padding is on the <td>, so the cell draws the button at full size
+       even when the anchor is reduced to plain text;
+    2. the label sits in a <span> carrying the colour, because a client that
+       restyles <a> rarely reaches its descendants;
+    3. !important on the anchor, the span, and the head rules for .btn-a and
+       .btn-s and .gold.
+  The same span treatment is on the email and phone links for the same reason.
 
   ONE THING THAT WILL BITE YOU IF IT IS MISSED
   The contact. tags only resolve once a contact exists. If the workflow is
@@ -92,7 +117,7 @@
   seamless. Served 2x (360x448), displayed at 180x224.
 -->
 
-<body class="bg" style="margin:0; padding:0; background-color:#07090f; color:#efe9dd;">
+<body id="body" class="bg" style="margin:0; padding:0; background-color:#07090f; color:#efe9dd;">
 
 <!-- Preheader. Visible in the inbox list, never in the open email. -->
 <div style="display:none; font-size:1px; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all; font-family:Arial,sans-serif; color:#07090f;">
@@ -159,18 +184,18 @@
                   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                       <td class="dim" width="76" valign="top" style="width:76px; padding:0 10px 12px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:12px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:#a89c89; line-height:1.7;">Name</td>
-                      <td class="tx" valign="top" style="padding:0 0 12px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:16px; font-weight:700; color:#efe9dd; line-height:1.6; word-break:break-word;">{{contact.name}}</td>
+                      <td class="tx" valign="top" style="padding:0 0 12px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:16px; font-weight:700; color:#efe9dd; line-height:1.6; word-break:break-word;">{{inboundWebhookRequest.name}}</td>
                     </tr>
                     <tr>
                       <td class="dim" width="76" valign="top" style="width:76px; padding:0 10px 12px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:12px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:#a89c89; line-height:1.7;">Email</td>
                       <td valign="top" style="padding:0 0 12px 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:16px; line-height:1.6; word-break:break-word;">
-                        <a class="gold" href="mailto:{{contact.email}}" style="color:#e6d193; text-decoration:underline;">{{contact.email}}</a>
+                        <a class="gold" href="mailto:{{inboundWebhookRequest.email}}" style="color:#e6d193 !important; text-decoration:underline;"><span class="gold" style="color:#e6d193 !important;">{{inboundWebhookRequest.email}}</span></a>
                       </td>
                     </tr>
                     <tr>
                       <td class="dim" width="76" valign="top" style="width:76px; padding:0 10px 0 0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:12px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:#a89c89; line-height:1.7;">Phone</td>
                       <td valign="top" style="padding:0; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:16px; line-height:1.6; word-break:break-word;">
-                        <a class="gold" href="tel:{{contact.phone}}" style="color:#e6d193; text-decoration:underline;">{{contact.phone}}</a>
+                        <a class="gold" href="tel:{{inboundWebhookRequest.phone}}" style="color:#e6d193 !important; text-decoration:underline;"><span class="gold" style="color:#e6d193 !important;">{{inboundWebhookRequest.phone}}</span></a>
                       </td>
                     </tr>
                   </table>
@@ -247,21 +272,20 @@
         </tr>
 
         <!-- ============ CTA ============ -->
-        <!-- No VML and no conditional comments. See the note at the top of the
-             file: the conditional wrapper is what made this button vanish in
-             GoHighLevel. A background-coloured cell with a padded anchor inside
-             renders in every client, Word-engine Outlook included, and the
-             square corner this design wants comes free. mso-padding-alt is the
-             one hint Word needs to honour the anchor's padding. -->
+        <!-- The padding is on the CELL, not the anchor, and the label is in a
+             span. That is deliberate: the client was dropping display and
+             padding off the anchor and repainting it in its own link blue, so
+             a button built on the anchor alone collapsed to underlined text.
+             Built this way the cell draws the button whatever happens to the
+             anchor. No VML either - it only buys rounded corners and this
+             design has square ones. -->
         <tr>
           <td align="center" class="pad-x" style="padding:26px 40px 8px 40px;">
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
               <tr>
-                <td align="center" bgcolor="#a8141d" style="background-color:#a8141d; border:1px solid #a8141d; mso-padding-alt:17px 34px;">
+                <td align="center" bgcolor="#a8141d" style="background-color:#a8141d; border:1px solid #a8141d; padding:17px 34px; mso-padding-alt:17px 34px;">
                   <a class="btn-a" href="https://app.gohighlevel.com/v2/location/{{location.id}}/contacts/detail/{{contact.id}}"
-                     style="display:inline-block; padding:17px 34px; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:13px; font-weight:700; letter-spacing:2.6px; text-transform:uppercase; color:#fdf6ea; text-decoration:none;">
-                    Open contact in GHL
-                  </a>
+                     style="display:block; font-family:'Montserrat',system-ui,'Segoe UI',Arial,sans-serif; font-size:13px; font-weight:700; letter-spacing:2.6px; text-transform:uppercase; color:#fdf6ea !important; text-decoration:none !important;"><span class="btn-s" style="color:#fdf6ea !important; text-decoration:none !important;">Open contact in GHL</span></a>
                 </td>
               </tr>
             </table>
