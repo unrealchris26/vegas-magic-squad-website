@@ -1471,8 +1471,31 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 }
 /* White, not the muted secondary. These are real people's words and the one
    piece of proof the page has; they were reading as caption-grade text. */
-.quote__body{flex:0 1 auto; display:flex; flex-direction:column; gap:13px}
-.quote__body p{flex:0 0 auto}
+/* flex:1, so the text box takes every pixel between the stars and the author
+   row and the footer has nothing to float above. How much text goes IN that
+   box is script.js's job (4b-ii): it counts how many lines fit and writes the
+   number to --lines. The 13px that used to be a flex `gap` is now a margin on
+   the second paragraph onward — identical spacing, but -webkit-line-clamp
+   needs a -webkit-box, and a -webkit-box is not a flex container. */
+.quote__body{flex:1 1 auto; min-height:0; display:block}
+.quote__body p + p{margin-top:13px}
+
+/* The clamp itself. Applied only when the text actually overflows, so a short
+   review is a plain block with no ellipsis and no control under it. The count
+   is a custom property rather than a fixed number because the right count is
+   whatever this card's row happens to be tall enough for. */
+.quote__body.is-clamped{
+  display:-webkit-box; -webkit-box-orient:vertical;
+  -webkit-line-clamp:var(--lines,6); line-clamp:var(--lines,6);
+  overflow:hidden;
+}
+/* line-clamp puts the ellipsis on line N but does not shorten the box. The
+   box here is flex:1, so it is taller than N lines by whatever did not divide
+   evenly - and that remainder painted the top of line N+1 underneath the
+   ellipsis, a sliced half-line sitting on the author rule. script.js measures
+   the clamped height in this state and pins it as a max-height; the leftover
+   then goes to the footer's auto margin, where it is invisible. */
+.quote__body.is-measuring{flex:0 0 auto !important; max-height:none !important}
 .quote p{color:#fff; font-size:14.5px; font-weight:400; line-height:1.75; margin:0}
 
 /* The "more" control. A real button, not a link: it reveals text in place and
@@ -1480,11 +1503,16 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    Styled to sit inside the sentence it ends. */
 .quote__more{
   appearance:none; -webkit-appearance:none;
-  background:none; border:0; padding:0; margin:0;
-  font:inherit; line-height:inherit;
+  background:none; border:0; padding:0;
+  /* sits under the clamped text rather than inside it. -webkit-line-clamp
+     clips by line box, so anything trailing the last visible line is clipped
+     with it — an inline "more" would disappear exactly when it is needed. */
+  margin:10px 0 0; align-self:flex-start;
+  font:inherit; font-size:14.5px; line-height:1.75;
   color:var(--gold-hi); cursor:pointer;
   text-decoration:underline; text-underline-offset:3px;
 }
+.quote__more[hidden]{display:none}
 .quote__more:hover{color:var(--gold)}
 .quote__more:focus-visible{outline:2px solid var(--gold); outline-offset:2px}
 .quote__body:focus{outline:none}
@@ -1576,8 +1604,12 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   flex:0 0 auto;
   margin:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(45%,1fr)); gap:8px;
 }
+/* 16/10 and capped at 220px. The photograph was the thing setting the height
+   of its whole row, which is what left the text-only cards beside it with a
+   hundred pixels of nothing. A shorter frame means less for them to fill. */
 .quote__shot img{
-  display:block; width:100%; height:auto; aspect-ratio:4/3;
+  display:block; width:100%; height:auto; aspect-ratio:16/10;
+  max-height:220px;
   object-fit:cover;
   filter:brightness(.82) saturate(.95);
 }

@@ -499,6 +499,7 @@
            Put the section heading back in front of them. */
         shown = INITIAL;
         paint();
+        document.dispatchEvent(new CustomEvent('quotes:revealed'));
         var sec = document.getElementById('quotes');
         if (sec) {
           sec.scrollIntoView({
@@ -511,62 +512,220 @@
       var from = shown;
       shown = Math.min(cards.length, shown + columns());
       reveal(from, shown);
+      document.dispatchEvent(new CustomEvent('quotes:revealed'));
     });
   })();
 
   /* ------------------------------------------------------------------ *
-   * 4b-ii. Reviews: clip the long ones to a preview, with a "more".
+   * 4b-ii. Reviews: fill each card with as much text as its row allows.
    *
-   *     A real review runs as long as the person felt like writing, and two
-   *     of the three here run past 600 characters. Left full, one card sets
-   *     the height of the whole row and the section turns into a wall.
+   *     This replaced a flat 236-character clamp. A fixed clamp cannot know
+   *     how tall its row is going to be, and the row is set by whichever card
+   *     holds a photograph - so the text-only cards beside it were cut off at
+   *     236 characters and then stretched to match, which left a hundred
+   *     pixels of empty panel between the last word and the author's name.
    *
-   *     The FULL text ships in the markup and is clipped here at runtime, so
-   *     a reader without JavaScript, and a crawler, still get every word. The
-   *     opposite - shipping a stub and expanding by script - hides the content
-   *     from both.
+   *     So the count is measured rather than guessed. The body is flex:1, so
+   *     it is already stretched to exactly the space between the stars and
+   *     the footer: its own clientHeight IS the space available, and the row
+   *     grouping is something align-items:stretch has already done. Divide by
+   *     the line height, clamp to that many lines, and the text reaches the
+   *     bottom of every card.
+   *
+   *     The FULL text ships in the markup and is only ever clipped by CSS, so
+   *     a reader without JavaScript, and a crawler, still get every word -
+   *     and so does anyone who presses "more", since nothing was removed.
    * ------------------------------------------------------------------ */
-  (function clipReviews() {
-    var MAX = 236;
-    var bodies = document.querySelectorAll('.quote__body');
-    if (!bodies.length) return;
+  (function fitReviews() {
+    var grid = document.getElementById('quotelist');
+    if (!grid) return;
+    var cards = [].slice.call(grid.querySelectorAll('.quote'));
+    if (!cards.length) return;
 
-    Array.prototype.forEach.call(bodies, function (body) {
-      var full = body.innerHTML;
-      var text = (body.textContent || '').replace(/\s+/g, ' ').trim();
-      if (text.length <= MAX) return;
+    /* The baseline every card is measured from, and the plain preview length
+       on mobile where there is no row to fill. Low enough that a text card at
+       baseline is shorter than a card carrying a photograph, which is what
+       makes the photograph set the row height in pass 1. */
+    var BASE = 6;
+    var MIN = 3;
 
-      /* Cut on a word, not mid-syllable. The 0.6 floor stops a freak run of
-         one very long word collapsing the preview to almost nothing. */
-      var cut = text.slice(0, MAX);
-      var space = cut.lastIndexOf(' ');
-      if (space > MAX * 0.6) cut = cut.slice(0, space);
-      // trailing punctuation before an ellipsis reads as a typo
-      cut = cut.replace(/[\s.,;:!?–—-]+$/, '');
-
-      var p = document.createElement('p');
-      p.appendChild(document.createTextNode(cut + '… '));
+    var recs = [];
+    cards.forEach(function (card) {
+      var body = card.querySelector('.quote__body');
+      if (!body) return;
 
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'quote__more';
+      btn.hidden = true;
       btn.textContent = 'more';
       // the visible word is "more"; on its own that is meaningless out of context
       btn.setAttribute('aria-label', 'Read the rest of this review');
-      p.appendChild(btn);
+      btn.setAttribute('aria-expanded', 'false');
+      body.insertAdjacentElement('afterend', btn);
 
-      body.innerHTML = '';
-      body.appendChild(p);
+      /* A card with a photograph is never fitted and never clamped. It is the
+         card that SETS its row's height - the photograph is the tall thing -
+         so clamping it to fit the row it is itself creating just cuts a short
+         review in half for no gain. The text-only cards fill up to it. */
+      var rec = {
+        body: body, btn: btn, card: card, open: false, lines: BASE,
+        photo: !!card.querySelector('.quote__shot')
+      };
+      recs.push(rec);
 
       btn.addEventListener('click', function () {
-        body.innerHTML = full;
-        /* Focus moves to the text that just appeared. Without this the focus
-           ring is left on a button that no longer exists and a keyboard user
-           is dropped back at the top of the document. */
-        body.setAttribute('tabindex', '-1');
-        body.focus();
+        rec.open = !rec.open;
+        btn.textContent = rec.open ? 'less' : 'more';
+        btn.setAttribute('aria-expanded', rec.open ? 'true' : 'false');
+        btn.setAttribute('aria-label', rec.open
+          ? 'Collapse this review' : 'Read the rest of this review');
+        apply(rec);
+        /* This card just changed its row's height. Refit the rest of the row
+           so they fill the new space instead of growing a gap - which is the
+           same bug one card deep. Focus stays put: the control is still here
+           and still the thing that undoes what was just done. */
+        fit();
       });
     });
+    if (!recs.length) return;
+
+    function lineHeight(body) {
+      var ref = body.querySelector('p') || body;
+      var cs = getComputedStyle(ref);
+      var lh = parseFloat(cs.lineHeight);
+      if (!lh || isNaN(lh)) lh = parseFloat(cs.fontSize) * 1.75;
+      return lh;
+    }
+
+    /* line-clamp counts line boxes and knows nothing about the margin between
+       paragraphs, so that margin has to come out of the budget by hand. */
+    function gaps(body) {
+      var ps = body.querySelectorAll('p');
+      if (ps.length < 2) return 0;
+      return (parseFloat(getComputedStyle(ps[1]).marginTop) || 0) * (ps.length - 1);
+    }
+
+    /* Clamp, but leave the box stretched: pass 2 reads its height as the
+       budget, so it must not be pinned before the budget is known. */
+    function apply(rec) {
+      rec.body.style.maxHeight = '';
+      if (free(rec)) {
+        rec.body.classList.remove('is-clamped');
+        rec.body.style.removeProperty('--lines');
+        return;
+      }
+      rec.body.classList.add('is-clamped');
+      rec.body.style.setProperty('--lines', String(rec.lines));
+    }
+
+    /* Then pin it. Collapsing the box to its clamped content for one frame is
+       the only honest way to learn that height - it accounts for the ellipsis
+       and for whichever paragraph margins actually survived the cut, neither
+       of which arithmetic on the line count can know. */
+    function lock(rec) {
+      if (free(rec)) { rec.body.style.maxHeight = ''; return; }
+      rec.body.style.maxHeight = '';
+      rec.body.classList.add('is-measuring');
+      var h = rec.body.offsetHeight;
+      rec.body.classList.remove('is-measuring');
+      rec.body.style.maxHeight = h + 'px';
+    }
+
+    function cut(rec) { return rec.body.scrollHeight > rec.body.clientHeight + 1; }
+
+    // expanded by the reader, or carrying a photograph: either way, not clamped
+    function free(rec) { return rec.open || rec.photo; }
+
+    function stacked() {
+      return !!(window.matchMedia && window.matchMedia('(max-width: 620px)').matches);
+    }
+
+    /* Every phase below reads the whole row before it writes to any of it.
+       Reading one card's budget and immediately clamping it changes that
+       card's height, which changes its row's height, which changes the budget
+       of the card read next - the first version did exactly that and handed
+       the last card in each row a count meant for a taller row. */
+    function budgets(vis) {
+      return vis.map(function (r) {
+        return free(r) ? 0 : r.body.clientHeight - gaps(r.body);
+      });
+    }
+    function clampTo(vis, b) {
+      vis.forEach(function (r, i) {
+        if (free(r)) return;
+        var n = Math.floor(b[i] / lineHeight(r.body));
+        r.lines = (!isFinite(n) || n < MIN) ? MIN : n;
+        apply(r);
+      });
+    }
+
+    function fit() {
+      var vis = recs.filter(function (r) { return r.card.offsetParent !== null; });
+      if (!vis.length) return;
+
+      // 1. everyone to the baseline, controls out, so the row height is set by
+      //    the photograph rather than by whichever review ran longest.
+      vis.forEach(function (r) {
+        if (!free(r)) r.lines = BASE;
+        apply(r);
+        r.btn.hidden = true;
+      });
+      void grid.offsetHeight;
+
+      /* One card per row: there is no neighbour to line up with, so fitting
+         would only ever shrink a card to match itself. Plain preview. */
+      if (!stacked()) {
+        // 2. the stretched body is the budget. Fill it.
+        clampTo(vis, budgets(vis));
+        void grid.offsetHeight;
+      }
+
+      // 3. pin each box to its clamped height, THEN ask whether anything was
+      //    lost. Asking before the pin compares the text against a box that is
+      //    taller than the clamp, which says "nothing was cut" about a card
+      //    whose last two lines are about to be clipped away.
+      vis.forEach(lock);
+      void grid.offsetHeight;
+      vis.forEach(function (r) {
+        r.btn.hidden = r.open ? false : (r.photo ? true : !cut(r));
+      });
+      void grid.offsetHeight;
+
+      if (stacked()) return;
+
+      /* 4. The controls that just appeared take their own height out of the
+         budget, so the cards that have one are measured again without it. A
+         card with no control keeps the same budget and the same count, so the
+         verdict above still holds and nothing can end up silently cut. */
+      vis.forEach(function (r) { if (!free(r)) apply(r); });
+      void grid.offsetHeight;
+      clampTo(vis, budgets(vis));
+      void grid.offsetHeight;
+      vis.forEach(lock);
+    }
+
+    function soon() { requestAnimationFrame(fit); }
+
+    /* Measure on the real fonts. Josefin and Montserrat land after first
+       paint, and a line height measured against the fallback is a line height
+       measured against the wrong face - every count would be off, visibly,
+       and then jump when the swap happened. */
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(soon);
+    else soon();
+    window.addEventListener('load', soon);
+
+    var t;
+    function later() { clearTimeout(t); t = setTimeout(soon, 150); }
+    window.addEventListener('resize', later);
+
+    // a lazily-loaded photograph changes its row's height when it arrives
+    Array.prototype.forEach.call(grid.querySelectorAll('.quote__shot img'), function (img) {
+      if (!img.complete) img.addEventListener('load', later);
+    });
+
+    // and the button above reveals cards that have never been measured
+    document.addEventListener('quotes:revealed', soon);
   })();
 
   /* ------------------------------------------------------------------ *
