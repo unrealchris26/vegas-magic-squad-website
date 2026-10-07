@@ -1562,6 +1562,13 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   font-family:var(--disp); font-size:11px; font-weight:500;
   text-transform:uppercase; letter-spacing:.16em; color:var(--gold);
 }
+/* The label sits beside its badge rather than under it, and the tracking on
+   the last letter is not allowed to push the row apart. */
+.quote__src{display:flex; align-items:center; gap:6px}
+/* The one blue on the page, and deliberately not a palette token: it is
+   borrowed trust-signal blue, not part of this site's colour. Keeping it out
+   of :root keeps it from spreading. */
+.vbadge{flex:none; color:#1d9bf0}
 
 /* A real reviewer's own photograph instead of a monogram. The monogram exists
    because the placeholder names are invented and a stock face against a made-up
