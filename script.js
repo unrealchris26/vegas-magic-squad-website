@@ -415,7 +415,7 @@
   })();
 
   /* ------------------------------------------------------------------ *
-   * 4b. Reviews: show three, reveal the rest.
+   * 4b. Reviews: show three, reveal the rest a row at a time.
    *
    *     This is all that is left of what used to be the drift-rail engine —
    *     a ~230 line factory that turned a container into a self-scrolling,
@@ -427,44 +427,90 @@
    *     The HTML ships every review visible, so no-JS readers and crawlers
    *     get the lot; this hides the extras and reveals the button only once
    *     it is certain the button will work.
+   *
+   *     A press reveals one row, not the whole list, and a row is however
+   *     many columns the grid is actually showing — 3, 2 or 1, read from the
+   *     same breakpoints the stylesheet uses. Revealing a fixed 3 into a
+   *     two-column grid leaves a half-empty row on every press.
    * ------------------------------------------------------------------ */
   (function moreReviews() {
     var list = document.getElementById('quotelist');
     var btn = document.getElementById('quotes-more');
     if (!list || !btn) return;
 
-    var extras = list.querySelectorAll('.quotes__extra');
-    // Nothing to collapse: fewer reviews than the fold allows. Leave the
-    // button hidden rather than offering to expand nothing.
-    if (!extras.length) return;
+    var cards = [].slice.call(list.querySelectorAll('.quote'));
+    var INITIAL = 3;
+    // Nothing to collapse. Leave the button hidden rather than offering to
+    // expand nothing — it carries the hidden attribute in the markup.
+    if (cards.length <= INITIAL) return;
 
     var label = btn.querySelector('[data-more-label]');
-    var MORE = 'Read More Reviews';
-    var LESS = 'Show Fewer Reviews';
+    var MORE = 'Show more reviews';
+    var LESS = 'Show fewer reviews';
+    var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+    var shown = INITIAL;
 
-    function set(open) {
-      list.classList.toggle('is-clipped', !open);
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (label) label.textContent = open ? LESS : MORE;
+    /* The stylesheet's own breakpoints, not a guess at them. If those move,
+       these move with them or the batch stops matching the row. */
+    function columns() {
+      if (!window.matchMedia) return 3;
+      if (window.matchMedia('(max-width: 620px)').matches) return 1;
+      if (window.matchMedia('(max-width: 900px)').matches) return 2;
+      return 3;
     }
 
-    set(false);
+    function paint() {
+      for (var i = 0; i < cards.length; i++) {
+        cards[i].classList.toggle('is-hidden', i >= shown);
+      }
+      var all = shown >= cards.length;
+      btn.setAttribute('aria-expanded', shown > INITIAL ? 'true' : 'false');
+      if (label) label.textContent = all ? LESS : MORE;
+    }
+
+    /* Fade and rise, once, on the cards this press uncovered. Class-driven so
+       the transition retargets if someone presses again mid-reveal; the
+       reduced-motion branch is in the stylesheet, which neutralises both
+       classes rather than having two code paths here. */
+    function reveal(from, to) {
+      var batch = cards.slice(from, to);
+      batch.forEach(function (c) { c.classList.add('is-entering'); });
+      paint();
+      void list.offsetHeight;                       // commit the start state
+      batch.forEach(function (c) {
+        c.classList.add('is-enter-done');
+        c.classList.remove('is-entering');
+        var done = function (e) {
+          if (e.target !== c || e.propertyName !== 'opacity') return;
+          c.classList.remove('is-enter-done');
+          c.removeEventListener('transitionend', done);
+        };
+        c.addEventListener('transitionend', done);
+      });
+    }
+
+    paint();
     btn.hidden = false;
 
     btn.addEventListener('click', function () {
-      var open = btn.getAttribute('aria-expanded') === 'true';
-      set(!open);
-
-      /* Collapsing can leave the reader below the section's new bottom, so
-         the page jumps and the reviews they were reading are gone. Put them
-         back at the top of the section instead. Only on collapse — on expand
-         the next card is already where they are looking. */
-      if (open) {
+      if (shown >= cards.length) {
+        /* Collapsing pulls the ground out from under the reader — the cards
+           they were looking at are gone and the page is suddenly shorter.
+           Put the section heading back in front of them. */
+        shown = INITIAL;
+        paint();
         var sec = document.getElementById('quotes');
-        if (sec && sec.getBoundingClientRect().top < 0) {
-          sec.scrollIntoView({ block: 'start' });
+        if (sec) {
+          sec.scrollIntoView({
+            block: 'start',
+            behavior: calm && calm.matches ? 'auto' : 'smooth'
+          });
         }
+        return;
       }
+      var from = shown;
+      shown = Math.min(cards.length, shown + columns());
+      reveal(from, shown);
     });
   })();
 

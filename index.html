@@ -815,16 +815,26 @@
                        because the screenshot does not name it; its "Hired as"
                        field suggests a booking marketplace. Confirm and label.
 
-  All three are copied word for word. Two are about Kent and one about Dream,
-  and each says so in its own text, so none of them reads as a claim about the
-  squad as a whole. Keep it that way.
+  4. Ellen Little      Google, 5 stars  } carried over from the Kent Axell
+  5. Courtney Oldrin   Google, 5 stars  } site, where they were transcribed by
+  6. Barrett Jones     Google, 5 stars  } hand from Google and TRIMMED FOR
+  7. Sunny Daggett     Google, 5 stars  } LENGTH. The ellipses inside 4-7 are
+  8. Benjy Lowry       Google, 5 stars  } that trim, not the reviewer's own
+                                        } punctuation, which is why the note
+                                        } above the grid no longer claims the
+                                        } text is word for word.
+
+  Every one of 4-8 is about Kent by name, and several are about his own touring
+  show rather than a squad booking - Manchester NH, Rockport Maine, "the quirks
+  of Mainers". They read as reviews of a performer the squad includes, which is
+  true, and not as claims about the squad. Keep it that way.
 
   Long reviews are CLIPPED TO 236 CHARACTERS with a "more" control, added by
   script.js at runtime. The full text is what ships in the markup, so a reader
   without JavaScript, and a crawler, get the whole thing.
 
-  Adding a fourth: copy a .quote block, give it class="quote quotes__extra"
-  and the "Read more reviews" button below re-enables itself.
+  Adding another: copy a .quote block into the grid. script.js counts the cards
+  itself and collapses everything past the third, so nothing else needs editing.
 -->
 <section class="sec sec--night quotes" id="quotes" aria-labelledby="quotes-h">
   <span class="deco deco--top deco--quote deco--grain" aria-hidden="true"></span>
@@ -837,7 +847,7 @@
       <span class="fleuron" aria-hidden="true"></span>
     </header>
 
-    <p class="quotes__note">Real reviews, copied word for word from where they were left.</p>
+    <p class="quotes__note">Real reviews, copied from where they were left. Nothing is reworded; an ellipsis marks where a long one was shortened.</p>
 
     <div class="quotes__grid" id="quotelist">
 
@@ -913,17 +923,117 @@
         </footer>
       </blockquote>
 
+      <!-- The five below came across from the Kent Axell site, copied word for
+           word from its markup. Their avatars are the reviewers' own Google
+           profile pictures, except Barrett Jones, who has none and shows
+           Google's own letter disc. Where a reviewer attached photographs,
+           those came too. See the note above .quotes__note about the ellipses. -->
+
+      <blockquote class="quote quote--shot">
+        <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <span class="sr-only">Rated 5 out of 5</span>
+        <div class="quote__body">
+          <p>
+            We went to Kent Axell&rsquo;s show in Manchester NH after hearing rave reviews
+            from our daughter who saw his show in Las Vegas. He kept the audience mesmerized
+            and engaged. His ability to engage random members of the audience and reveal what
+            they were thinking, all the time giving an entertaining performance was mind
+            boggling. It&rsquo;s an experience you don&rsquo;t want to miss.
+          </p>
+        </div>
+        <figure class="quote__shot">
+          <img draggable="false" src="images/site/review-ellen-photo-1.jpg" alt="Kent Axell on stage in front of his illuminated backdrop" width="531" height="700" loading="lazy" decoding="async">
+          <img draggable="false" src="images/site/review-ellen-photo-2.jpg" alt="Kent Axell performing to a seated theatre audience" width="528" height="700" loading="lazy" decoding="async">
+        </figure>
+        <footer>
+          <img class="quote__avatar quote__avatar--photo" src="images/site/review-ellen-avatar.png" alt="" width="72" height="72" loading="lazy" decoding="async"><span class="quote__who"><b>Ellen Little</b><span>Google review</span></span>
+        </footer>
+      </blockquote>
+
+      <blockquote class="quote quote--shot">
+        <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <span class="sr-only">Rated 5 out of 5</span>
+        <div class="quote__body">
+          <p>
+            So much fun! Such a great performance for kids and adults alike. The audience
+            was amazed at how Kent was flawlessly able to &ldquo;read people&rsquo;s
+            minds&rdquo;. I am absolutely dying to know how he does it! Kent is a warm and
+            personal entertainer and his comments about the quirks of Mainers made the night
+            all the more engaging and intimate.
+          </p>
+        </div>
+        <figure class="quote__shot">
+          <img draggable="false" src="images/site/review-courtney-photo-1.jpg" alt="Kent Axell on stage under purple light" width="526" height="700" loading="lazy" decoding="async">
+          <img draggable="false" src="images/site/review-courtney-photo-2.jpg" alt="Kent Axell with three young audience members after the show" width="700" height="479" loading="lazy" decoding="async">
+        </figure>
+        <footer>
+          <img class="quote__avatar quote__avatar--photo" src="images/site/review-courtney-avatar.png" alt="" width="72" height="72" loading="lazy" decoding="async"><span class="quote__who"><b>Courtney Oldrin</b><span>Google review</span></span>
+        </footer>
+      </blockquote>
+
+      <blockquote class="quote">
+        <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <span class="sr-only">Rated 5 out of 5</span>
+        <div class="quote__body">
+          <p>
+            Kent Axell has &ldquo;it.&rdquo; He&rsquo;s charismatic, quick-witted, and
+            genuine. His &ldquo;deceptions,&rdquo; as he refers to them, are unique,
+            head-scratching, and most importantly&mdash;quite specific. His show is powered
+            by audience participation, and half of the fun is listening to him have fun with
+            his audience&hellip; If Kent is in your area, I highly suggest attending his show.
+          </p>
+        </div>
+        <footer>
+          <img class="quote__avatar quote__avatar--photo" src="images/site/review-barrett-avatar.png" alt="" width="72" height="72" loading="lazy" decoding="async"><span class="quote__who"><b>Barrett Jones</b><span>Google review</span></span>
+        </footer>
+      </blockquote>
+
+      <blockquote class="quote">
+        <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <span class="sr-only">Rated 5 out of 5</span>
+        <div class="quote__body">
+          <p>
+            I saw him in Rockport, Maine. This was a top notch performance. Kent is
+            amazing! We all had a blast! If you are lucky enough to have him come to your
+            city or town I highly recommend going. He truly cares about giving a great
+            performance and making people happy and amazed&hellip; If you&rsquo;re in Vegas
+            make time to see the show!
+          </p>
+        </div>
+        <footer>
+          <img class="quote__avatar quote__avatar--photo" src="images/site/review-sunny-avatar.png" alt="" width="72" height="72" loading="lazy" decoding="async"><span class="quote__who"><b>Sunny Daggett</b><span>Google review</span></span>
+        </footer>
+      </blockquote>
+
+      <blockquote class="quote">
+        <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <span class="sr-only">Rated 5 out of 5</span>
+        <div class="quote__body">
+          <p>
+            Great showman!! Entertaining, funny, and a good time for the whole family. My
+            10 year old spent the drive home talking about how amazed he was!&hellip; proved
+            himself a nice guy who really seems to enjoy his audience. Thanks!
+          </p>
+        </div>
+        <footer>
+          <img class="quote__avatar quote__avatar--photo" src="images/site/review-benjy-avatar.png" alt="" width="72" height="72" loading="lazy" decoding="async"><span class="quote__who"><b>Benjy Lowry</b><span>Google review</span></span>
+        </footer>
+      </blockquote>
+
     </div>
 
     <!--
       Hidden until there is something to reveal. script.js only shows it when
-      a .quotes__extra card exists, so with three reviews it stays out of the
-      way and re-enables itself the moment a fourth is added.
+      the grid holds more than three cards, so it stays out of the way on a
+      short list and re-enables itself the moment a fourth is added.
     -->
     <p class="quotes__more">
-      <button class="btn btn--ghost" type="button" id="quotes-more"
+      <button class="btn btn--ghost quotes__btn" type="button" id="quotes-more"
               hidden aria-expanded="false" aria-controls="quotelist">
-        <span data-more-label>Read More Reviews</span>
+        <span data-more-label>Show more reviews</span>
+        <svg class="quotes__chev" viewBox="0 0 12 8" width="12" height="8" aria-hidden="true" focusable="false">
+          <path d="M1 1.6 6 6.5 11 1.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"/>
+        </svg>
       </button>
     </p>
 

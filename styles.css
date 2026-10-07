@@ -1400,15 +1400,16 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    Was a drifting, draggable, cloned rail at every width. Removed on request.
    -------------------------------------------------------------------------- */
 .quotes{--qgap:clamp(24px,2.6vw,32px)}
-/* start, not stretch. Stretch made every card as tall as the tallest, which
-   was fine when all seven were invented and the same length; with real reviews
-   of real lengths, and a photograph on one of them, it left two hundred pixels
-   of empty panel in the cards either side. Each card is now its own height.
-   Three unequal cards in a row is what three unequal reviews look like. */
+/* stretch, and the author row pushed to the floor of each card with
+   margin-top:auto. This was align-items:start for a while, because three real
+   reviews of wildly different lengths left a lot of empty panel when forced to
+   match. With eight reviews clipped to a 236-character preview the lengths are
+   near enough even, and a ragged row of boxes reads as a bug where a ragged
+   row of paragraphs did not. The footers now line up across each row. */
 .quotes__grid{
   display:grid; grid-template-columns:repeat(3,1fr);
   gap:var(--qgap);
-  align-items:start;
+  align-items:stretch;
 }
 @media (max-width:900px){
   .quotes__grid{grid-template-columns:repeat(2,1fr)}
@@ -1418,13 +1419,39 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 }
 
 /* Collapsed to the first three until the button says otherwise. The class is
-   put on by script.js, so the default state of this markup is "all of them
-   showing" — see the note above the list in index.html. display:none rather
-   than visibility or height, so the hidden four are out of the tab order and
-   out of the accessibility tree while they are away. */
-.quotes__grid.is-clipped > .quotes__extra{display:none}
+   put on by script.js card by card, so the default state of this markup is
+   "all of them showing" — see the note above the list in index.html.
+   display:none rather than visibility or height, so a hidden card is out of
+   the tab order and out of the accessibility tree while it is away. */
+.quote.is-hidden{display:none}
+
+/* Revealed cards fade and rise once, on the batch that uncovered them. It is
+   a transition on a class rather than an animation so an interrupted reveal
+   retargets instead of restarting, and the end state is the plain card — if
+   the class never lands, nothing is invisible. */
+.quote.is-entering{opacity:0; transform:translateY(14px)}
+.quote.is-enter-done{
+  opacity:1; transform:none;
+  transition:opacity .42s var(--ease), transform .42s var(--ease);
+}
+@media (prefers-reduced-motion:reduce){
+  .quote.is-entering{opacity:1; transform:none}
+  .quote.is-enter-done{transition:none}
+}
 
 .quotes__more{margin:clamp(26px,3.4vw,42px) 0 0; text-align:center}
+
+/* The chevron points down at "show more" and flips when the list is open.
+   .btn already carries the gold-on-dark, the uppercase and the .2em tracking
+   that match the TESTIMONIALS eyebrow, so this adds only the arrow. */
+.quotes__chev{flex:none; transition:transform .28s var(--ease)}
+.quotes__btn[aria-expanded="true"] .quotes__chev{transform:rotate(180deg)}
+@media (prefers-reduced-motion:reduce){
+  .quotes__chev{transition:none}
+}
+/* Stated rather than inherited from the global :focus-visible, so a later
+   change to that rule cannot quietly take the ring off this control. */
+.quotes__btn:focus-visible{outline:2px solid var(--gold-hi); outline-offset:3px}
 
 .quote{
   margin:0; overflow:hidden;
@@ -1444,7 +1471,7 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 }
 /* White, not the muted secondary. These are real people's words and the one
    piece of proof the page has; they were reading as caption-grade text. */
-.quote__body{flex:1; display:flex; flex-direction:column; gap:13px}
+.quote__body{flex:0 1 auto; display:flex; flex-direction:column; gap:13px}
 .quote__body p{flex:0 0 auto}
 .quote p{color:#fff; font-size:14.5px; font-weight:400; line-height:1.75; margin:0}
 
@@ -1462,7 +1489,11 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 .quote__more:focus-visible{outline:2px solid var(--gold); outline-offset:2px}
 .quote__body:focus{outline:none}
 .quote__body:focus-visible{outline:2px solid var(--gold); outline-offset:4px}
+/* margin-top:auto, not flex:1 on the body above it. Stretching the body would
+   push its own paragraphs apart and leave a photograph floating mid-card; the
+   slack belongs above the footer, in one place. */
 .quote footer{
+  margin-top:auto;
   display:flex; align-items:center; gap:12px;
   padding-top:14px; border-top:1px solid rgba(200,168,80,.18);
 }
