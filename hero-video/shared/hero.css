@@ -1,0 +1,148 @@
+/* hero.css - layers for the hero background loop, both crops.
+ *
+ * Stacking, bottom to top:
+ *   .night      the --night base fill (a child, not the root - see core)
+ *   .shot       five photographs + the loop-seam copy of shot 1
+ *   haze, spot  atmosphere, all screen-blended so they only ever add light
+ *   .leak       the two gold light leaks
+ *   #dust       gold dust
+ *   .scrim      the text-safe darkening the headline relies on
+ *   #grain      film grain (registry grain-overlay)
+ *
+ * No static `transform` is set on anything the timeline animates; GSAP owns
+ * those (lint: gsap_css_transform_conflict). Static rotation lives on a
+ * parent of the animated node instead.
+ */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { margin: 0; overflow: hidden; background: #07090f; }
+
+#root { position: relative; width: 100%; height: 100%; overflow: hidden; }
+
+.night { position: absolute; inset: 0; background: #07090f; }
+
+.shot { position: absolute; inset: 0; overflow: hidden; }
+.shot .fade, .shot .wipe { position: absolute; inset: 0; }
+.shot .cam { position: absolute; inset: 0; }
+.shot .cam > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* A plate holds a low-resolution photo at or under 1:1, feathered into the
+   night instead of stretched to full frame. Geometry per crop, below. */
+
+/* Smoke wipe: the incoming shot is revealed through a wispy-edged mask that
+   slides across. --wipe is tweened by the timeline. */
+.desk .wipe {
+  -webkit-mask-image: url("../assets/fx/smoke-h.png"); mask-image: url("../assets/fx/smoke-h.png");
+  -webkit-mask-size: 5760px 1080px; mask-size: 5760px 1080px;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: var(--wipe, 250px) 0; mask-position: var(--wipe, 250px) 0;
+}
+.mob .wipe {
+  -webkit-mask-image: url("../assets/fx/smoke-v.png"); mask-image: url("../assets/fx/smoke-v.png");
+  -webkit-mask-size: 1080px 5760px; mask-size: 1080px 5760px;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: 0 var(--wipe, 250px); mask-position: 0 var(--wipe, 250px);
+}
+
+/* Light sweep across the card (registry shimmer-sweep, recoloured gold).
+   It sits inside the plate's camera so it rides the push-in. */
+.sweep { position: absolute; left: 18%; top: 44%; width: 46%; height: 42%; pointer-events: none; }
+.sweep .shimmer-mask {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    var(--shimmer-angle, 115deg),
+    transparent 0%,
+    transparent calc(var(--shimmer-pos, -25%) - var(--shimmer-width, 22%) / 2),
+    var(--shimmer-color, rgba(230, 209, 147, 0.55)) var(--shimmer-pos, -25%),
+    transparent calc(var(--shimmer-pos, -25%) + var(--shimmer-width, 22%) / 2),
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 40%, transparent 100%);
+}
+
+/* Haze: a coloured fill seen through the tileable haze texture. Each layer is
+   wider than the frame so its drift never shows an edge. */
+.haze { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; }
+.haze .h1, .haze .h2 {
+  position: absolute; top: -200px; bottom: -200px; left: -420px; right: -420px;
+  -webkit-mask-image: url("../assets/fx/haze.png"); mask-image: url("../assets/fx/haze.png");
+  -webkit-mask-repeat: repeat; mask-repeat: repeat;
+}
+#haze-cool .h1, #haze-cool .h2 { background: #3a4a6b; -webkit-mask-size: 2400px 1350px; mask-size: 2400px 1350px; }
+#haze-warm .h1, #haze-warm .h2 { background: #8a6d2c; -webkit-mask-size: 1700px 956px; mask-size: 1700px 956px; }
+#haze-warm .h2 { -webkit-mask-position: 610px 340px; mask-position: 610px 340px; }
+
+/* Spotlight cone: drawn by clip-path, softened by a blur on its parent (a
+   filter on the same node would run before the clip and leave hard edges). */
+#spot { position: absolute; pointer-events: none; mix-blend-mode: screen; filter: blur(34px); }
+#spot .aim { position: absolute; inset: 0; }
+#spot .cone {
+  position: absolute; inset: 0; transform-origin: 50% 0%;
+  clip-path: polygon(46% 0%, 54% 0%, 100% 100%, 0% 100%);
+  background: linear-gradient(180deg, rgba(230, 209, 147, 0.30) 0%, rgba(200, 168, 80, 0.12) 45%, rgba(200, 168, 80, 0) 92%);
+}
+
+/* Gold leak, adapted from the registry's organic-light-leak-overlay: same
+   layered-gradient construction, recoloured to the site's golds and moved
+   into the outer region so it never crosses the headline. */
+.leak { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity: 0; }
+.leak .lk-a, .leak .lk-b { position: absolute; inset: -20%; }
+.leak .lk-a { filter: blur(40px); }
+.leak .lk-b { filter: blur(60px); }
+
+#dust { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; }
+.mote {
+  position: absolute; left: 0; top: 0; display: block; border-radius: 50%;
+  background: radial-gradient(circle, #fff6d8 0%, rgba(230, 209, 147, 0.95) 38%, rgba(200, 168, 80, 0) 72%);
+}
+.mote.bokeh {
+  background: radial-gradient(circle, rgba(230, 209, 147, 0.75) 0%, rgba(200, 168, 80, 0.38) 42%, rgba(200, 168, 80, 0) 72%);
+}
+
+.scrim { position: absolute; inset: 0; pointer-events: none; }
+
+/* ---------------------------------------------------------------- desktop */
+/* Headline zone: the left 55%. Darkest, least motion. */
+/* Desktop shots are the client's own 1920x1080 frames, full-frame at native
+   resolution. Each shot's push aims at its subject via an inline
+   transform-origin written by tools/build.py. */
+
+.desk #haze-cool, .desk #haze-warm, .desk #dust {
+  -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,.22) 0%, rgba(0,0,0,.12) 30%, rgba(0,0,0,.35) 50%, #000 68%);
+          mask-image: linear-gradient(90deg, rgba(0,0,0,.22) 0%, rgba(0,0,0,.12) 30%, rgba(0,0,0,.35) 50%, #000 68%);
+}
+.desk #spot { left: 1080px; top: -90px; width: 820px; height: 1300px; }
+.desk #spot .aim { transform: rotate(14deg); transform-origin: 50% 0%; }
+.desk .leak .lk-a { background: radial-gradient(ellipse 34% 60% at 76% 46%, rgba(240, 205, 120, 0.80), rgba(200, 168, 80, 0.42) 40%, transparent 70%); }
+.desk .leak .lk-b { background: radial-gradient(ellipse 30% 70% at 88% 30%, rgba(200, 168, 80, 0.75), rgba(138, 109, 44, 0.3) 50%, transparent 78%); }
+.desk .scrim {
+  background:
+    linear-gradient(90deg, rgba(7, 9, 15, 0.82) 0%, rgba(7, 9, 15, 0.78) 26%, rgba(7, 9, 15, 0.70) 42%,
+                    rgba(7, 9, 15, 0.52) 52%, rgba(7, 9, 15, 0.22) 60%, rgba(7, 9, 15, 0) 70%),
+    radial-gradient(ellipse 85% 95% at 64% 44%, rgba(7, 9, 15, 0) 52%, rgba(7, 9, 15, 0.55) 100%);
+}
+
+/* ----------------------------------------------------------------- mobile */
+/* Headline zone: the bottom 45%. Subjects live in the upper half. */
+/* Mobile shots: a native 1080x1080 square from each frame, centred on the
+   performer, sitting high in the frame and falling off into the night by the
+   time it reaches the headline. */
+.mob .mplate { position: absolute; left: 0; top: 40px; width: 1080px; height: 1080px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 7%, #000 72%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0%, #000 7%, #000 72%, transparent 100%); }
+
+.mob #haze-cool, .mob #haze-warm, .mob #dust {
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 42%, rgba(0,0,0,.3) 60%, rgba(0,0,0,.14) 100%);
+          mask-image: linear-gradient(180deg, #000 0%, #000 42%, rgba(0,0,0,.3) 60%, rgba(0,0,0,.14) 100%);
+}
+.mob #spot { left: 300px; top: -90px; width: 760px; height: 1400px; }
+.mob #spot .aim { transform: rotate(8deg); transform-origin: 50% 0%; }
+.mob .leak .lk-a { background: radial-gradient(ellipse 60% 26% at 62% 30%, rgba(240, 205, 120, 0.80), rgba(200, 168, 80, 0.42) 40%, transparent 70%); }
+.mob .leak .lk-b { background: radial-gradient(ellipse 70% 24% at 30% 18%, rgba(200, 168, 80, 0.75), rgba(138, 109, 44, 0.3) 50%, transparent 78%); }
+.mob .scrim {
+  background:
+    linear-gradient(180deg, rgba(7, 9, 15, 0) 34%, rgba(7, 9, 15, 0.50) 55%, rgba(7, 9, 15, 0.76) 72%, rgba(7, 9, 15, 0.84) 100%),
+    radial-gradient(ellipse 110% 70% at 50% 30%, rgba(7, 9, 15, 0) 50%, rgba(7, 9, 15, 0.5) 100%);
+}

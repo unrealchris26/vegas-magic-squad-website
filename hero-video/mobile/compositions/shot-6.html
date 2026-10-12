@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; overflow: hidden; }
+      </style>
+      <div id="root" data-composition-id="shot-6" data-width="1080" data-height="1920">
+        <div id="k6" class="shot k6"><div class="fade"><div class="mplate" data-layout-allow-overflow><div class="cam" style="transform-origin: 46.4% 38.0%">
+          <img id="k6-img" src="assets/graded/f2-mobile.jpg" alt="" />
+        </div></div></div></div>
+      </div>
+      <script>
+        (function () {
+          var tl = gsap.timeline({ paused: true });
+          tl.fromTo('#k6 .fade', { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'sine.inOut' }, 0);
+          tl.fromTo('#k6 .cam', { x: -26, scale: 1.05 }, { x: 26, scale: 1.05, duration: 2.8, ease: 'sine.inOut' }, 0);
+          tl.to('#k6 .fade', { opacity: 0, duration: 0.5599999999999999, ease: 'sine.inOut' }, 2.24);
+          window.__timelines["shot-6"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

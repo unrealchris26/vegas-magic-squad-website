@@ -31,9 +31,16 @@ const ENTRIES = ['index.html', 'squad.html', 'kent-axell.html', 'privacy.html', 
 // Only these get pulled in by reference. Keeps a stray mailto: or #anchor out.
 const ASSET_EXT = /\.(?:css|js|mjs|woff2?|ttf|otf|jpe?g|png|webp|avif|gif|svg|ico|webmanifest|mp4|webm)$/i;
 
-/* Every relative path in a src=, href= or url(). Absolute URLs, protocol
-   links and bare fragments fall out on the extension test below. */
-const REF = /(?:\b(?:src|href)\s*=\s*|url\(\s*)["']?([^"')\s>]+)/gi;
+/* Every relative path in a src=, href=, poster=, srcset= or url(). Absolute
+   URLs, protocol links and bare fragments fall out on the extension test
+   below. poster and srcset were missing: the hero video's poster would have
+   been left out of dist/, and the portrait hero image only shipped because a
+   preload link happened to name it too. For srcset, the first candidate is
+   taken (the comma stops the match) - every srcset on this site has one.
+   content= is for og:image: the share image is named nowhere else once the
+   hero became a video. Meta descriptions never end in an asset extension,
+   so they fall out on the extension test like any other prose. */
+const REF = /(?:\b(?:src|href|poster|srcset|content)\s*=\s*|url\(\s*)["']?([^"')\s>,]+)/gi;
 
 function isLocal(ref) {
   return ref &&

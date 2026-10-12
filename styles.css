@@ -201,6 +201,12 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   overflow:hidden; isolation:isolate;
 }
 .hero__pic{position:absolute; inset:0; z-index:-2}
+/* The looping background film. Same layer as the poster picture and later in
+   the DOM, so it covers it once it has a frame. Decoration only. */
+.hero__vid{
+  position:absolute; inset:0; z-index:-2;
+  width:100%; height:100%; object-fit:cover; pointer-events:none;
+}
 .hero__img{
   width:100%; height:100%;
   object-fit:cover; object-position:58% 32%;
@@ -239,6 +245,19 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 .hero__col{
   width:100%; max-width:1040px; margin:0 auto;
   display:flex; flex-direction:column; align-items:center;
+}
+/* A soft pool of night behind the headline. The hero film puts lit faces
+   right behind "MAGIC" for a few seconds of every loop (the first cut's
+   shot 2 took phones from 5:1 to 2.2:1; the 8-shot cut's worst is 3.9:1 at
+   1440 with the pool in place). The pool is attached to the
+   headline itself, so it follows it at every breakpoint, and it is radial and
+   feathered so it reads as the stage falling off around the title rather than
+   as a box. */
+.bill__top{position:relative; isolation:isolate}
+.bill__top::before{
+  content:""; position:absolute; z-index:-1; pointer-events:none;
+  inset:-34% -14%;
+  background:radial-gradient(closest-side, rgba(7,9,15,.72) 0%, rgba(7,9,15,.6) 45%, rgba(7,9,15,.28) 75%, rgba(7,9,15,0) 100%);
 }
 
 .bill__name{
@@ -1828,6 +1847,9 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   *,*::before,*::after{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important}
   .bulb{animation:none; opacity:.92; box-shadow:0 0 7px 1px rgba(230,209,147,.45)}
   .hero__img{animation:none; transform:none}
+  /* no film at all - the poster underneath stands. script.js also removes
+     the element so nothing downloads; this covers JS being off. */
+  .hero__vid{display:none}
   .strike{opacity:1; animation:none}
 }
 

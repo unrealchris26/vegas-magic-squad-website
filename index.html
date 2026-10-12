@@ -16,8 +16,10 @@
 <meta property="og:type" content="website">
 <link rel="preload" href="fonts/JosefinSans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/Montserrat-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" as="image" href="images/site/hero.jpg" media="(orientation: landscape)" fetchpriority="high">
-<link rel="preload" as="image" href="images/site/hero-mobile.jpg" media="(orientation: portrait)" fetchpriority="high">
+<!-- the hero video's poster, per breakpoint: what paints before the video,
+     and all that reduced-motion visitors ever get -->
+<link rel="preload" as="image" href="images/site/hero-poster-desktop.jpg" media="(min-width: 769px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/site/hero-poster-mobile.jpg" media="(max-width: 768px)" fetchpriority="high">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -68,10 +70,25 @@
 
 <!-- ============ HERO : THE MARQUEE ============ -->
 <section class="hero" aria-labelledby="hero-name">
+  <!--
+    Background: a 16s looping film of eight real event photos (hero-video/).
+    The picture underneath holds the poster - a frame of the same film - so the
+    hero is never empty while the video loads, and it is all a visitor sees
+    with prefers-reduced-motion (the video is removed; see script.js and the
+    reduced-motion block in styles.css). Both are decoration: the headline
+    says what the section is, so neither carries alt text.
+  -->
   <picture class="hero__pic">
-    <source media="(orientation: portrait)" srcset="images/site/hero-mobile.jpg" width="1024" height="1536">
-    <img class="hero__img" src="images/site/hero.jpg" alt="Brandon Williams, Kent Axell and Dream Upright on stage as playing cards fall through the smoke around them" width="1800" height="911" fetchpriority="high" decoding="async">
+    <source media="(max-width: 768px)" srcset="images/site/hero-poster-mobile.jpg" width="1080" height="1920">
+    <img class="hero__img" src="images/site/hero-poster-desktop.jpg" alt="" width="1920" height="1080" fetchpriority="high" decoding="async">
   </picture>
+  <video class="hero__vid" autoplay muted loop playsinline preload="metadata"
+         poster="images/site/hero-poster-desktop.jpg" aria-hidden="true" tabindex="-1">
+    <source media="(max-width: 768px)" src="video/hero-mobile.webm" type="video/webm">
+    <source media="(max-width: 768px)" src="video/hero-mobile.mp4" type="video/mp4">
+    <source src="video/hero-desktop.webm" type="video/webm">
+    <source src="video/hero-desktop.mp4" type="video/mp4">
+  </video>
   <div class="hero__scrim" aria-hidden="true"></div>
 
   <div class="hero__bill">

@@ -1,0 +1,19 @@
+hero-desktop.mp4        3.47 MB  target <= 4.0 MB  OK  (crf 26)
+hero-desktop.webm       1.93 MB  target <= 3.0 MB  OK  (crf 36)
+hero-mobile.mp4         2.61 MB  target <= 3.0 MB  OK  (crf 27)
+hero-mobile.webm        1.76 MB  target <= 2.5 MB  OK  (crf 36)
+hero-desktop.mp4       h264 1920x1080 30/1fps 16.00s audio tracks: 0
+hero-desktop.webm      vp9 1920x1080 30/1fps 16.00s audio tracks: 0
+hero-mobile.mp4        h264 1080x1920 30/1fps 16.00s audio tracks: 0
+hero-mobile.webm       vp9 1080x1920 30/1fps 16.00s audio tracks: 0
+desktop  loop seam (raw       ): last->first 1.54 | normal step median 1.20, 95th pct 2.31  ->  no visible jump
+desktop  loop seam (structural): last->first 0.36 | normal step median 0.40, 95th pct 1.93  ->  no visible jump
+desktop  cream 64px bold over the headline zone, encoded file, every 0.5s: worst 4.79:1 at 7.5s  ->  AA large text (3:1) PASS
+hero-poster-desktop.jpg   128 KB  (frame at 7.0s)
+loop-preview-desktop.mp4 48.00s (3 loops)
+mobile   loop seam (raw       ): last->first 1.49 | normal step median 0.88, 95th pct 2.10  ->  no visible jump
+mobile   loop seam (structural): last->first 0.59 | normal step median 0.41, 95th pct 1.73  ->  no visible jump
+mobile   cream 64px bold over the headline zone, encoded file, every 0.5s: worst 16.32:1 at 6.0s  ->  AA large text (3:1) PASS
+hero-poster-mobile.jpg   115 KB  (frame at 7.0s)
+loop-preview-mobile.mp4 48.00s (3 loops)
+hero-shots.jpg 3516x1366

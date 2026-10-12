@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; overflow: hidden; }
+      </style>
+      <div id="root" data-composition-id="shot-seam" data-width="1920" data-height="1080">
+        <div id="k0" class="shot k0"><div class="fade"><div class="cam" style="transform-origin: 32.0% 22.0%">
+          <img id="k0-img" src="assets/graded/f4-desktop-seam.jpg" alt="" />
+        </div></div></div>
+      </div>
+      <script>
+        (function () {
+          var tl = gsap.timeline({ paused: true });
+          // shot 1's opening state, static: fades in, then holds to the loop point
+          tl.fromTo('#k0 .fade', { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'sine.inOut' }, 0);
+          window.__timelines["shot-seam"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

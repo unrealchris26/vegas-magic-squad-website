@@ -190,6 +190,53 @@
   })();
 
   /* ------------------------------------------------------------------ *
+   * 3c. Hero film: the looping background video.
+   *
+   *     The <video> picks its own file per breakpoint through <source
+   *     media>. What it cannot pick is its poster, so that is set here.
+   *     Reduced motion gets no film at all - the element is removed and
+   *     the poster picture underneath stands (styles.css hides it too,
+   *     for when this never runs). Off screen it pauses, so a visitor
+   *     reading the reviews is not decoding a 1080p loop above them.
+   * ------------------------------------------------------------------ */
+  (function heroFilm() {
+    var film = document.querySelector('.hero__vid');
+    if (!film) return;
+
+    var narrow = window.matchMedia('(max-width: 768px)');
+    var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function still() {
+      film.pause();
+      film.remove();
+    }
+    if (calm.matches) { still(); return; }
+    if (calm.addEventListener) {
+      calm.addEventListener('change', function (e) { if (e.matches) still(); });
+    }
+
+    function poster() {
+      film.poster = narrow.matches ? 'images/site/hero-poster-mobile.jpg' : 'images/site/hero-poster-desktop.jpg';
+    }
+    poster();
+    if (narrow.addEventListener) narrow.addEventListener('change', poster);
+
+    if (!('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!film.isConnected) return;
+        if (entry.isIntersecting) {
+          var p = film.play();
+          // autoplay can be refused (data saver, some browsers); the poster stands
+          if (p && p.catch) p.catch(function () {});
+        } else {
+          film.pause();
+        }
+      });
+    }, { threshold: 0.05 }).observe(film);
+  })();
+
+  /* ------------------------------------------------------------------ *
    * 4. Showreel rail : swipeable on phones, drifting left on its own.
    *
    *    The swipe is the browser's — the rail is a native overflow-x

@@ -1,0 +1,13 @@
+[
+ {"label":"A night-gold custom","grading":{
+   "adjust":{"exposure":-0.12,"contrast":0.2,"highlights":-0.25,"shadows":-0.08,"blacks":0.05,"saturation":-0.2,"vibrance":0.12},
+   "wheels":{"shadows":{"hue":222,"amount":0.34,"level":0},"midtones":{"hue":32,"amount":0.05,"level":0},"highlights":{"hue":44,"amount":0.26,"level":0}},
+   "curves":{"master":[[0,0.03],[0.22,0.17],[0.75,0.8],[1,0.96]]}}},
+ {"label":"B night-lift preset + wheels","grading":{
+   "preset":"night-lift","intensity":0.8,
+   "wheels":{"shadows":{"hue":222,"amount":0.3,"level":0},"highlights":{"hue":44,"amount":0.22,"level":0}}}},
+ {"label":"C deep-contrast + wheels","grading":{
+   "preset":"deep-contrast","intensity":0.7,
+   "adjust":{"saturation":-0.15},
+   "wheels":{"shadows":{"hue":222,"amount":0.32,"level":0.02},"highlights":{"hue":44,"amount":0.24,"level":0}}}}
+]

@@ -1,0 +1,18 @@
+# Regenerable: masters (re-render with `npx hyperframes@0.8.148 render`),
+# CLI snapshots and caches. The deliverables live in output/.
+renders/
+snapshots/
+mobile/snapshots/
+.hyperframes/
+mobile/.hyperframes/
+tools/__pycache__/
+output/loop-preview-*.mp4
+output/v1-5shot-site/
+.thumbnails/
+.rtmp/
+# copies: the shipped films live in ../video/, the first cut's sources were
+# the full-size originals; output/ keeps posters, contact sheet and qa.txt
+output/hero-*.mp4
+output/hero-*.webm
+assets/photos-v1/
+output/Attached Element Context*.txt
