@@ -178,28 +178,31 @@
   at that point loses nothing.
 -->
 <section class="sec sec--night callform" id="booking" aria-labelledby="booking-h">
-  <span class="deco deco--top deco--grain" aria-hidden="true"></span>
   <!--
-    The heading sits in its OWN .wrap, outside .callform__in, so it can use the
-    full 1320px column while the form stays at 720px.
-
-    It has to be a sibling rather than a child: the form fields are direct
-    children of .callform__in, so widening that container to give the headline
-    room would have widened the form with it. The sub-heading keeps its own
-    max-width:var(--col) and so stays exactly where it was.
+    Layout per the supplied comps (Booking section, desktop@1x and mobile@1x).
+    The sunburst and glow are the section's own ::before / ::after (styles.css),
+    so there are no deco spans here. The form comes first in the source, so on
+    a phone it follows the header directly; on a wide screen the grid puts
+    "what happens next" in the left column and the form on the right.
   -->
   <header class="wrap callform__head">
     <p class="eyebrow">Book the squad</p>
-    <h2 class="h2 h2--gold hl" id="booking-h"><span class="hl__l">Let&rsquo;s find the right</span>
-      <span class="hl__l">entertainment for you</span></h2>
+    <h2 class="callform__h" id="booking-h">Let&rsquo;s find the right entertainment for you</h2>
+    <div class="callform__suits" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 2C9 6.6 4 9.3 4 13.5c0 2.5 2 4.3 4.3 4.3 1.3 0 2.4-.5 3.1-1.4-.3 2-1.2 3.6-2.6 4.6h6.4c-1.4-1-2.3-2.6-2.6-4.6.7.9 1.8 1.4 3.1 1.4 2.3 0 4.3-1.8 4.3-4.3C20 9.3 15 6.6 12 2z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M12 2l6.6 10L12 22 5.4 12z"/></svg>
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4.3"/><circle cx="7" cy="13.2" r="4.3"/><circle cx="17" cy="13.2" r="4.3"/><circle cx="12" cy="12" r="2.6"/><path d="M12 11.5l-2.4 10.1h4.8z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M12 21.2s-7.6-4.7-9.4-9.6C1.4 8.3 3.5 4.4 7.2 4.4c2 0 3.6 1.1 4.8 2.9 1.2-1.8 2.8-2.9 4.8-2.9 3.7 0 5.8 3.9 4.6 7.2-1.8 4.9-9.4 9.6-9.4 9.6z"/></svg>
+    </div>
     <p class="callform__sub">
       Start with a quick conversation. You don&rsquo;t need a confirmed date,
-      a venue, or a finished plan &mdash; we&rsquo;ll help you explore the options.
+      a venue or a finished plan. We&rsquo;ll help you explore the options.
     </p>
   </header>
 
   <div class="wrap callform__in">
 
+    <div class="callform__formcol">
     <div class="formframe">
     <form id="bookform" novalidate>
       <div class="f2">
@@ -380,13 +383,47 @@
         <a class="btn btn--gold btn--lg" id="calldone-link" href="#" target="_blank" rel="noopener">Choose a time</a>
       </p>
     </div>
+    </div>
 
-    <p class="callform__direct">
-      Prefer to reach us directly?
-      <a href="mailto:kent@vegasmagicsquad.com">kent@vegasmagicsquad.com</a>
-      <span aria-hidden="true">&middot;</span>
-      <a href="tel:+12074583115">(207) 458-3115</a>
-    </p>
+    <div class="callform__next">
+      <p class="callform__nextk">What happens next</p>
+      <h3 class="callform__nexth">Three steps, no pressure</h3>
+      <ol class="steps">
+        <li class="steps__i">
+          <span class="steps__n" aria-hidden="true">1</span>
+          <div class="steps__t">
+            <h4 class="steps__h">Tell us about the night</h4>
+            <p class="steps__p">A date, a rough headcount or just an idea. Half-formed is fine.</p>
+          </div>
+        </li>
+        <li class="steps__i">
+          <span class="steps__n" aria-hidden="true">2</span>
+          <div class="steps__t">
+            <h4 class="steps__h">We call you</h4>
+            <p class="steps__p">A short conversation about the room, the guests and what you want them to remember.</p>
+          </div>
+        </li>
+        <li class="steps__i">
+          <span class="steps__n" aria-hidden="true">3</span>
+          <div class="steps__t">
+            <h4 class="steps__h">You get a plan</h4>
+            <p class="steps__p">Who suits your event, what the set looks like and how the evening runs.</p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="callform__direct">
+        <p class="callform__directh">Prefer to reach us directly?</p>
+        <a class="callform__link" href="mailto:kent@vegasmagicsquad.com">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="M3.8 6.6 12 12.8l8.2-6.2"/></svg>
+          <span>kent@vegasmagicsquad.com</span>
+        </a>
+        <a class="callform__link" href="tel:+12074583115">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.2 3.8h3.3l1.7 4.1-2.2 1.4a11.4 11.4 0 0 0 6.7 6.7l1.4-2.2 4.1 1.7v3.3a1.6 1.6 0 0 1-1.7 1.6A16.7 16.7 0 0 1 3.6 5.5a1.6 1.6 0 0 1 1.6-1.7z"/></svg>
+          <span>(207) 458-3115</span>
+        </a>
+      </div>
+    </div>
 
   </div>
 </section>
@@ -452,127 +489,111 @@
 
 <!-- ============ SERVICES : WHAT THE SQUAD IS BOOKED FOR ============ -->
 <!--
-  Ported from the Kent Axell site (section.sec.services). Structure and the
-  alternating image/copy rhythm are his; the copy, photography and claims are
-  this site's. Four of his rows made claims PRODUCT.md does not license —
-  theatre and casino billing, seat counts, a press kit, hourly and day rates —
-  so those rows were rewritten to the two services actually in scope:
-  corporate events and private parties. Every CTA lands on #booking, per the
-  one-conversion rule. Nothing here states a price, a client or a headcount.
+  Built to the supplied comps (Services section, desktop@1x and mobile@1x).
+  Four cards, each a kind of evening; the chips jump to them. Phones get the
+  comp's shorter copy: where a paragraph differs, both versions are here and
+  styles.css shows one (.svc__wide / .svc__narrow). Every CTA lands on
+  #booking, per the one-conversion rule. Nothing here states a price, a
+  client or a headcount.
 -->
 <section class="sec sec--night services" id="services" aria-labelledby="services-h">
-  <span class="deco deco--top deco--grain" aria-hidden="true"></span>
   <div class="wrap">
 
-    <div class="rulepair rulepair--sec" aria-hidden="true"><i></i><i></i></div>
-    <header class="services__head">
+    <header class="svc-head">
       <p class="eyebrow eyebrow--start">Our services</p>
-      <h2 class="h2 h2--gold" id="services-h">What we get booked for</h2>
-      <p class="services__sub">Four kinds of evening we know well. Tell us which one is yours.</p>
+      <h2 class="svc-head__h" id="services-h">What we get booked for</h2>
+      <p class="svc-head__lede">Four kinds of evening we know inside out. Pick the one closest to yours<span class="svc__wide"> and we&rsquo;ll shape the set around your room, your run sheet and your guests</span>.</p>
+      <nav class="svc-chips" aria-label="Kinds of evening">
+        <a class="svc-chip" href="#svc-corporate"><span class="svc-chip__n" aria-hidden="true">01</span>Corporate</a>
+        <a class="svc-chip" href="#svc-stage"><span class="svc-chip__n" aria-hidden="true">02</span>Stage &amp; Parlour</a>
+        <a class="svc-chip" href="#svc-private"><span class="svc-chip__n" aria-hidden="true">03</span>Private Celebrations</a>
+        <a class="svc-chip" href="#svc-trade"><span class="svc-chip__n" aria-hidden="true">04</span>Trade Shows</a>
+      </nav>
     </header>
 
-    <!-- Row 1 -->
-    <article class="srow">
-      <figure class="srow__fig">
-        <img src="images/site/corporate-reception.webp" alt="A magician showing a card to a laughing group at a corporate drinks reception, glasses still in hand" width="1078" height="745" loading="lazy" decoding="async">
-      </figure>
-      <div class="srow__copy">
-        <h3>Corporate parties &amp; receptions</h3>
-        <p>
-          Your guests are already mid-conversation, and the last thing you need is
-          someone interrupting it. So we don&rsquo;t. We come to the tables through
-          the drinks hour and dinner service, work a few people at a time, and leave
-          each group with something to tell the next one.
-        </p>
-        <p>
-          Nothing has to stop, nothing gets announced, and the run sheet you spent
-          three weeks on stays exactly as you wrote it.
-        </p>
-        <ul class="ticks">
-          <li>We come to your guests, so the evening never pauses</li>
-          <li>No stage, no seating plan, no running order to rearrange</li>
-          <li>Book one of us or all three for the same night</li>
-        </ul>
-        <a class="btn btn--gold" href="#booking">Book a Quick Call</a>
-      </div>
-    </article>
+    <div class="svc-grid">
 
-    <!-- Row 2 -->
-    <article class="srow srow--flip">
-      <figure class="srow__fig">
-        <img src="images/site/stage-emcee.jpg" alt="Kent Axell hosting from the stage under blue and green lighting, a guest laughing beside him" width="1600" height="900" loading="lazy" decoding="async">
-      </figure>
-      <div class="srow__copy">
-        <h3>Stage &amp; parlour sets</h3>
-        <p>
-          There is a moment after dinner where an evening either comes back together
-          or quietly breaks up into small groups by the door. A seated set is how you
-          bring it back.
-        </p>
-        <p>
-          Kent works from the front, on people who are certain they gave nothing away.
-          Dream follows with classical magic close enough to inspect. Everyone watching
-          the same impossible thing at the same time, which is something a room of
-          colleagues almost never gets to do together.
-        </p>
-        <ul class="ticks">
-          <li>A set for an audience that has sat down to watch</li>
-          <li>Mentalism from Kent Axell, classical magic from Dream Upright</li>
-          <li>Tell us the space and the headcount and we will tell you what fits</li>
-        </ul>
-        <a class="btn btn--gold" href="#booking">Book a Quick Call</a>
-      </div>
-    </article>
+      <article class="svc" id="svc-corporate" aria-labelledby="svc-corporate-h">
+        <figure class="svc__fig">
+          <img src="images/site/corporate-reception.webp" alt="A magician showing a card to a laughing group at a corporate drinks reception, glasses still in hand" width="1078" height="745" loading="lazy" decoding="async">
+          <span class="svc__tag">Walk-around close-up</span>
+        </figure>
+        <div class="svc__body">
+          <h3 class="svc__h" id="svc-corporate-h"><span class="svc__n" aria-hidden="true">01</span><span>Corporate parties &amp; receptions</span></h3>
+          <p class="svc__p svc__wide">Your guests are already mid-conversation. We don&rsquo;t interrupt it. We come to the tables through the drinks hour and dinner, a few people at a time, and leave each group with something to talk about. Your run sheet stays exactly as you wrote it.</p>
+          <p class="svc__p svc__narrow">Your guests are already mid-conversation. We don&rsquo;t interrupt it. We come to the tables through drinks and dinner, a few people at a time, and leave each group with something to talk about.</p>
+          <ul class="svc__ticks">
+            <li>We come to your guests, so the evening never pauses</li>
+            <li>No stage, no seating plan, no running order to rearrange</li>
+            <li>Book one of us, or all three for the same night</li>
+          </ul>
+          <a class="svc__book" href="#booking">Book a quick call<span class="sr-only">: corporate parties &amp; receptions</span></a>
+        </div>
+      </article>
 
-    <!-- Row 3 -->
-    <article class="srow">
-      <figure class="srow__fig">
-        <img src="images/site/reception-crystal.jpg" alt="Dream Upright balancing a crystal ball on one hand at an evening reception" width="1080" height="1080" loading="lazy" decoding="async">
-      </figure>
-      <div class="srow__copy">
-        <h3>Private celebrations</h3>
-        <p>
-          A wedding reception, a milestone birthday, a big night at home. You have
-          invited people from every separate part of your life and most of them have
-          never met each other.
-        </p>
-        <p>
-          Two strangers who watch the same card turn into the wrong one are not
-          strangers any more. That is the actual job, and the magic is how we do it.
-        </p>
-        <ul class="ticks">
-          <li>Works a drinks reception, a dinner table or a living room</li>
-          <li>Close-up at arm&rsquo;s length, where the reaction is the show</li>
-          <li>Brandon&rsquo;s card work for the guests who like to watch closely</li>
-        </ul>
-        <a class="btn btn--gold" href="#booking">Book a Quick Call</a>
-      </div>
-    </article>
+      <article class="svc" id="svc-stage" aria-labelledby="svc-stage-h">
+        <figure class="svc__fig">
+          <img src="images/site/stage-emcee.jpg" alt="Kent Axell hosting from the stage under blue and green lighting, a guest laughing beside him" width="1600" height="900" loading="lazy" decoding="async">
+          <span class="svc__tag">Seated set</span>
+        </figure>
+        <div class="svc__body">
+          <h3 class="svc__h" id="svc-stage-h"><span class="svc__n" aria-hidden="true">02</span><span>Stage &amp; parlour sets</span></h3>
+          <p class="svc__p svc__wide">There&rsquo;s a moment after dinner when a room either comes together or breaks into small groups. A seated set is how you bring it back. Kent works from the front; Dream follows with classical magic close enough to inspect.</p>
+          <p class="svc__p svc__narrow">After dinner, a room either comes together or breaks into small groups. A seated set brings it back. Kent works from the front; Dream follows with classical magic close enough to inspect.</p>
+          <ul class="svc__ticks">
+            <li>A set for an audience that has sat down to watch</li>
+            <li>Mentalism from Kent Axell, classical magic from Dream Upright</li>
+            <li>Tell us the space and headcount, and we&rsquo;ll tell you what fits</li>
+          </ul>
+          <a class="svc__book" href="#booking">Book a quick call<span class="sr-only">: stage &amp; parlour sets</span></a>
+        </div>
+      </article>
 
-    <!-- Row 4 -->
-    <article class="srow srow--flip">
-      <figure class="srow__fig">
-        <img src="images/site/trade-show.jpg" alt="A magician holding a crowd of delegates at a trade-show stand, the front row laughing" width="1600" height="1200" loading="lazy" decoding="async">
-      </figure>
-      <div class="srow__copy">
-        <h3>Trade shows &amp; conference receptions</h3>
-        <p>
-          You have paid for the stand, the floor space and the flights, and people are
-          walking straight past it. We stop them.
-        </p>
-        <p>
-          Close-up magic holds a small crowd long enough for your team to say hello
-          properly, and hands each person over already talking instead of already
-          leaving. Your people open warm instead of cold, all day.
-        </p>
-        <ul class="ticks">
-          <li>Draws a crowd to your stand and keeps it there</li>
-          <li>Your product or message worked into the routine</li>
-          <li>Your team starts every conversation mid-flow, not from scratch</li>
-        </ul>
-        <a class="btn btn--gold" href="#booking">Book a Quick Call</a>
+      <article class="svc" id="svc-private" aria-labelledby="svc-private-h">
+        <figure class="svc__fig">
+          <img src="images/site/reception-crystal.jpg" alt="Dream Upright balancing a crystal ball on one hand at an evening reception" width="1080" height="1080" loading="lazy" decoding="async">
+          <span class="svc__tag">Close-up, arm&rsquo;s length</span>
+        </figure>
+        <div class="svc__body">
+          <h3 class="svc__h" id="svc-private-h"><span class="svc__n" aria-hidden="true">03</span><span>Private celebrations</span></h3>
+          <p class="svc__p svc__wide">A wedding reception, a milestone birthday, a big night at home. You&rsquo;ve brought together people from separate parts of your life. Two strangers who watch the same card turn into the wrong one aren&rsquo;t strangers any more.</p>
+          <p class="svc__p svc__narrow">A wedding reception, a milestone birthday, a big night at home. Two strangers who watch the same card turn into the wrong one aren&rsquo;t strangers any more.</p>
+          <ul class="svc__ticks">
+            <li>Works at a drinks reception, a dinner table or a living room</li>
+            <li>Close-up at arm&rsquo;s length, where the reaction is the show</li>
+            <li>Brandon&rsquo;s card work for guests who like to watch closely</li>
+          </ul>
+          <a class="svc__book" href="#booking">Book a quick call<span class="sr-only">: private celebrations</span></a>
+        </div>
+      </article>
+
+      <article class="svc" id="svc-trade" aria-labelledby="svc-trade-h">
+        <figure class="svc__fig">
+          <img src="images/site/trade-show.jpg" alt="A magician holding a crowd of delegates at a trade-show stand, the front row laughing" width="1600" height="1200" loading="lazy" decoding="async">
+          <span class="svc__tag">Booth draw</span>
+        </figure>
+        <div class="svc__body">
+          <h3 class="svc__h" id="svc-trade-h"><span class="svc__n" aria-hidden="true">04</span><span>Trade shows &amp; conference receptions</span></h3>
+          <p class="svc__p svc__wide">You&rsquo;ve paid for the stand, the floor space and the flights, and people are walking straight past. Close-up magic holds a crowd long enough for your team to say hello properly. Your people open warm instead of cold, all day.</p>
+          <p class="svc__p svc__narrow">You&rsquo;ve paid for the stand and the flights, and people are walking straight past. Close-up magic holds a crowd long enough for your team to say hello properly.</p>
+          <ul class="svc__ticks">
+            <li>Draws a crowd to your stand and keeps it there</li>
+            <li>Your product or message worked into the routine</li>
+            <li>Your team starts every conversation mid-flow, not from scratch</li>
+          </ul>
+          <a class="svc__book" href="#booking">Book a quick call<span class="sr-only">: trade shows &amp; conference receptions</span></a>
+        </div>
+      </article>
+
+    </div>
+
+    <aside class="svc-cta" aria-labelledby="svc-cta-h">
+      <div class="svc-cta__copy">
+        <h3 class="svc-cta__h" id="svc-cta-h">Not sure which one fits?</h3>
+        <p class="svc-cta__p">Tell us the space, the headcount and the date. On a quick call we&rsquo;ll tell you what works for your room<span class="svc__wide"> and who on the team suits it</span>.</p>
       </div>
-    </article>
+      <a class="btn btn--gold svc-cta__btn" href="#booking">Book a quick call</a>
+    </aside>
 
   </div>
 </section>
