@@ -263,6 +263,9 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 /* The title is the logo. Its height follows the viewport's shorter side so
    the lede, buttons and reel strip still fit under it on a laptop. */
 .bill__name{margin-inline:auto; line-height:0}
+/* centred inside the H1: the keyword line below is wider than the logo, so
+   the H1 sizes to the line and the logo would otherwise sit at its left */
+.bill__name .mark{margin-inline:auto}
 
 /* The logo mark and its entrance rig, designed in logo-intro/ (HyperFrames).
    The image is the logo; bloom, sheen and glint are the entrance layers,
@@ -339,38 +342,21 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 /* Tight to the title. This block holds the subtitle and the buttons, and at
    58px it left the subtitle floating mid-air rather than reading as a line
    belonging to the name above it. The breathing room the hero needs is below
-   the subtitle, not above it — .bill__lede's own margin-bottom does that. */
+   the subtitle, not above it. */
 /* The H1's visible keyword line, under the logo. Small, gold and tracked so
    the logo stays the title on screen while the heading still says what the
    page is about. The H1 itself is line-height:0 (it only held the logo), so
    the line sets its own. */
 .bill__kw{
-  display:block; margin:clamp(14px,1.4vw,20px) auto 0; max-width:44ch;
-  font-family:var(--text); font-size:clamp(10.5px,.5vw + 8.6px,13px); font-weight:700;
-  line-height:1.6; letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
-  text-shadow:0 1px 4px rgba(7,9,15,.9), 0 0 16px rgba(7,9,15,.7);
-  text-wrap:balance;
-}
-.bill__foot{width:100%; margin-top:clamp(6px,1vw,14px)}
-/* This was sized as body copy — 52ch measure, 18.5px ceiling — back when it
-   was a three-sentence paragraph. It is a six-word billing line now, so it is
-   set as one: the display face rather than the body face, so it reads as part
-   of the title lockup rather than as a caption beneath it.
-   Uppercase with positive tracking because Josefin Sans is geometric and its
-   near-circular caps close up badly when they are pulled together.
-   The shadow is no longer confined to the portrait breakpoint — at this size
-   the line sits across more of the photograph at every width. */
-.bill__lede{
-  max-width:34ch; margin-inline:auto;
-  font-family:var(--disp);
-  font-size:clamp(19px,2.7vw,33px);
-  font-weight:600; letter-spacing:.06em; text-transform:uppercase;
-  line-height:1.24; color:var(--night-tx);
+  display:block; margin:clamp(16px,1.6vw,24px) auto 0; max-width:34ch;
+  font-family:var(--disp); font-size:clamp(17px,1.9vw,27px); font-weight:600;
+  line-height:1.26; letter-spacing:.06em; text-transform:uppercase; color:var(--night-tx);
   text-shadow:0 2px 6px rgba(7,9,15,.85), 0 0 22px rgba(7,9,15,.6);
-  margin-top:0;
-  margin-bottom:clamp(26px,3.2vw,40px);
   text-wrap:balance;
 }
+/* the tagline that used to sit here repeated the H1 line above; with it gone,
+   this margin is the gap it used to give the buttons */
+.bill__foot{width:100%; margin-top:clamp(26px,3.2vw,40px)}
 .bill__acts{display:flex; flex-wrap:wrap; justify-content:center; gap:14px}
 
 /* the marquee strikes once on load, tier by tier */
@@ -2014,7 +2000,6 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   /* The base rule carries a stronger shadow now; this used to override it
      with a weaker one, which is the wrong way round on the crop where the
      line sits closest to the faces. */
-  .bill__lede{letter-spacing:.05em}
 }
 
 

@@ -32,10 +32,10 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   const boxes = JSON.parse(await js(`(() => {
     const r = s => { const e = document.querySelector(s); if (!e) return null; const b = e.getBoundingClientRect();
       return [Math.round(b.left), Math.round(b.top), Math.round(b.right), Math.round(b.bottom)]; };
-    return JSON.stringify({ name: r('.bill__name'), lede: r('.bill__lede'), acts: r('.bill__acts'),
+    return JSON.stringify({ name: r('.bill__name'), lede: r('.bill__kw'), acts: r('.bill__acts'),
       film: (document.querySelector('.hero__vid') || {}).currentSrc || 'none',
-      ledeSize: parseFloat(getComputedStyle(document.querySelector('.bill__lede')).fontSize),
-      ledeWeight: parseInt(getComputedStyle(document.querySelector('.bill__lede')).fontWeight, 10) });
+      ledeSize: parseFloat(getComputedStyle(document.querySelector('.bill__kw')).fontSize),
+      ledeWeight: parseInt(getComputedStyle(document.querySelector('.bill__kw')).fontWeight, 10) });
   })()`));
   const times = [];
   for (let s = 0.5; s < 16; s += 1) times.push(+s.toFixed(1));   // the whole 16s loop
@@ -45,7 +45,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       // hide the TEXT only - anything drawn behind it (a contrast pool) stays measured
       if (!document.getElementById('__hidetext')) {
         const st = document.createElement('style'); st.id = '__hidetext';
-        st.textContent = '.bill__name, .bill__name *, .bill__lede { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; }'
+        st.textContent = '.bill__name, .bill__name *, .bill__kw { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; }'
           + '.bill__acts, .reelgrid { visibility: hidden !important; }';
         document.head.appendChild(st);
       }
