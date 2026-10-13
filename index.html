@@ -454,7 +454,12 @@
 
   <div class="clients__panel">
     <div class="wrap clients__in">
-      <div class="rulepair rulepair--sec" aria-hidden="true"><i></i><i></i></div>
+      <!-- The Las Vegas skyline on a fading horizon line (images/site/skyline.svg,
+           recoloured from "Las Vegas Skyline.svg"). It rises out of the line when
+           the panel scrolls in, on the same --lit switch the rule it replaced used. -->
+      <div class="skyline" aria-hidden="true">
+        <img class="skyline__img" src="images/site/skyline.svg" width="722" height="202" alt="Las Vegas skyline" loading="lazy" decoding="async">
+      </div>
       <p class="clients__eyebrow">Trusted by the brands you know</p>
       <h2 class="h2 clients__title" id="clients-h">The brands you know already booked us</h2>
     </div>
