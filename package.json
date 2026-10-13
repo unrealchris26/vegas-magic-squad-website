@@ -6,7 +6,10 @@
   "scripts": {
     "build": "node build.js",
     "dev": "node serve.js",
-    "preview": "node build.js && node serve.js dist"
+    "preview": "node build.js && node serve.js dist",
+    "check-contact": "node scripts/check-contact.js",
+    "check-links": "node scripts/check-links.js",
+    "check-form": "node scripts/check-form.js"
   },
   "engines": {
     "node": ">=18"

@@ -340,6 +340,17 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    58px it left the subtitle floating mid-air rather than reading as a line
    belonging to the name above it. The breathing room the hero needs is below
    the subtitle, not above it — .bill__lede's own margin-bottom does that. */
+/* The H1's visible keyword line, under the logo. Small, gold and tracked so
+   the logo stays the title on screen while the heading still says what the
+   page is about. The H1 itself is line-height:0 (it only held the logo), so
+   the line sets its own. */
+.bill__kw{
+  display:block; margin:clamp(14px,1.4vw,20px) auto 0; max-width:44ch;
+  font-family:var(--text); font-size:clamp(10.5px,.5vw + 8.6px,13px); font-weight:700;
+  line-height:1.6; letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
+  text-shadow:0 1px 4px rgba(7,9,15,.9), 0 0 16px rgba(7,9,15,.7);
+  text-wrap:balance;
+}
 .bill__foot{width:100%; margin-top:clamp(6px,1vw,14px)}
 /* This was sized as body copy — 52ch measure, 18.5px ceiling — back when it
    was a three-sentence paragraph. It is a six-word billing line now, so it is
@@ -1837,7 +1848,7 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
   font-family:var(--disp); font-weight:700; text-transform:uppercase;
   color:var(--svc-cream);
   font-size:clamp(44px,3.52vw + 30.3px,81px); line-height:.97; letter-spacing:0;
-  max-width:13ch;
+  max-width:17ch;
 }
 .svc-head__lede{
   margin-top:clamp(18px,1vw + 14px,28px);
