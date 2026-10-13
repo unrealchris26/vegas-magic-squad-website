@@ -17,3 +17,6 @@ desktop.ini
 
 # Local preview server has no state to keep, but editors leave these around
 *.log
+
+.vercel
+.env*

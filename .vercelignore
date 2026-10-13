@@ -1,0 +1,22 @@
+# Upload only what build.js reads. The project folder is a workspace: the
+# hero-video project (~380MB of renders), full-size source photos, design
+# docs and reference screenshots have no business leaving this machine.
+# build.js still decides what is PUBLISHED; this only decides what is uploaded.
+/*
+!/build.js
+!/package.json
+!/package-lock.json
+!/vercel.json
+!/_headers
+!/robots.txt
+!/index.html
+!/squad.html
+!/kent-axell.html
+!/privacy.html
+!/terms.html
+!/styles.css
+!/script.js
+!/fonts
+!/images
+!/video
+!/vendor
