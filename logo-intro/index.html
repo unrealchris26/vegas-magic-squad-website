@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <!-- the site ships GSAP 3.12.5 (vendor/gsap.min.js); prototype on the same -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #07090f; }
+      #root { position: relative; width: 100%; height: 100%; }
+
+      /* stand-in for the hero: a frame of the hero film under the site's scrim */
+      #backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      #scrim { position: absolute; inset: 0;
+        background: radial-gradient(ellipse at 50% 42%, rgba(7,9,15,.55), rgba(7,9,15,.82) 75%); }
+
+      /* the headline slot, sized as on the site at 1920x1080 */
+      #slot { position: absolute; left: 50%; top: 150px; transform: translateX(-50%);
+        display: flex; justify-content: center; }
+      #slot::before { content: ""; position: absolute; z-index: 0; inset: -18% -60%;
+        background: radial-gradient(closest-side, rgba(7,9,15,.72) 0%, rgba(7,9,15,.6) 45%, rgba(7,9,15,.28) 75%, rgba(7,9,15,0) 100%); }
+
+      /* ===== MARK: copied verbatim to styles.css (.mark) ===== */
+      .mark { position: relative; z-index: 1; display: block; width: auto; height: 340px; aspect-ratio: 560 / 697; }
+      .mark__img, .mark__bloom, .mark__sheen { position: absolute; inset: 0; width: 100%; height: 100%; }
+      .mark__img { display: block; object-fit: contain;
+        filter: drop-shadow(0 2px 0 rgba(42,32,8,.55)) drop-shadow(0 14px 40px rgba(0,0,0,.55)); }
+      .mark__bloom { background: url(assets/logo.png) center / contain no-repeat;
+        filter: blur(22px) brightness(1.35); opacity: .2; pointer-events: none; z-index: -1; }
+      .mark__sheen { overflow: hidden; pointer-events: none;
+        -webkit-mask: url(assets/logo.png) center / contain no-repeat; mask: url(assets/logo.png) center / contain no-repeat; }
+      .mark__band { position: absolute; top: -20%; bottom: -20%; left: 0; width: 42%;
+        background: linear-gradient(100deg, rgba(255,246,220,0) 0%, rgba(255,246,220,.0) 22%, rgba(255,246,220,.85) 50%, rgba(255,246,220,0) 78%);
+        mix-blend-mode: screen; transform: translateX(-120%) skewX(-14deg); }
+      .mark__glint { position: absolute; left: 71.3%; top: 1%; width: 30%; aspect-ratio: 1;
+        transform: translate(-50%, -50%) scale(0); opacity: 0; pointer-events: none; }
+      .mark__glint svg { display: block; width: 100%; height: 100%; overflow: visible; }
+      /* ===== /MARK ===== */
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1920" data-height="1080">
+      <img id="backdrop" class="clip" src="assets/backdrop.jpg" alt="" data-start="0" data-duration="3" data-track-index="0" />
+      <div id="scrim" class="clip" data-start="0" data-duration="3" data-track-index="1"></div>
+      <div id="slot" class="clip" data-start="0" data-duration="3" data-track-index="2">
+        <!-- ===== MARK markup: copied to index.html inside h1#hero-name ===== -->
+        <span class="mark">
+          <span class="mark__bloom" aria-hidden="true"></span>
+          <img class="mark__img" src="assets/logo.png" alt="Vegas Magic Squad" width="560" height="697" />
+          <span class="mark__sheen" aria-hidden="true"><span class="mark__band"></span></span>
+          <span class="mark__glint" aria-hidden="true">
+            <svg viewBox="-50 -50 100 100">
+              <defs>
+                <radialGradient id="glint-halo"><stop offset="0" stop-color="#fff6dc" stop-opacity=".7" /><stop offset="1" stop-color="#e6d193" stop-opacity="0" /></radialGradient>
+                <radialGradient id="glint-core"><stop offset="0" stop-color="#ffffff" /><stop offset=".45" stop-color="#fff6dc" /><stop offset="1" stop-color="#e6d193" /></radialGradient>
+              </defs>
+              <circle r="22" fill="url(#glint-halo)" />
+              <path d="M0-50C2-12 12-2 50 0C12 2 2 12 0 50C-2 12-12 2-50 0C-12-2-2-12 0-50Z" fill="url(#glint-core)" />
+            </svg>
+          </span>
+        </span>
+      </div>
+    </div>
+    <script>
+      /* ===== MARK timeline: the same function body runs in script.js =====
+         ~2.4s. The logo resolves out of a soft blur, a glow blooms behind it,
+         one gold light sweep crosses it, a glint lands on the star tip, and
+         the glow settles to a low resting warmth. sine / expo only. */
+      function markEntrance(mark, tlVars) {
+        var q = function (s) { return mark.querySelector(s); };
+        var img = q('.mark__img'), bloom = q('.mark__bloom'), band = q('.mark__band'), glint = q('.mark__glint');
+        // the logo's resting drop-shadows ride along, or the blur would replace them
+        var SHADOW = ' drop-shadow(0 2px 0 rgba(42,32,8,.55)) drop-shadow(0 14px 40px rgba(0,0,0,.55))';
+        var tl = gsap.timeline(tlVars);
+        tl.set(img, { opacity: 0, scale: 0.94, filter: 'blur(16px)' + SHADOW }, 0)
+          .set(bloom, { opacity: 0 }, 0)
+          .set(band, { x: 0, xPercent: -120, skewX: -14 }, 0)
+          .set(glint, { x: 0, y: 0, xPercent: -50, yPercent: -50, scale: 0, rotation: -40, opacity: 0 }, 0)
+          .to(img, { opacity: 1, duration: 0.9, ease: 'sine.out' }, 0.1)
+          .to(img, { scale: 1, filter: 'blur(0px)' + SHADOW, duration: 1.25, ease: 'expo.out' }, 0.1)
+          .to(bloom, { opacity: 0.75, duration: 0.8, ease: 'sine.out' }, 0.35)
+          .to(band, { xPercent: 340, duration: 0.95, ease: 'sine.inOut' }, 0.95)
+          .to(glint, { scale: 1, rotation: 45, opacity: 1, duration: 0.4, ease: 'sine.out' }, 1.55)
+          .to(glint, { scale: 0.35, rotation: 90, opacity: 0, duration: 0.5, ease: 'sine.in' }, 1.95)
+          .to(bloom, { opacity: 0.2, duration: 1.1, ease: 'sine.inOut' }, 1.2);
+        return tl;
+      }
+      /* ===== /MARK timeline ===== */
+
+      const tl = markEntrance(document.querySelector('.mark'), { paused: true });
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

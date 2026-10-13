@@ -121,71 +121,48 @@
   }
 
   /* ------------------------------------------------------------------ *
-   * 3b. Hero title: the letters fly in from scattered, once, on load.
-   *     Real spans in the real webfont, so the type stays crisp and
-   *     selectable rather than being converted to paths.
+   * 3b. Hero title: the logo's entrance, once, on load. ~2.4s.
+   *     Designed and proofed as a HyperFrames composition in logo-intro/;
+   *     markEntrance() is the same function as there, so a change made in
+   *     the prototype is a copy-paste here. The logo resolves out of a soft
+   *     blur, a glow blooms behind it, one gold light sweep crosses it, a
+   *     glint lands on the star's tip, and the glow settles to its resting
+   *     warmth. sine / expo only, nothing snappy.
    * ------------------------------------------------------------------ */
-  (function shatterTitle() {
-    var title = document.getElementById('hero-name');
-    if (!title || typeof window.gsap === 'undefined') return;
+  function markEntrance(mark, tlVars) {
+    var q = function (s) { return mark.querySelector(s); };
+    var img = q('.mark__img'), bloom = q('.mark__bloom'), band = q('.mark__band'), glint = q('.mark__glint');
+    // the logo's resting drop-shadows ride along, or the blur would replace them
+    var SHADOW = ' drop-shadow(0 2px 0 rgba(42,32,8,.55)) drop-shadow(0 14px 40px rgba(0,0,0,.55))';
+    var tl = gsap.timeline(tlVars);
+    tl.set(img, { opacity: 0, scale: 0.94, filter: 'blur(16px)' + SHADOW }, 0)
+      .set(bloom, { opacity: 0 }, 0)
+      .set(band, { x: 0, xPercent: -120, skewX: -14 }, 0)
+      .set(glint, { x: 0, y: 0, xPercent: -50, yPercent: -50, scale: 0, rotation: -40, opacity: 0 }, 0)
+      .to(img, { opacity: 1, duration: 0.9, ease: 'sine.out' }, 0.1)
+      .to(img, { scale: 1, filter: 'blur(0px)' + SHADOW, duration: 1.25, ease: 'expo.out' }, 0.1)
+      .to(bloom, { opacity: 0.75, duration: 0.8, ease: 'sine.out' }, 0.35)
+      .to(band, { xPercent: 340, duration: 0.95, ease: 'sine.inOut' }, 0.95)
+      .to(glint, { scale: 1, rotation: 45, opacity: 1, duration: 0.4, ease: 'sine.out' }, 1.55)
+      .to(glint, { scale: 0.35, rotation: 90, opacity: 0, duration: 0.5, ease: 'sine.in' }, 1.95)
+      .to(bloom, { opacity: 0.2, duration: 1.1, ease: 'sine.inOut' }, 1.2);
+    return tl;
+  }
 
-    var text = title.textContent.replace(/\s+/g, ' ').trim();
-    // The animated letters are decorative duplicates of this string, so the
-    // heading keeps one clean accessible name instead of being read out
-    // character by character.
-    title.setAttribute('aria-label', text);
+  (function logoEntrance() {
+    var mark = document.querySelector('#hero-name .mark');
+    if (!mark) return;
+    var img = mark.querySelector('.mark__img');
+    // Reduced motion: styles.css already stands the logo lit, with no fade.
+    // No GSAP: leave the CSS fallback fade to bring it in.
+    if (reduced.matches || typeof window.gsap === 'undefined') return;
 
-    // An endless shatter is exactly the motion this setting exists to stop.
-    if (reduced.matches) return;
-
-    var frag = document.createDocumentFragment();
-    var words = text.split(' ');
-    words.forEach(function (word, wi) {
-      var w = document.createElement('span');
-      w.className = 'word';
-      word.split('').forEach(function (ch) {
-        var sp = document.createElement('span');
-        sp.className = 'ltr';
-        sp.textContent = ch;
-        w.appendChild(sp);
-      });
-      frag.appendChild(w);
-      // A real space between word spans, so the line can still break on
-      // narrow screens. A non-breaking space would force one unwrappable
-      // line and overflow the hero on a phone.
-      if (wi < words.length - 1) frag.appendChild(document.createTextNode(' '));
-    });
-
-    var shell = document.createElement('span');
-    shell.setAttribute('aria-hidden', 'true');
-    shell.appendChild(frag);
-    title.textContent = '';
-    title.appendChild(shell);
-
-    var letters = title.querySelectorAll('.ltr');
-    if (!letters.length) return;
-    function rand(min, max) { return Math.random() * (max - min) + min; }
-
-    gsap.set(letters, {
-      x: function () { return rand(-500, 500); },
-      y: function () { return rand(-500, 500); },
-      rotation: function () { return rand(-720, 720); },
-      scale: 0,
-      opacity: 0
-    });
-
-    // A one-time entrance: the letters fly in and stay put.
-    gsap.timeline({
+    img.style.animation = 'none';          // the timeline owns the reveal now
+    markEntrance(mark, {
       onComplete: function () {
-        // Hand the letters back to normal document flow once they land, so
-        // fifteen composited layers are not left alive for the page's life.
-        gsap.set(letters, { clearProps: 'transform,opacity,willChange' });
+        // drop the transforms and the blur filter so nothing stays composited
+        gsap.set(img, { clearProps: 'transform,filter,opacity' });
       }
-    }).to(letters, {
-      x: 0, y: 0, rotation: 0, scale: 1, opacity: 1,
-      duration: 0.75,
-      ease: 'power4.inOut',
-      stagger: 0.0125
     });
   })();
 

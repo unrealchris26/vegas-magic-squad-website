@@ -95,7 +95,26 @@
    <div class="hero__col">
 
     <div class="bill__top">
-      <h1 class="bill__name" id="hero-name">Vegas Magic Squad</h1>
+      <!-- The logo is the title. Its alt is the h1's accessible name. The
+           layers around it are the entrance (designed in logo-intro/,
+           played by script.js); decoration only. -->
+      <h1 class="bill__name" id="hero-name">
+        <span class="mark">
+          <span class="mark__bloom" aria-hidden="true"></span>
+          <img class="mark__img" src="images/site/logo.png" alt="Vegas Magic Squad" width="560" height="697" fetchpriority="high" decoding="async">
+          <span class="mark__sheen" aria-hidden="true"><span class="mark__band"></span></span>
+          <span class="mark__glint" aria-hidden="true">
+            <svg viewBox="-50 -50 100 100" focusable="false">
+              <defs>
+                <radialGradient id="glint-halo"><stop offset="0" stop-color="#fff6dc" stop-opacity=".7"/><stop offset="1" stop-color="#e6d193" stop-opacity="0"/></radialGradient>
+                <radialGradient id="glint-core"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#fff6dc"/><stop offset="1" stop-color="#e6d193"/></radialGradient>
+              </defs>
+              <circle r="22" fill="url(#glint-halo)"/>
+              <path d="M0-50C2-12 12-2 50 0C12 2 2 12 0 50C-2 12-12 2-50 0C-12-2-2-12 0-50Z" fill="url(#glint-core)"/>
+            </svg>
+          </span>
+        </span>
+      </h1>
     </div>
 
     <div class="bill__foot strike" style="--s:1">

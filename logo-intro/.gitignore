@@ -1,0 +1,7 @@
+# Regenerable: CLI snapshots, caches, renders. The deliverable is the live
+# timeline in ../script.js (3b), not a video.
+snapshots/
+.hyperframes/
+.thumbnails/
+.rtmp/
+renders/

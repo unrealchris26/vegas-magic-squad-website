@@ -1,10 +1,13 @@
 /* site-behaviour.cjs <url> - the hero film's runtime contract on the real page:
  * reduced motion removes it (poster stands), scrolling away pauses it,
- * coming back resumes it, and nothing logs an error. */
+ * coming back resumes it, and nothing logs an error. Also the hero logo:
+ * it has finished its entrance, or (reduced motion) stands lit with no animation. */
 const { spawn } = require('child_process');
 const CHROME = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const URL_ = process.argv[2];
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+// Node's built-in WebSocket does not hold the process open; this does, until process.exit
+setInterval(() => {}, 1000);
 
 async function session(port, setup) {
   const cp = spawn(CHROME, ['--headless=new', '--hide-scrollbars', '--autoplay-policy=no-user-gesture-required',
@@ -35,7 +38,10 @@ async function session(port, setup) {
   let s = await session(9811);
   const state = () => s.js(`(() => { const v = document.querySelector('.hero__vid');
     return v ? JSON.stringify({ present: true, paused: v.paused, t: +v.currentTime.toFixed(2), src: v.currentSrc.split('/').pop(), aria: v.getAttribute('aria-hidden'), tab: v.tabIndex }) : JSON.stringify({ present: false }); })()`);
+  const mark = () => s.js(`(() => { const i = document.querySelector('#hero-name .mark__img'), g = document.querySelector('.mark__glint'), cs = getComputedStyle(i);
+    return JSON.stringify({ name: document.getElementById('hero-name').textContent.trim() || i.alt, loaded: i.complete && i.naturalWidth > 0, opacity: cs.opacity, filter: cs.filter.slice(0, 18), animation: cs.animationName, glint: getComputedStyle(g).opacity }); })()`);
   console.log('on load            ', await state());
+  console.log('logo               ', await mark());
   await s.js('window.scrollTo(0, document.body.scrollHeight / 2); 1'); await sleep(1200);
   console.log('scrolled away      ', await state());
   await s.js('window.scrollTo(0, 0); 1'); await sleep(1500);
@@ -47,6 +53,7 @@ async function session(port, setup) {
   s = await session(9812, send => send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] }));
   console.log('reduced motion     ', await s.js(`(() => { const v = document.querySelector('.hero__vid'); const img = document.querySelector('.hero__img');
     return JSON.stringify({ video: v ? 'STILL PRESENT' : 'removed', poster: img.currentSrc.split('/').pop(), posterLoaded: img.complete && img.naturalWidth > 0, posterVisible: getComputedStyle(img).visibility }); })()`));
+  console.log('logo               ', await mark());
   console.log('console errors     ', s.errs.length ? s.errs.join(' | ') : 'none');
   s.close();
   process.exit(0);
