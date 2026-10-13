@@ -3,17 +3,17 @@
   "buildCommand": "node build.js",
   "outputDirectory": "dist",
   "framework": null,
-  "cleanUrls": false,
+  "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "geolocation=(), camera=(), microphone=()" }
+        { "key": "Permissions-Policy", "value": "geolocation=(), camera=(), microphone=()" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }
       ]
     },
     {
@@ -23,13 +23,31 @@
       ]
     },
     {
-      "source": "/index.html",
+      "source": "/squad",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
     },
     {
-      "source": "/squad.html",
+      "source": "/kent-axell",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/privacy",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/terms",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/404",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
@@ -70,5 +88,12 @@
         { "key": "Cache-Control", "value": "public, max-age=2592000" }
       ]
     }
+  ],
+  "redirects": [
+    { "source": "/index.html", "destination": "/", "statusCode": 301 },
+    { "source": "/squad.html", "destination": "/squad", "statusCode": 301 },
+    { "source": "/kent-axell.html", "destination": "/kent-axell", "statusCode": 301 },
+    { "source": "/privacy.html", "destination": "/privacy", "statusCode": 301 },
+    { "source": "/terms.html", "destination": "/terms", "statusCode": 301 }
   ]
 }

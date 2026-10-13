@@ -26,7 +26,9 @@ const ROOT = __dirname;
 const OUT = path.join(ROOT, 'dist');
 
 // The pages and the two shared files; every asset below is discovered.
-const ENTRIES = ['index.html', 'squad.html', 'kent-axell.html', 'privacy.html', 'terms.html', 'styles.css', 'script.js'];
+// 404.html is served by Vercel for any unmatched path; it uses root-absolute
+// asset paths, which collect() normalises below.
+const ENTRIES = ['index.html', 'squad.html', 'kent-axell.html', 'privacy.html', 'terms.html', '404.html', 'styles.css', 'script.js'];
 
 // Only these get pulled in by reference. Keeps a stray mailto: or #anchor out.
 const ASSET_EXT = /\.(?:css|js|mjs|woff2?|ttf|otf|jpe?g|png|webp|avif|gif|svg|ico|webmanifest|mp4|webm)$/i;
@@ -64,10 +66,12 @@ function collect() {
     let m;
     REF.lastIndex = 0;
     while ((m = REF.exec(text)) !== null) {
-      const ref = m[1].split(/[?#]/)[0];
-      if (!isLocal(ref)) continue;
+      const raw = m[1].split(/[?#]/)[0];
+      if (!isLocal(raw)) continue;                 // before normalising: /_vercel/ and // are tested on the raw form
+      // "/styles.css" (404.html) and "styles.css" are the same file
+      const ref = raw.replace(/^\.?\//, '');
       if (ENTRIES.includes(ref)) continue;        // already copied as an entry
-      found.add(ref.replace(/^\.\//, ''));
+      found.add(ref);
     }
   }
   return [...found].sort();
@@ -105,14 +109,18 @@ function main() {
      wire, so that file must exist at a stable public URL even though no page
      references it - the reference scan above would otherwise drop it and the
      logo would silently stop loading in every email sent. */
-  for (const asset of ['images/site/email-logo.png', 'images/site/signature-logo.png']) {
+  /* The share images are named by absolute URL in og:image, which the scan
+     skips as external, so they are listed here too. */
+  for (const asset of ['images/site/email-logo.png', 'images/site/signature-logo.png',
+                       'images/site/og-default.jpg', 'images/site/og-kent-axell.jpg']) {
     if (fs.existsSync(path.join(ROOT, asset))) bytes += copy(asset);
   }
 
   // Netlify reads _headers and _redirects from the publish root. Vercel does
   // not — its equivalents live in vercel.json. These are still copied so the
   // output works on either host; on Vercel they are simply inert files.
-  for (const extra of ['_headers', '_redirects', 'robots.txt']) {
+  // robots.launch.txt is NOT published: it only replaces robots.txt at launch (LAUNCH.md).
+  for (const extra of ['_headers', '_redirects', 'robots.txt', 'sitemap.xml']) {
     if (fs.existsSync(path.join(ROOT, extra))) {
       bytes += copy(extra);
     }

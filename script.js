@@ -7,6 +7,27 @@
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   /* ------------------------------------------------------------------ *
+   * 0. Conversion events, through the Vercel Web Analytics already on
+   *    every page - no new tracker, no cookie.
+   *
+   *    window.va is the queue the insights script drains when it loads,
+   *    which is exactly what @vercel/analytics' track() does under the
+   *    hood. Events carry no personal data: never the name, email, phone
+   *    or the address clicked, only which page it happened on. (Custom
+   *    events show in the dashboard on Vercel's Pro plan; on Hobby they
+   *    are dropped silently, which costs nothing.)
+   * ------------------------------------------------------------------ */
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  function track(name) {
+    try { window.va('event', { name: name, data: { page: location.pathname } }); } catch (e) {}
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="tel:"], a[href^="mailto:"]');
+    if (!a) return;
+    track(a.getAttribute('href').indexOf('tel:') === 0 ? 'Phone Click' : 'Email Click');
+  });
+
+  /* ------------------------------------------------------------------ *
    * 1. The bulb chase.
    *    Bulbs are real elements so the light actually travels the rail,
    *    the way a marquee chase does, instead of a gradient sliding under
@@ -1136,6 +1157,8 @@
   var CALENDAR_URL = '';     // <-- paste the GHL calendar/scheduler link here
 
   function showCallDone(data) {
+    // only reached once the lead is saved, so this counts real submissions
+    track('Booking Form Submitted');
     var done = document.getElementById('calldone');
     if (!done) return;
     var link = document.getElementById('calldone-link');

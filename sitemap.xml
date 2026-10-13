@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Every indexable page, by its clean canonical URL. Privacy and Terms are
+  left out on purpose: they carry <meta name="robots" content="noindex">.
+
+  Published with the site (build.js), but inert until launch: robots.txt
+  still says Disallow: / and every response carries X-Robots-Tag: noindex.
+  See LAUNCH.md. Update <lastmod> when a page's content changes.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://www.magicsquad.vegas/</loc>
+    <lastmod>2026-10-14</lastmod>
+  </url>
+  <url>
+    <loc>https://www.magicsquad.vegas/squad</loc>
+    <lastmod>2026-10-14</lastmod>
+  </url>
+  <url>
+    <loc>https://www.magicsquad.vegas/kent-axell</loc>
+    <lastmod>2026-10-14</lastmod>
+  </url>
+</urlset>

@@ -20,3 +20,6 @@ desktop.ini
 
 .vercel
 .env*
+
+# local scratch for test runs (headless browser profiles)
+.tmp/

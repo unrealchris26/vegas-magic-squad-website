@@ -461,6 +461,14 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    Everything else is borrowed from the existing system.
    ========================================================================== */
 .legalpage{padding-top:calc(72px + env(safe-area-inset-top,0px))}
+/* 404: the legal-page shell, centred, with the three ways out most people want */
+.notfound .sec{min-height:min(78vh,760px); display:grid; align-items:center}
+.notfound__in{text-align:center}
+.notfound__h{margin-inline:auto; margin-bottom:.4em}
+.notfound__p{max-width:46ch; margin:0 auto; font-size:clamp(16px,.3vw + 15px,18px); line-height:1.65; color:var(--night-tx2)}
+.notfound__acts{display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:clamp(26px,3vw,40px)}
+.notfound__home{--fg:var(--gold-hi); --bd:rgba(200,168,80,.45)}
+.notfound__home:hover{--bd:var(--gold)}
 .legal{max-width:68ch; margin-inline:auto}
 .legal__lede{
   margin:0 0 clamp(30px,4vw,46px);
@@ -914,6 +922,16 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
    ========================================================================== */
 .foot{position:relative; background:var(--night-2); border-top:1px solid rgba(200,168,80,.32); padding-top:clamp(46px,5vw,76px)}
 .bulbs--strip{position:absolute; top:-3.5px; left:var(--pad); right:var(--pad); justify-content:space-between}
+/* The same strip on the seam between the hero and the booking section. It
+   sits in the flow at zero height, so its bulbs centre on the seam, and draws
+   the footer's gold rail behind them full-bleed. z-index lifts it over the
+   edges of both sections. */
+.bulbs--seam{position:relative; z-index:2; top:auto; left:auto; right:auto; height:0; align-items:center; margin-inline:var(--pad)}
+.bulbs--seam::before{
+  content:""; position:absolute; z-index:-1; top:-.5px; height:1px;
+  left:calc(var(--pad) * -1); right:calc(var(--pad) * -1);
+  background:rgba(200,168,80,.32);
+}
 .foot__grid{
   display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) auto;
   gap:clamp(28px,4vw,60px); align-items:start;

@@ -19,15 +19,10 @@
 # style-src 'unsafe-inline', and a policy loosened enough to pass is worth
 # less than the time spent debugging it. Worth writing properly once the
 # booking form talks to a real endpoint and its origins are known.
-# >>> REMOVE THE X-Robots-Tag LINE BELOW TO GO LIVE <<<
-# The page currently ships visible placeholders: three reviews it labels as
-# not real, a phone and email it labels as placeholders, a form that delivers
-# nothing, and eight client logos carried over from another performer's site.
-# Indexing that under the business name is the one mistake here that is hard
-# to take back, so search engines are told to stay away until it is finished.
-# Deleting the single X-Robots-Tag line re-opens the site to indexing.
+# Indexing is ON (launched 2026-10-14, see LAUNCH.md). Privacy, Terms and the
+# 404 page stay out of search through their own <meta name="robots" content="noindex">.
 /*
-  X-Robots-Tag: noindex, nofollow
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
