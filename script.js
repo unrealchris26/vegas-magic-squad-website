@@ -1077,8 +1077,8 @@
         // Two different failures, two different truths. Neither claims the
         // inquiry arrived, because in neither case do we know that it did.
         status.textContent = (err && err.message === 'not-configured')
-          ? 'This form is not connected yet, so nothing was sent. Please email kent@vegasmagicsquad.com or call (207) 458-3115.'
-          : 'That did not send. Please email kent@vegasmagicsquad.com or call (207) 458-3115 and we will pick it up there.';
+          ? 'This form is not connected yet, so nothing was sent. Please email events@magicsquad.vegas or call (207) 458-3115.'
+          : 'That did not send. Please email events@magicsquad.vegas or call (207) 458-3115 and we will pick it up there.';
         status.className = 'formnote is-bad';
       })
       .then(function () {

@@ -22,7 +22,7 @@ const fs = require('fs');
 const path = require('path');
 
 const APPROVED = {
-  emails: ['kent@vegasmagicsquad.com'],
+  emails: ['events@magicsquad.vegas'],
   phones: ['2074583115'],              // digits only, without the +1
 };
 

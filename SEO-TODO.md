@@ -13,15 +13,16 @@ below that is visible on a page is visible to search engines too.
       booked us" over eight logos carried over from Kent's own site (AT&T, IBM, Ford,
       Chase, Capital One, Xerox, Con Edison, Make-A-Wish). Keep only companies the
       Squad has genuinely performed for, or reword the line to name Kent. *(Phase 1)*
-- [ ] **Email works.** Confirm `kent@vegasmagicsquad.com` actually receives mail. It
-      is now the only email on the site, including Privacy and Terms (replacing
-      `unrealvegas@gmail.com`). *(Phase 2)*
-- [ ] **Business email.** Move to an `@magicsquad.vegas` address before launch
-      marketing starts. Change `APPROVED` in `scripts/check-contact.js`, then the pages,
-      until `npm run check-contact` passes. *(Phase 2)*
+- [ ] **Email works.** Confirm `events@magicsquad.vegas` actually receives mail
+      (MX records on the domain, a working inbox). It is now the only email on the
+      site, including Privacy, Terms, the form errors and the email templates.
+- [x] **Business email.** Moved to `events@magicsquad.vegas` on 2026-10-17, replacing
+      `kent@vegasmagicsquad.com` everywhere; `scripts/check-contact.js` now approves
+      only it. *(Phase 2)*
 - [ ] **Local phone.** Move to a 702 or 725 (Las Vegas) number. The current
       (207) 458-3115 is a Maine area code, which undercuts a "Las Vegas" business
-      for both buyers and local search. Same process as the email. *(Phase 2)*
+      for both buyers and local search. Change `APPROVED` in `scripts/check-contact.js`, then the pages, until
+      `npm run check-contact` passes. *(Phase 2)*
 - [ ] **Service-area address.** Decide whether to show a service-area address (or
       just "Las Vegas, Nevada", as now) on the site and in the business schema. *(Phase 2)*
 - [ ] **Kent: gig length.** `kent-axell.html` shows `[TODO: realistic gig length range]`
