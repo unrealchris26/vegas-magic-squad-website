@@ -40,26 +40,16 @@ below that is visible on a page is visible to search engines too.
 
 ## Needs legal review
 
-The Privacy Policy and Terms are live with these placeholders visible on the page.
-They are written from what the site actually does, but they are not legal advice.
-
-- [ ] **Privacy: legal entity name.** `[CONFIRM: registered legal entity name]`
-- [ ] **Privacy: marketing list.** `[CONFIRM: whether inquirers are also added to a
-      marketing or newsletter list. If they are, this policy must say so plainly and
-      offer a way to decline.]`
-- [ ] **Privacy: retention period.** `[CONFIRM: retention period. A common approach is
-      to keep inquiries for the length of the booking conversation plus a defined
-      period afterwards — say 24 months — then delete them.]`
-- [ ] **Privacy: governing jurisdiction.** `[CONFIRM: governing jurisdiction — Nevada,
-      USA is the likely answer, but that is the squad's call.]`
-- [ ] **Terms: legal entity name.** `[CONFIRM: registered legal entity name]`
-- [ ] **Terms: quote validity.** `[CONFIRM: how long a quote should stand — 14 or 30
-      days are common]`
-- [ ] **Terms: liability clause.** `[CONFIRM: liability wording. This ought to be
-      written or reviewed by whoever handles your compliance rather than drafted from
-      a template.]`
-- [ ] **Terms: governing jurisdiction.** `[CONFIRM: governing jurisdiction — Nevada,
-      USA is the likely answer, but that is the squad's call.]`
+- [x] **Privacy Policy and Terms of Service.** Replaced on 2026-10-17 with the
+      owner's own text, published word for word, plus the approved email and phone
+      under each contact section. All eight earlier `[CONFIRM: …]` placeholders went
+      with the old drafts.
+- [ ] **SMS consent on the form.** Both documents describe SMS opt-in (marketing
+      consent separate from transactional, 18+ for marketing). Check the booking
+      form's consent boxes match that wording before SMS sending starts.
+- [ ] **"Creator applications".** The Privacy Policy mentions creator applications
+      and collaboration opportunities. The site has no such form today; fine if
+      one is planned, otherwise worth removing from the policy.
 
 ## Needs photos / video
 
