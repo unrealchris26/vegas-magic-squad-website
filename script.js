@@ -1063,15 +1063,13 @@
 
     sendInquiry(payload)
       .then(function () {
-        /* Step two. The lead is already saved at this point, so the calendar
-           is an offer and never a gate - and leaving now loses nothing. */
-        showCallDone(payload);
+        // GoHighLevel accepted it: clear the form and the "Checking" line,
+        // then confirm in the pop-up. Only this path opens it.
         form.reset();
         fields.forEach(clearError);
-        // Deliberately does not claim delivery: the handler below transmits
-        // nothing. Replace this string when the form is wired to a real endpoint.
-        status.textContent = 'Thank you — your inquiry is in. We will come back to you with what we would do with your evening, and what it would cost.';
-        status.className = 'formnote is-ok';
+        status.textContent = '';
+        status.className = 'formnote';
+        openCallModal(submit);
       })
       .catch(function (err) {
         // Two different failures, two different truths. Neither claims the
@@ -1122,39 +1120,70 @@
   }
 
   /* ------------------------------------------------------------------ *
-   * Step two : confirmation, and an optional time.
+   * Confirmation pop-up (#callmodal), opened once the send succeeds.
    *
-   * CALENDAR_URL is empty until the GHL scheduler link is supplied. While it
-   * is empty the confirmation shows on its own rather than linking to a
-   * calendar that does not exist - a dead "choose a time" button is worse
-   * than no button.
-   *
-   * The visitor's details are carried into the booking link so they are not
-   * asked for them twice, and so the appointment lands against the same
-   * contact rather than creating a second one.
+   * showModal() makes the page behind inert and turns Esc into a "cancel".
+   * On top of that: Tab and Shift+Tab loop between the two buttons, a click
+   * on the backdrop closes it, the page cannot scroll behind it, and focus
+   * goes back to the submit button afterwards. Every way of closing runs
+   * through closeCallModal(), which plays the opening in reverse first.
    * ------------------------------------------------------------------ */
-  var CALENDAR_URL = '';     // <-- paste the GHL calendar/scheduler link here
+  var callModal = document.getElementById('callmodal');
+  var callModalReturn = null;
+  var callModalClosing = false;
 
-  function showCallDone(data) {
-    var done = document.getElementById('calldone');
-    if (!done) return;
-    var link = document.getElementById('calldone-link');
-    var sub = document.getElementById('calldone-sub');
+  function openCallModal(returnTo) {
+    if (!callModal || callModal.open) return;
+    callModalReturn = returnTo || null;
+    callModalClosing = false;
+    document.documentElement.classList.add('is-modal-open');
+    if (typeof callModal.showModal === 'function') callModal.showModal();
+    else callModal.setAttribute('open', '');
+    // The corner x comes first in the source; focus lands on Close instead,
+    // the action a visitor most likely wants after reading two lines.
+    var primary = callModal.querySelector('.cmodal__close');
+    if (primary) primary.focus();
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { callModal.classList.add('is-in'); });
+    });
+  }
 
-    if (CALENDAR_URL && link) {
-      var join = CALENDAR_URL.indexOf('?') === -1 ? '?' : '&';
-      link.href = CALENDAR_URL + join +
-        'first_name=' + encodeURIComponent(data.name || '') +
-        '&email=' + encodeURIComponent(data.email || '') +
-        '&phone=' + encodeURIComponent(data.phone || '');
-    } else {
-      if (link) link.hidden = true;
-      if (sub) sub.textContent = 'We will be in touch shortly to arrange a time.';
-    }
+  function closeCallModal() {
+    if (!callModal || !callModal.open || callModalClosing) return;
+    callModalClosing = true;
+    callModal.classList.remove('is-in');
+    setTimeout(function () {
+      if (typeof callModal.close === 'function') callModal.close();
+      else callModal.removeAttribute('open');
+      document.documentElement.classList.remove('is-modal-open');
+      callModalClosing = false;
+      if (callModalReturn && callModalReturn.focus) callModalReturn.focus();
+      callModalReturn = null;
+    }, reduced.matches ? 0 : 220);
+  }
 
-    done.hidden = false;
-    done.setAttribute('tabindex', '-1');
-    done.focus();
+  if (callModal) {
+    callModal.addEventListener('click', function (e) {
+      // The dialog element itself is the backdrop area, so a click that lands
+      // on it rather than inside the card was a click outside the card.
+      if (e.target === callModal || (e.target.closest && e.target.closest('[data-cmodal-close]'))) {
+        closeCallModal();
+      }
+    });
+    // Esc: replace the browser's instant close with the animated one, so
+    // focus is returned the same way as every other exit.
+    callModal.addEventListener('cancel', function (e) {
+      e.preventDefault();
+      closeCallModal();
+    });
+    callModal.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab') return;
+      var f = callModal.querySelectorAll('button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])');
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
   }
 
   function sendInquiry(data) {

@@ -590,22 +590,66 @@ html{scrollbar-color:var(--gold-deep) var(--night); scrollbar-width:thin}
 .callform__direct a{color:var(--gold-hi); text-underline-offset:3px}
 .callform__direct a:hover{color:var(--gold)}
 
-/* Step two. Hidden until the lead is saved, then revealed in place - it
-   replaces nothing, so a visitor can see their request was received without
-   the page having navigated anywhere. */
-.callform__done{
-  margin:clamp(22px,3vw,32px) 0 0; padding:clamp(22px,3vw,30px);
-  background:var(--night-2); border:1px solid rgba(200,168,80,.3);
-  text-align:center;
+/* ==========================================================================
+   Booking confirmation : the pop-up after a successful send
+   The form card's materials (navy card, hairline edge, gold corner brackets)
+   and the old inline confirmation's type: gold Josefin head, muted body.
+   The values are repeated rather than borrowed from .callform's --bk-*
+   tokens, because the dialog lives at the end of <body>, outside .callform.
+   ========================================================================== */
+.cmodal{
+  border:0; padding:0; background:transparent; color:var(--night-tx);
+  width:calc(100% - 32px); max-width:480px;   /* 16px side margins on phones */
+  max-height:calc(100% - 32px); overflow:visible;
 }
-.callform__done:focus{outline:none}
-.callform__done:focus-visible{outline:2px solid var(--gold); outline-offset:3px}
-.callform__doneh{
-  margin:0 0 .5em; font-family:var(--disp); font-weight:700;
-  font-size:clamp(18px,2.2vw,24px); color:var(--gold-hi); letter-spacing:.01em;
+.cmodal::backdrop{background:rgba(3,4,8,.72); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px)}
+.cmodal__card{
+  position:relative; text-align:center;
+  background:#0a0e15; border:1px solid #302d21;
+  padding:clamp(40px,5vw,48px) clamp(24px,5vw,40px) clamp(28px,4vw,36px);
 }
-.callform__donep{margin:0 auto; max-width:46ch; font-size:15px; color:var(--night-tx2)}
-.callform__donecta{margin:clamp(16px,2.2vw,24px) 0 0}
+.cmodal__card::before,
+.cmodal__card::after{content:""; position:absolute; pointer-events:none; width:16px; height:16px; border:2px solid #8a6d2c}
+.cmodal__card::before{top:-1px; left:-1px; border-right:0; border-bottom:0}
+.cmodal__card::after{bottom:-1px; right:-1px; border-left:0; border-top:0}
+.cmodal__h{
+  margin:0 0 .6em; font-family:var(--disp); font-weight:700;
+  font-size:clamp(20px,2.2vw,24px); line-height:1.25; letter-spacing:.01em;
+  color:var(--gold-hi); text-wrap:balance;
+}
+.cmodal__p{margin:0 auto; max-width:36ch; font-size:15px; line-height:1.6; color:var(--night-tx2)}
+/* the same red as the "Request My Call" button (.callform #submit) */
+.cmodal__close{
+  margin-top:clamp(24px,3vw,30px); min-width:180px; min-height:50px;
+  background:#a8141d; border-color:#a8141d; color:#fff; font-size:13px;
+}
+.cmodal__close:hover{background:var(--red-hi); border-color:var(--red-hi)}
+.cmodal__x{
+  position:absolute; top:10px; right:10px;
+  width:40px; height:40px; display:grid; place-items:center;
+  font-family:var(--text); font-size:26px; line-height:1;
+  background:transparent; color:var(--gold-hi);
+  border:1px solid rgba(200,168,80,.4); cursor:pointer;
+  transition:background .2s var(--ease), color .2s var(--ease);
+}
+.cmodal__x:hover{background:var(--gold); color:var(--gold-ink)}
+.cmodal__x:focus-visible,
+.cmodal__close:focus-visible{outline:2px solid var(--gold-hi); outline-offset:3px}
+
+/* Opening: a short fade with a slight scale-up. .is-in is added a frame
+   after showModal(), and taken away again to play it backwards before
+   close(). Reduced motion: it simply appears and disappears. */
+.cmodal .cmodal__card{opacity:0; transform:scale(.96); transition:opacity .22s var(--ease), transform .28s var(--ease)}
+.cmodal::backdrop{opacity:0; transition:opacity .22s var(--ease)}
+.cmodal.is-in .cmodal__card{opacity:1; transform:none}
+.cmodal.is-in::backdrop{opacity:1}
+@media (prefers-reduced-motion:reduce){
+  .cmodal .cmodal__card,
+  .cmodal::backdrop{transition:none}
+}
+
+/* page scroll is locked while the confirmation is open */
+html.is-modal-open{overflow:hidden}
 
 /* ==========================================================================
    Final call : returns to the form above rather than opening a second one

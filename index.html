@@ -390,24 +390,6 @@
     </form>
     </div>
 
-    <!--
-      STEP TWO. Revealed only after the lead is safely away. The calendar is an
-      offer, never a gate - the heading says the request is already received,
-      because it is.
-
-      CALENDAR_URL is empty until the GHL scheduler link is supplied. While it
-      is empty this shows the confirmation alone and promises nothing it cannot
-      do, rather than linking to a calendar that does not exist.
-    -->
-    <div class="callform__done" id="calldone" hidden>
-      <p class="callform__doneh">Thanks &mdash; your call request has been received.</p>
-      <p class="callform__donep" id="calldone-sub">
-        Prefer a specific time? Choose one below. Otherwise, we&rsquo;ll be in touch.
-      </p>
-      <p class="callform__donecta">
-        <a class="btn btn--gold btn--lg" id="calldone-link" href="#" target="_blank" rel="noopener">Choose a time</a>
-      </p>
-    </div>
     </div>
 
     <div class="callform__next">
@@ -1092,6 +1074,25 @@
     <video class="lb__vid" id="lb-video" controls playsinline preload="none" hidden></video>
     <img class="lb__img" id="lb-image" alt="Enlarged photo" hidden>
     <button class="lb__x" type="button" id="lb-close" aria-label="Close">&times;</button>
+  </div>
+</dialog>
+
+<!--
+  BOOKING CONFIRMATION. Opened by script.js only once GoHighLevel has accepted
+  the inquiry; a failed send keeps the inline error under the button and never
+  opens this. A native <dialog> opened with showModal(), like the media viewer
+  above, so the page behind goes inert and Esc closes it; script.js adds the
+  Tab loop, backdrop click, scroll lock and the return of focus to the submit
+  button. The heading is a <p>, not an <h2>: it is in the page source for every
+  visitor, and a "Thanks" heading would sit in the outline before anyone has
+  sent anything. aria-labelledby still names the dialog by it.
+-->
+<dialog class="cmodal" id="callmodal" role="dialog" aria-modal="true" aria-labelledby="callmodal-h" aria-describedby="callmodal-p">
+  <div class="cmodal__card">
+    <button class="cmodal__x" type="button" data-cmodal-close aria-label="Close">&times;</button>
+    <p class="cmodal__h" id="callmodal-h">Thanks &mdash; your call request has been received.</p>
+    <p class="cmodal__p" id="callmodal-p">We will be in touch shortly to arrange a time.</p>
+    <button class="btn btn--red btn--lg cmodal__close" type="button" data-cmodal-close>Close</button>
   </div>
 </dialog>
 

@@ -119,8 +119,7 @@ function main() {
   // Netlify reads _headers and _redirects from the publish root. Vercel does
   // not — its equivalents live in vercel.json. These are still copied so the
   // output works on either host; on Vercel they are simply inert files.
-  // robots.launch.txt is NOT published: it only replaces robots.txt at launch (LAUNCH.md).
-  for (const extra of ['_headers', '_redirects', 'robots.txt', 'sitemap.xml']) {
+  for (const extra of ['_headers', '_redirects', 'sitemap.xml']) {
     if (fs.existsSync(path.join(ROOT, extra))) {
       bytes += copy(extra);
     }

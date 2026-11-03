@@ -5,7 +5,7 @@
    Drives the booking form in headless Chrome and checks it:
    1. renders,
    2. rejects an empty submit with errors on name, email and phone,
-   3. reaches the success state ("request received") when filled in.
+   3. opens the confirmation pop-up when filled in and sent.
    window.fetch is stubbed BEFORE any page script runs, so no lead is ever
    sent to GoHighLevel; the check only confirms the request WOULD go there.
 
@@ -71,8 +71,8 @@ setInterval(() => {}, 1000);                // Node's WebSocket does not hold th
     set('f-name', 'Test Person'); set('f-email', 'test@example.com'); set('f-phone', '7025550100');
     document.getElementById('submit').click();
     await new Promise(r => setTimeout(r, 1500));
-    const d = document.getElementById('calldone');
-    return d && !d.hidden ? 'request-received panel shown' : '';
+    const m = document.getElementById('callmodal');
+    return m && m.open ? 'confirmation pop-up shown' : '';
   })()`);
   r.wouldSendTo = await js(`window.__sent.map(u => new URL(u).host).join(', ')`);
 
